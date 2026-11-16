@@ -71,6 +71,7 @@ const { tour, details: d } = Astro.props;
 <script>
   import { addToCart } from '../lib/cart';
   import { slotStatus } from '../lib/availability';
+  import { url } from '../lib/preview';
   const form = document.getElementById('ticket-form') as HTMLFormElement | null;
   if (form) {
     const aed = (n: number) => 'AED ' + n.toLocaleString('en-AE');
@@ -142,7 +143,7 @@ const { tour, details: d } = Astro.props;
       setTimeout(() => toast.classList.add('opacity-0', '-translate-y-4'), 3000);
     });
     form.querySelector('[data-buy]')!.addEventListener('click', () => {
-      if (!valid()) return; add(); location.href = '/checkout';
+      if (!valid()) return; add(); location.href = url('/checkout');
     });
     form.addEventListener('change', () => err.classList.add('hidden'));
     renderSlots();

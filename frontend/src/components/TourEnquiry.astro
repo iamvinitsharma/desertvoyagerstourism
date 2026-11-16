@@ -97,6 +97,7 @@ const field = 'w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-
 <script type="application/json" id="enquiry-pricing" set:html={JSON.stringify(pricing)} />
 
 <script>
+  import { STATIC_PREVIEW, demoRef, url } from '../lib/preview';
   const form = document.getElementById('enquiry-form') as HTMLFormElement | null;
   if (form) {
     const card = document.getElementById('enquiry-card')!;
@@ -147,9 +148,16 @@ const field = 'w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-
       body.addons = fd.getAll('addons');
       btn.disabled = true; label.textContent = 'Sending…';
       try {
-        const res = await fetch('/api/enquiry', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-        const data = await res.json();
-        if (!res.ok || !data.ok) throw new Error(data.error || 'Something went wrong');
+        let data: any;
+        if (STATIC_PREVIEW) {
+          // GitHub Pages preview: no server, simulate a successful request
+          await new Promise(r => setTimeout(r, 600));
+          data = { ok: true, ref: demoRef('DV'), tour: document.querySelector('h1')?.textContent?.trim() };
+        } else {
+          const res = await fetch(url('/api/enquiry'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+          data = await res.json();
+          if (!res.ok || !data.ok) throw new Error(data.error || 'Something went wrong');
+        }
         form.classList.add('hidden');
         const ok = card.querySelector<HTMLElement>('[data-success]')!; ok.classList.remove('hidden');
         ok.querySelector('[data-ref]')!.textContent = data.ref;

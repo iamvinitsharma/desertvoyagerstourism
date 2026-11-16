@@ -90,6 +90,7 @@ const steps = ['Cart', 'Your details', 'Payment', 'E-ticket'];
 
 <script>
   import { getCart } from '../lib/cart';
+  import { STATIC_PREVIEW, demoRef, url } from '../lib/preview';
   const C = JSON.parse(document.getElementById('catalog')!.textContent!);
   const aed = (n: number) => 'AED ' + n.toLocaleString('en-AE');
   const esc = (s: string) => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
@@ -125,13 +126,22 @@ const steps = ['Cart', 'Your details', 'Payment', 'E-ticket'];
       const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!; btn.disabled = true;
       const label = form.querySelector<HTMLElement>('[data-pay]')!; const old = label.textContent; label.textContent = 'Processing…';
       try {
-        const res = await fetch('/api/checkout', {
+        const customer = { firstName: fd.get('firstName'), lastName: fd.get('lastName'), email: fd.get('email'), phone: `${fd.get('dial')} ${fd.get('phone')}`, notes: fd.get('notes') };
+        if (STATIC_PREVIEW) {
+          // GitHub Pages preview: no server, build a demo order in the browser
+          await new Promise(r => setTimeout(r, 700));
+          const ref = demoRef('DT');
+          const lines = cart.map(i => {
+            const c = C[i.slug], p = c.prices;
+            return { title: c.title, date: i.date, time: i.time, qty: i.qty, amount: i.qty.adult * p.adult + i.qty.child * p.child + i.qty.infant * p.infant };
+          });
+          sessionStorage.setItem('dv_demo_order', JSON.stringify({ ref, customer, lines, total: lines.reduce((s, l) => s + l.amount, 0), status: 'paid_demo' }));
+          location.href = url(`/checkout/success?ref=${ref}`);
+          return;
+        }
+        const res = await fetch(url('/api/checkout'), {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            items: cart.map(({ slug, date, time, qty }) => ({ slug, date, time, qty })),
-            customer: { firstName: fd.get('firstName'), lastName: fd.get('lastName'), email: fd.get('email'), phone: `${fd.get('dial')} ${fd.get('phone')}`, notes: fd.get('notes') },
-            terms: true,
-          }),
+          body: JSON.stringify({ items: cart.map(({ slug, date, time, qty }) => ({ slug, date, time, qty })), customer, terms: true }),
         });
         const data = await res.json();
         if (!res.ok || !data.ok) throw new Error(data.error || 'Payment could not be started');

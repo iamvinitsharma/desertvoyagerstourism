@@ -2,7 +2,8 @@
 import Icon from './Icon.astro';
 import AwardBadge from './AwardBadge.astro';
 import { site, nav } from '../data/site';
-const path = Astro.url.pathname;
+// strip the deploy base (GitHub Pages preview) so active-link matching works everywhere
+const path = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '').replace(/\/$/, '') || '/';
 ---
 <header id="site-header" class="sticky top-0 z-40 bg-white/95 backdrop-blur transition-shadow">
   <div class="container-x flex h-[84px] items-center justify-between gap-4 2xl:max-w-[1500px]">

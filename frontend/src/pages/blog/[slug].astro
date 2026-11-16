@@ -6,6 +6,11 @@ import { posts, formatDate } from '../../data/blog';
 import { tours } from '../../data/tours';
 import { site } from '../../data/site';
 
+// Used only by the static GitHub Pages preview build (ignored when server-rendered).
+export function getStaticPaths() {
+  return posts.map(p => ({ params: { slug: p.slug } }));
+}
+
 const post = posts.find(p => p.slug === Astro.params.slug);
 if (!post) return Astro.rewrite('/404');
 const related = post.related

@@ -4,8 +4,11 @@ import Icon from '../../components/Icon.astro';
 import { find } from '../../lib/store';
 import { site } from '../../data/site';
 
-const ref = (Astro.url.searchParams.get('ref') || '').slice(0, 20);
-const order = /^DT-[A-Z0-9]{6}$/.test(ref) ? await find('orders', ref) : null;
+// GitHub Pages preview: no server, the demo order is rendered in the browser from sessionStorage.
+const preview = import.meta.env.PUBLIC_STATIC_PREVIEW === 'true';
+const ref = preview ? '' : (Astro.url.searchParams.get('ref') || '').slice(0, 20);
+const order = !preview && /^DT-[A-Z0-9]{6}$/.test(ref) ? await find('orders', ref) : null;
+const home = import.meta.env.BASE_URL;
 const aed = (n: number) => `AED ${n.toLocaleString('en-AE')}`;
 const fmt = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' });
 ---
@@ -43,6 +46,8 @@ const fmt = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { 
             </div>
           </div>
         </div>
+      ) : preview ? (
+        <div id="demo-order" data-home={home}></div>
       ) : (
         <div class="rounded-3xl border border-line bg-white p-10 text-center">
           <h1 class="text-2xl font-semibold">We couldn’t find that order</h1>
@@ -58,4 +63,37 @@ const fmt = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { 
 <script>
   import { setCart } from '../../lib/cart';
   if (document.querySelector('[data-clear-cart]')) setCart([]);
+
+  // Preview build: render the demo order saved by the checkout page
+  const box = document.getElementById('demo-order');
+  if (box) {
+    const esc = (s: unknown) => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+    const aed = (n: number) => 'AED ' + n.toLocaleString('en-AE');
+    const fmt = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' });
+    let o: any = null;
+    try { o = JSON.parse(sessionStorage.getItem('dv_demo_order') || 'null'); } catch {}
+    if (!o) {
+      box.innerHTML = `<div class="rounded-3xl border border-line bg-white p-10 text-center"><h1 class="text-2xl font-semibold">No order to show</h1><p class="mt-2 text-ink-soft">Add tickets to your cart and complete checkout to see the confirmation.</p></div>`;
+    } else {
+      setCart([]);
+      const who = (q: any) => [q.adult && `${q.adult} adult`, q.child && `${q.child} child`, q.infant && `${q.infant} infant`].filter(Boolean).join(', ');
+      box.innerHTML = `
+        <div class="overflow-hidden rounded-3xl border border-line bg-white shadow-xl shadow-ink/5">
+          <div class="bg-gradient-to-br from-brand-green to-[#2a7a37] p-8 text-center text-white">
+            <span class="mx-auto grid size-16 place-items-center rounded-full bg-white text-3xl text-brand-green">✓</span>
+            <h1 class="mt-4 text-3xl font-semibold">Thank you, ${esc(o.customer.firstName)}!</h1>
+            <p class="mt-1 text-white/85">Your tickets are confirmed. Order <b>${esc(o.ref)}</b></p>
+          </div>
+          <div class="p-6 sm:p-8">
+            <p class="mb-5 rounded-xl bg-amber-50 p-3 text-sm text-amber-800"><b>Preview site:</b> this is a demo order. No payment was taken and nothing was saved.</p>
+            <p class="text-sm text-ink-soft">E-tickets will be sent to <b class="text-ink">${esc(o.customer.email)}</b> and WhatsApp <b class="text-ink">${esc(o.customer.phone)}</b>.</p>
+            <ul class="mt-5 divide-y divide-line rounded-2xl border border-line">
+              ${o.lines.map((l: any) => `<li class="flex items-start justify-between gap-4 p-4"><div><p class="font-semibold">${esc(l.title)}</p><p class="text-sm text-ink-soft">${fmt(l.date)}${l.time ? ' · ' + esc(l.time) : ''}</p><p class="text-sm text-ink-soft">${who(l.qty)}</p></div><span class="whitespace-nowrap font-semibold">${aed(l.amount)}</span></li>`).join('')}
+              <li class="flex justify-between p-4 text-lg"><span class="font-semibold">Total paid</span><span class="font-display font-bold">${aed(o.total)}</span></li>
+            </ul>
+            <a href="${box.dataset.home}" class="btn-dark mt-6 !px-6 !py-3">Back to home</a>
+          </div>
+        </div>`;
+    }
+  }
 </script>

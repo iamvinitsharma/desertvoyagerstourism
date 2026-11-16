@@ -5,6 +5,11 @@ import TicketBuy from '../../components/TicketBuy.astro';
 import { tours } from '../../data/tours';
 import { getDetails } from '../../data/details';
 
+// Used only by the static GitHub Pages preview build (ignored when server-rendered).
+export function getStaticPaths() {
+  return tours.filter(t => t.type === 'ticket').map(t => ({ params: { slug: t.slug } }));
+}
+
 const tour = tours.find(t => t.slug === Astro.params.slug);
 if (!tour) return Astro.rewrite('/404');
 if (tour.type !== 'ticket') return Astro.redirect(`/tours/${tour.slug}`, 301);
