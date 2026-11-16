@@ -20,3 +20,6 @@ Thumbs.db
 
 # temp folder used by the Pages preview build
 .api-parked/
+
+# accidental nested clone of this repo
+/desertvoyagerstourism/
