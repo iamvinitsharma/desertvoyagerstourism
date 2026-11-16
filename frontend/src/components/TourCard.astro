@@ -1,0 +1,62 @@
+---
+import Icon from './Icon.astro';
+import { type Tour, discountPct, formatAED, categories } from '../data/tours';
+interface Props { tour: Tour }
+const { tour } = Astro.props;
+const off = discountPct(tour);
+const href = `/${tour.type === 'ticket' ? 'tickets' : 'tours'}/${tour.slug}`;
+const cat = categories.find(c => c.slug === tour.category);
+---
+<article data-category={tour.category}
+  class="tour-card group flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition hover:-translate-y-1 hover:shadow-xl hover:shadow-ink/10">
+  <a href={href} class="relative block aspect-[4/3] overflow-hidden bg-sand-100">
+    {tour.image ? (
+      <img src={tour.image} alt={tour.title} loading="lazy" width="650" height="488"
+           class="size-full object-cover transition duration-500 group-hover:scale-105" />
+    ) : (
+      <div class="grid size-full place-items-center bg-gradient-to-br from-brand-blue to-brand-blue-dark text-white/90">
+        <div class="text-center">
+          <Icon name={cat?.icon ?? 'ticket'} size={44} class="mx-auto" />
+          <p class="mt-2 text-xs font-semibold uppercase tracking-widest text-white/70">{tour.location}</p>
+        </div>
+      </div>
+    )}
+    <div class="absolute inset-x-3 top-3 flex items-start justify-between gap-2">
+      {tour.badge ? <span class="rounded-full bg-white px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-ink shadow">{tour.badge}</span> : <span></span>}
+      {off > 0 && <span class="rounded-full bg-brand-sand px-2.5 py-1 text-[11px] font-bold text-white shadow">-{off}%</span>}
+    </div>
+    <span class="absolute bottom-3 left-3 flex items-center gap-1 rounded-full bg-ink/75 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur">
+      <Icon name="pin" size={12} />{tour.location}
+    </span>
+  </a>
+
+  <div class="flex flex-1 flex-col p-4 sm:p-5">
+    <div class="flex items-center gap-1.5 text-sm">
+      <Icon name="star" size={15} class="text-amber-400" />
+      <span class="font-semibold">{tour.rating.toFixed(1)}</span>
+      <span class="text-ink-soft">({tour.reviews})</span>
+    </div>
+    <h3 class="mt-1.5 line-clamp-2 font-display text-[17px] font-semibold leading-snug">
+      <a href={href} class="hover:text-brand-blue">{tour.title}</a>
+    </h3>
+
+    <ul class="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-[13px] text-ink-soft">
+      <li class="flex items-center gap-1.5"><Icon name="clock" size={14} />{tour.duration}</li>
+      {tour.pickup && <li class="flex items-center gap-1.5"><Icon name="car" size={14} />Hotel pickup</li>}
+      {tour.type === 'ticket'
+        ? <li class="flex items-center gap-1.5 text-brand-green"><Icon name="zap" size={14} />Instant e-ticket</li>
+        : <li class="flex items-center gap-1.5 text-brand-green"><Icon name="check" size={14} />No prepayment</li>}
+    </ul>
+
+    <div class="mt-auto flex items-end justify-between gap-2 border-t border-dashed border-line pt-4">
+      <div class="min-w-0">
+        <p class="whitespace-nowrap text-[11px] font-medium uppercase tracking-wide text-ink-soft">
+          From {tour.oldPrice && <s class="ml-1 normal-case">{formatAED(tour.oldPrice)}</s>}
+        </p>
+        <p class="whitespace-nowrap font-display text-xl font-bold text-ink">{formatAED(tour.price)}</p>
+        <p class="text-[11px] text-ink-soft">per {tour.type === 'ticket' ? 'ticket' : 'person'}</p>
+      </div>
+      <a href={href} class="btn-primary shrink-0 whitespace-nowrap !px-4">{tour.type === 'ticket' ? 'Buy Tickets' : 'Book Now'}</a>
+    </div>
+  </div>
+</article>

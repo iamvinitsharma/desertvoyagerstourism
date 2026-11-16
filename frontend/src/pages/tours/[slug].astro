@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProductPage from '../../components/ProductPage.astro';
+import TourEnquiry from '../../components/TourEnquiry.astro';
+import { tours } from '../../data/tours';
+import { getDetails } from '../../data/details';
+
+const tour = tours.find(t => t.slug === Astro.params.slug);
+if (!tour) return Astro.rewrite('/404');
+// tickets live under /tickets/
+if (tour.type === 'ticket') return Astro.redirect(`/tickets/${tour.slug}`, 301);
+
+const details = getDetails(tour);
+const related = [
+  ...tours.filter(t => t.slug !== tour.slug && t.category === tour.category),
+  ...tours.filter(t => t.slug !== tour.slug && t.category !== tour.category && t.type === 'tour' && t.featured),
+].slice(0, 8);
+---
+<Layout title={`${tour.title} | Desert Voyagers Tourism`} description={`${tour.title} in ${tour.location}: ${tour.highlights.join(', ')}. From AED ${tour.price}. Hotel pickup, no prepayment.`} bodyClass="has-cta">
+  <ProductPage tour={tour} details={details} related={related} ctaLabel="Book now">
+    <TourEnquiry slot="sidebar" tour={tour} details={details} />
+  </ProductPage>
+</Layout>

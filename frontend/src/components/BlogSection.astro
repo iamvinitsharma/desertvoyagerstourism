@@ -1,0 +1,47 @@
+---
+// Homepage blog: one featured article + three compact ones.
+import Icon from './Icon.astro';
+import { posts, formatDate } from '../data/blog';
+const [lead, ...rest] = posts;
+---
+<section class="py-16 sm:py-20">
+  <div class="container-x">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="font-script text-3xl text-brand-sand-dark">Travel journal</p>
+        <h2 class="section-title mt-1">Tips & guides for your UAE trip</h2>
+      </div>
+      <a href="/blog" class="btn-ghost !px-5">All articles <Icon name="arrow-right" size={16} /></a>
+    </div>
+
+    <div class="mt-8 grid gap-6 lg:grid-cols-[1.15fr_1fr]">
+      <a href={`/blog/${lead.slug}`} class="blog-card group relative isolate flex min-h-[420px] flex-col justify-end overflow-hidden rounded-3xl p-7 text-white">
+        <img src={lead.image} alt="" loading="lazy" class="absolute inset-0 -z-10 size-full object-cover transition duration-700 group-hover:scale-105" />
+        <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink/95 via-ink/40 to-transparent"></div>
+        <span class="self-start rounded-full bg-brand-sand px-3 py-1 text-xs font-bold uppercase tracking-wide">{lead.category}</span>
+        <h3 class="mt-4 max-w-lg font-display text-2xl font-semibold leading-snug sm:text-3xl">{lead.title}</h3>
+        <p class="mt-2 max-w-lg text-white/80">{lead.excerpt}</p>
+        <p class="mt-4 flex items-center gap-4 text-sm text-white/70">
+          <span class="flex items-center gap-1.5"><Icon name="calendar" size={14} />{formatDate(lead.date)}</span>
+          <span class="flex items-center gap-1.5"><Icon name="clock" size={14} />{lead.readTime}</span>
+        </p>
+      </a>
+
+      <div class="grid gap-4">
+        {rest.slice(0, 3).map(p => (
+          <a href={`/blog/${p.slug}`} class="blog-card group flex gap-4 rounded-3xl border border-line bg-white p-3 transition hover:-translate-y-0.5 hover:shadow-xl hover:shadow-ink/5">
+            <span class="relative w-32 shrink-0 overflow-hidden rounded-2xl sm:w-40">
+              <img src={p.image} alt="" loading="lazy" class="absolute inset-0 size-full object-cover transition duration-500 group-hover:scale-110" />
+            </span>
+            <span class="flex min-w-0 flex-col py-1.5 pr-2">
+              <span class="text-xs font-bold uppercase tracking-wide text-brand-sand">{p.category}</span>
+              <span class="mt-1 line-clamp-2 font-display text-[17px] font-semibold leading-snug text-ink group-hover:text-brand-blue">{p.title}</span>
+              <span class="mt-1 line-clamp-2 text-sm text-ink-soft">{p.excerpt}</span>
+              <span class="mt-auto pt-2 text-xs text-ink-soft">{formatDate(p.date)} · {p.readTime}</span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

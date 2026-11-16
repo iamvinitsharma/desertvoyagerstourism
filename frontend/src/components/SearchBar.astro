@@ -1,0 +1,228 @@
+---
+import Icon from './Icon.astro';
+import { tours, categories } from '../data/tours';
+
+// Lightweight index for instant client-side suggestions (later: /api/search).
+const index = tours.map(t => ({
+  title: t.title,
+  href: `/${t.type === 'ticket' ? 'tickets' : 'tours'}/${t.slug}`,
+  cat: categories.find(c => c.slug === t.category)?.name ?? '',
+  loc: t.location,
+  img: t.image ?? '',
+  price: t.price,
+  type: t.type,
+}));
+const popular = ['Desert Safari', 'Burj Khalifa', 'Abu Dhabi City Tour', 'Louvre Abu Dhabi', 'Ferrari World', 'Dune Buggy'];
+const cats = categories.map(c => ({ name: c.name, href: c.slug === 'tickets' ? '/tickets' : `/tours?category=${c.slug}` }));
+---
+<form action="/tours" method="get" id="dv-search" autocomplete="off" role="search"
+  class="relative mx-auto w-full max-w-4xl rounded-[28px] bg-white p-2 text-left shadow-2xl shadow-black/25 md:rounded-full">
+  <div class="grid gap-1 md:grid-cols-[1.7fr_1fr_1fr_auto] md:items-center">
+
+    <!-- WHAT -->
+    <div class="relative" data-field="what">
+      <label for="s-q" class="flex cursor-text items-center gap-3 rounded-2xl px-4 py-2.5 hover:bg-sand-50 md:rounded-full md:px-6">
+        <Icon name="search" size={20} class="shrink-0 text-brand-sand" />
+        <span class="min-w-0 flex-1">
+          <span class="block text-[11px] font-bold uppercase tracking-wider text-ink">What</span>
+          <input id="s-q" name="q" type="text" placeholder="Desert safari, Burj Khalifa…" aria-autocomplete="list" aria-controls="s-panel" aria-expanded="false"
+                 class="w-full truncate bg-transparent text-[15px] text-ink outline-none placeholder:text-ink-soft/70" />
+        </span>
+        <button type="button" data-clear class="hidden size-6 shrink-0 place-items-center rounded-full bg-sand-100 text-ink-soft hover:bg-sand-200" aria-label="Clear search"><Icon name="x" size={14} /></button>
+      </label>
+
+      <!-- Suggestions panel -->
+      <div id="s-panel" role="listbox" class="absolute left-0 top-full z-50 mt-3 hidden w-full min-w-[320px] overflow-hidden rounded-2xl border border-line bg-white shadow-2xl shadow-ink/20 md:w-[480px]">
+        <div data-empty class="p-4">
+          <p class="text-[11px] font-bold uppercase tracking-wider text-ink-soft">Popular searches</p>
+          <div class="mt-2.5 flex flex-wrap gap-2">
+            {popular.map(p => (
+              <button type="button" data-pick={p} class="flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-sm text-ink hover:border-brand-sand hover:bg-orange-50">
+                <Icon name="search" size={13} class="text-ink-soft" />{p}
+              </button>
+            ))}
+          </div>
+          <p class="mt-4 text-[11px] font-bold uppercase tracking-wider text-ink-soft">Browse by category</p>
+          <div class="mt-2 grid grid-cols-2 gap-1">
+            {cats.map(c => (
+              <a href={c.href} class="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-ink hover:bg-sand-50">
+                {c.name}<Icon name="chevron-right" size={15} class="text-ink-soft" />
+              </a>
+            ))}
+          </div>
+        </div>
+        <ul data-results class="hidden max-h-[360px] overflow-y-auto p-2"></ul>
+        <div data-none class="hidden p-5 text-center text-sm text-ink-soft">
+          No exact match. Press <b class="text-ink">Search</b> to see all results, or
+          <a href="https://wa.me/971585721121" class="font-semibold text-brand-green">ask us on WhatsApp</a>.
+        </div>
+      </div>
+    </div>
+
+    <!-- WHEN -->
+    <label class="flex cursor-pointer items-center gap-3 rounded-2xl px-4 py-2.5 hover:bg-sand-50 md:rounded-full md:relative md:before:absolute md:before:left-0 md:before:top-1/2 md:before:h-9 md:before:w-px md:before:-translate-y-1/2 md:before:bg-line md:px-5">
+      <Icon name="calendar" size={20} class="shrink-0 text-brand-sand" />
+      <span class="min-w-0 flex-1">
+        <span class="block text-[11px] font-bold uppercase tracking-wider text-ink">When</span>
+        <input type="date" name="date" id="s-date" class="w-full bg-transparent text-[15px] text-ink outline-none" />
+      </span>
+    </label>
+
+    <!-- WHO -->
+    <div class="relative">
+      <button type="button" id="s-guests-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="s-guests"
+        class="flex w-full items-center gap-3 rounded-2xl px-4 py-2.5 text-left hover:bg-sand-50 md:rounded-full md:relative md:before:absolute md:before:left-0 md:before:top-1/2 md:before:h-9 md:before:w-px md:before:-translate-y-1/2 md:before:bg-line md:px-5">
+        <Icon name="users" size={20} class="shrink-0 text-brand-sand" />
+        <span class="min-w-0 flex-1">
+          <span class="block text-[11px] font-bold uppercase tracking-wider text-ink">Who</span>
+          <span id="s-guests-label" class="block truncate text-[15px] text-ink">2 adults</span>
+        </span>
+        <Icon name="chevron-down" size={16} class="text-ink-soft" />
+      </button>
+      <input type="hidden" name="adults" value="2" />
+      <input type="hidden" name="children" value="0" />
+      <div id="s-guests" role="dialog" aria-label="Guests" class="absolute right-0 top-full z-50 mt-3 hidden w-[300px] rounded-2xl border border-line bg-white p-4 shadow-2xl shadow-ink/20">
+        {[
+          { key: 'adults', label: 'Adults', sub: 'Age 12+', min: 1 },
+          { key: 'children', label: 'Children', sub: 'Age 3–11', min: 0 },
+        ].map(g => (
+          <div class="flex items-center justify-between py-2.5 first:border-b first:border-line">
+            <div><p class="font-semibold text-ink">{g.label}</p><p class="text-xs text-ink-soft">{g.sub}</p></div>
+            <div class="flex items-center gap-3" data-stepper={g.key} data-min={g.min}>
+              <button type="button" data-dec class="grid size-9 place-items-center rounded-full border border-line text-lg leading-none text-ink hover:border-ink disabled:opacity-30" aria-label={`Fewer ${g.label}`}>−</button>
+              <span data-val class="w-5 text-center font-semibold">{g.key === 'adults' ? 2 : 0}</span>
+              <button type="button" data-inc class="grid size-9 place-items-center rounded-full border border-line text-lg leading-none text-ink hover:border-ink" aria-label={`More ${g.label}`}>+</button>
+            </div>
+          </div>
+        ))}
+        <p class="mt-2 text-xs text-ink-soft">Infants under 3 usually go free. Add them in the booking notes.</p>
+        <button type="button" data-done class="btn-dark mt-3 w-full">Done</button>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-primary h-14 !rounded-2xl !px-8 !text-base md:!rounded-full">
+      <Icon name="search" size={19} /><span>Search</span>
+    </button>
+  </div>
+</form>
+
+<script is:inline define:vars={{ index }}>
+  window.__dvIndex = index;
+</script>
+
+<script>
+  type Item = { title: string; href: string; cat: string; loc: string; img: string; price: number; type: string };
+  const form = document.getElementById('dv-search') as HTMLFormElement | null;
+  if (form) {
+    const index: Item[] = (window as any).__dvIndex || [];
+    const q = form.querySelector<HTMLInputElement>('#s-q')!;
+    const panel = form.querySelector<HTMLElement>('#s-panel')!;
+    const empty = panel.querySelector<HTMLElement>('[data-empty]')!;
+    const list = panel.querySelector<HTMLElement>('[data-results]')!;
+    const none = panel.querySelector<HTMLElement>('[data-none]')!;
+    const clear = form.querySelector<HTMLElement>('[data-clear]')!;
+    let active = -1;
+
+    const esc = (s: string) => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+    const mark = (text: string, term: string) => {
+      const i = text.toLowerCase().indexOf(term.toLowerCase());
+      if (!term || i < 0) return esc(text);
+      return esc(text.slice(0, i)) + '<mark class="bg-orange-100 text-ink rounded px-0.5">' + esc(text.slice(i, i + term.length)) + '</mark>' + esc(text.slice(i + term.length));
+    };
+
+    const openPanel = (open: boolean) => { panel.classList.toggle('hidden', !open); q.setAttribute('aria-expanded', String(open)); };
+
+    const render = () => {
+      const term = q.value.trim();
+      clear.classList.toggle('hidden', !term); clear.classList.toggle('grid', !!term);
+      active = -1;
+      if (!term) { empty.classList.remove('hidden'); list.classList.add('hidden'); none.classList.add('hidden'); return; }
+      const words = term.toLowerCase().split(/\s+/);
+      const hits = index
+        .map(it => {
+          const hay = `${it.title} ${it.cat} ${it.loc}`.toLowerCase();
+          if (!words.every(w => hay.includes(w))) return null;
+          return { it, score: it.title.toLowerCase().startsWith(words[0]) ? 0 : 1 };
+        })
+        .filter(Boolean).sort((a, b) => a!.score - b!.score).slice(0, 6).map(x => x!.it);
+      empty.classList.add('hidden');
+      none.classList.toggle('hidden', hits.length > 0);
+      list.classList.toggle('hidden', hits.length === 0);
+      list.innerHTML = hits.map((it, i) => `
+        <li role="option" id="s-opt-${i}">
+          <a href="${it.href}" class="s-opt flex items-center gap-3 rounded-xl p-2 hover:bg-sand-50">
+            ${it.img
+              ? `<img src="${it.img}" alt="" class="size-14 shrink-0 rounded-lg object-cover" loading="lazy">`
+              : `<span class="grid size-14 shrink-0 place-items-center rounded-lg bg-brand-blue/10 text-brand-blue text-xs font-bold">${it.type === 'ticket' ? 'TICKET' : 'TOUR'}</span>`}
+            <span class="min-w-0 flex-1">
+              <span class="block truncate text-[15px] font-semibold text-ink">${mark(it.title, words[0])}</span>
+              <span class="block text-xs text-ink-soft">${esc(it.cat)} · ${esc(it.loc)}</span>
+            </span>
+            <span class="shrink-0 text-right">
+              <span class="block text-[10px] uppercase text-ink-soft">From</span>
+              <span class="block whitespace-nowrap text-sm font-bold text-ink">AED ${it.price.toLocaleString('en-AE')}</span>
+            </span>
+          </a>
+        </li>`).join('');
+    };
+
+    const setActive = (n: number) => {
+      const opts = list.querySelectorAll<HTMLElement>('.s-opt');
+      if (!opts.length) return;
+      active = (n + opts.length) % opts.length;
+      opts.forEach((o, i) => o.classList.toggle('bg-sand-100', i === active));
+      q.setAttribute('aria-activedescendant', `s-opt-${active}`);
+      opts[active].scrollIntoView({ block: 'nearest' });
+    };
+
+    q.addEventListener('focus', () => { render(); openPanel(true); });
+    q.addEventListener('input', () => { render(); openPanel(true); });
+    q.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown') { e.preventDefault(); setActive(active + 1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(active - 1); }
+      else if (e.key === 'Enter' && active >= 0) { e.preventDefault(); list.querySelectorAll<HTMLAnchorElement>('.s-opt')[active]?.click(); }
+      else if (e.key === 'Escape') { openPanel(false); q.blur(); }
+    });
+    clear.addEventListener('click', e => { e.preventDefault(); q.value = ''; render(); q.focus(); });
+    panel.querySelectorAll<HTMLElement>('[data-pick]').forEach(b => b.addEventListener('click', () => {
+      q.value = b.dataset.pick!; render(); q.focus();
+    }));
+
+    // ---- Date: default tomorrow, no past dates
+    const date = form.querySelector<HTMLInputElement>('#s-date')!;
+    const iso = (d: Date) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    const tmr = new Date(); tmr.setDate(tmr.getDate() + 1);
+    date.min = iso(new Date()); date.value = iso(tmr);
+    date.closest('label')!.addEventListener('click', () => { try { (date as any).showPicker?.(); } catch {} });
+
+    // ---- Guests popover
+    const gBtn = form.querySelector<HTMLButtonElement>('#s-guests-btn')!;
+    const gPop = form.querySelector<HTMLElement>('#s-guests')!;
+    const gLabel = form.querySelector<HTMLElement>('#s-guests-label')!;
+    const openGuests = (open: boolean) => { gPop.classList.toggle('hidden', !open); gBtn.setAttribute('aria-expanded', String(open)); };
+    const updateLabel = () => {
+      const a = +(form.elements.namedItem('adults') as HTMLInputElement).value;
+      const c = +(form.elements.namedItem('children') as HTMLInputElement).value;
+      gLabel.textContent = `${a} adult${a > 1 ? 's' : ''}${c ? `, ${c} child${c > 1 ? 'ren' : ''}` : ''}`;
+    };
+    gBtn.addEventListener('click', () => openGuests(gPop.classList.contains('hidden')));
+    gPop.querySelector('[data-done]')!.addEventListener('click', () => openGuests(false));
+    gPop.querySelectorAll<HTMLElement>('[data-stepper]').forEach(s => {
+      const key = s.dataset.stepper!, min = +s.dataset.min!;
+      const input = form.elements.namedItem(key) as HTMLInputElement;
+      const val = s.querySelector<HTMLElement>('[data-val]')!;
+      const dec = s.querySelector<HTMLButtonElement>('[data-dec]')!;
+      const set = (n: number) => { n = Math.max(min, Math.min(20, n)); input.value = String(n); val.textContent = String(n); dec.disabled = n <= min; updateLabel(); };
+      dec.addEventListener('click', () => set(+input.value - 1));
+      s.querySelector('[data-inc]')!.addEventListener('click', () => set(+input.value + 1));
+      set(+input.value);
+    });
+
+    // ---- Close popovers on outside click
+    document.addEventListener('click', e => {
+      const t = e.target as Node;
+      if (!form.querySelector('[data-field="what"]')!.contains(t)) openPanel(false);
+      if (!gPop.contains(t) && !gBtn.contains(t)) openGuests(false);
+    });
+  }
+</script>

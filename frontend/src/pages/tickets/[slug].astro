@@ -1,0 +1,19 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProductPage from '../../components/ProductPage.astro';
+import TicketBuy from '../../components/TicketBuy.astro';
+import { tours } from '../../data/tours';
+import { getDetails } from '../../data/details';
+
+const tour = tours.find(t => t.slug === Astro.params.slug);
+if (!tour) return Astro.rewrite('/404');
+if (tour.type !== 'ticket') return Astro.redirect(`/tours/${tour.slug}`, 301);
+
+const details = getDetails(tour);
+const related = tours.filter(t => t.slug !== tour.slug && t.type === 'ticket').slice(0, 8);
+---
+<Layout title={`${tour.title} | Buy Online | Desert Voyagers Tourism`} description={`Buy ${tour.title} online from AED ${tour.price}. Instant e-ticket by email and WhatsApp, secure card payment.`} bodyClass="has-cta">
+  <ProductPage tour={tour} details={details} related={related} ctaLabel="Buy tickets">
+    <TicketBuy slot="sidebar" tour={tour} details={details} />
+  </ProductPage>
+</Layout>

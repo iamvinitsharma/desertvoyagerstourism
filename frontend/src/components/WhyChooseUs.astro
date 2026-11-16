@@ -1,0 +1,50 @@
+---
+// "Why choose us" — bento grid: large photo story card + feature cards.
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+
+const features = [
+  { icon: 'pin', title: 'Local Abu Dhabi team', text: 'You book directly with the people who run your tour. No middlemen, no call centres.', tone: 'bg-orange-50 text-brand-sand' },
+  { icon: 'tag', title: 'Clear, honest prices', text: 'Every page lists exactly what’s included. The price you see is the price you pay.', tone: 'bg-blue-50 text-brand-blue' },
+  { icon: 'check', title: 'Tours with no prepayment', text: 'Reserve now and pay after we confirm. Tickets are paid securely online.', tone: 'bg-green-50 text-brand-green' },
+  { icon: 'car', title: 'Safe 4x4s & expert drivers', text: 'Experienced desert drivers and well-maintained vehicles on every safari.', tone: 'bg-amber-50 text-amber-600' },
+  { icon: 'users', title: 'Private & group options', text: 'Share with other travellers or book a private car for your family or company.', tone: 'bg-cyan-50 text-cyan-700' },
+];
+---
+<section class="py-16 sm:py-24">
+  <div class="container-x">
+    <div class="mx-auto max-w-2xl text-center">
+      <p class="font-script text-3xl text-brand-sand-dark">Why choose us</p>
+      <h2 class="section-title mt-1">Travel with people who know the desert</h2>
+      <p class="mt-3 text-ink-soft">From your first message to drop-off at your hotel, our team takes care of every detail.</p>
+    </div>
+
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2">
+      <!-- story card -->
+      <div class="group relative isolate flex min-h-[360px] flex-col justify-end overflow-hidden rounded-3xl p-7 text-white sm:col-span-2 lg:row-span-2">
+        <img src="/images/tours/image-for-half-day-desert-safari.png" alt="Desert Voyagers 4x4 on the dunes" loading="lazy" class="absolute inset-0 -z-10 size-full object-cover transition duration-700 group-hover:scale-105" />
+        <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/50 to-transparent"></div>
+        <h3 class="max-w-md font-display text-2xl font-semibold leading-snug sm:text-3xl">Real people on WhatsApp, 7 days a week</h3>
+        <p class="mt-3 max-w-md text-white/80">Questions before you book, pickup updates on the day, help if plans change. Message us any time between {site.hours.replace('Daily ', '')}.</p>
+        <a href={site.whatsapp} target="_blank" rel="noopener" class="btn mt-6 self-start bg-[#25D366] !px-5 !py-3 text-white hover:opacity-90"><Icon name="whatsapp" size={18} />Chat with our team</a>
+      </div>
+
+      {features.map(f => (
+        <div class="why-card group flex flex-col rounded-3xl border border-line bg-white p-6 transition duration-300 hover:-translate-y-1 hover:border-transparent hover:shadow-xl hover:shadow-ink/10">
+          <span class:list={['grid size-12 place-items-center rounded-2xl transition duration-300 group-hover:scale-110', f.tone]}><Icon name={f.icon} size={22} /></span>
+          <h3 class="mt-5 font-display text-lg font-semibold text-ink">{f.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-ink-soft">{f.text}</p>
+        </div>
+      )).slice(0, 4)}
+    </div>
+
+    <!-- bottom strip -->
+    <div class="mt-4 grid gap-4 sm:grid-cols-[1fr_auto] sm:items-center rounded-3xl border border-line bg-sand-50 p-6">
+      <div class="flex items-start gap-4">
+        <span class:list={['grid size-12 shrink-0 place-items-center rounded-2xl', features[4].tone]}><Icon name={features[4].icon} size={22} /></span>
+        <div><h3 class="font-display text-lg font-semibold">{features[4].title}</h3><p class="mt-1 text-sm text-ink-soft">{features[4].text}</p></div>
+      </div>
+      <a href="/tours" class="btn-primary !px-6 !py-3">Explore tours <Icon name="arrow-right" size={16} /></a>
+    </div>
+  </div>
+</section>

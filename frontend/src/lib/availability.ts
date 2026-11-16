@@ -1,0 +1,31 @@
+/**
+ * SAMPLE availability (deterministic per product/date so it looks real and stays stable).
+ * Shared by the calendar (browser) and the booking APIs (server).
+ * Backend phase: replace with real stock from the admin (blocked dates, slot capacity).
+ */
+export type DayStatus = 'available' | 'limited' | 'soldout' | 'past';
+export type SlotStatus = 'available' | 'limited' | 'soldout';
+
+function rnd(seed: string) {
+  let h = 2166136261;
+  for (let i = 0; i < seed.length; i++) { h ^= seed.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return ((h >>> 0) % 1000) / 1000;
+}
+
+export const isoDate = (d: Date) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+export const MAX_DAYS_AHEAD = 180;
+
+export function dayStatus(slug: string, iso: string, minIso: string): DayStatus {
+  if (iso < minIso) return 'past';
+  const r = rnd(`${slug}|${iso}`);
+  if (r < 0.08) return 'soldout';
+  if (r < 0.22) return 'limited';
+  return 'available';
+}
+
+export function slotStatus(slug: string, iso: string, slot: string): SlotStatus {
+  const r = rnd(`${slug}|${iso}|${slot}`);
+  if (r < 0.15) return 'soldout';
+  if (r < 0.35) return 'limited';
+  return 'available';
+}

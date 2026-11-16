@@ -1,0 +1,103 @@
+---
+// Instagram-style guest reels: 5 vertical cards per row (slider on mobile), click → vertical player.
+import Icon from './Icon.astro';
+import Carousel from './Carousel.astro';
+import { reels } from '../data/reviews';
+import { site } from '../data/site';
+---
+<section class="py-16 sm:py-20">
+  <div class="container-x">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="font-script text-3xl text-brand-sand-dark">Real guests, real moments</p>
+        <h2 class="section-title mt-1">See it through our guests’ eyes</h2>
+      </div>
+      <a href={site.social.instagram} target="_blank" rel="noopener"
+         class="btn !px-5 !py-2.5 bg-gradient-to-r from-[#f58529] via-[#dd2a7b] to-[#8134af] text-white hover:opacity-90">
+        <Icon name="instagram" size={18} />Follow @voyagerstourismdesert
+      </a>
+    </div>
+
+    <Carousel class="mt-8" label="Guest video reels" trackClass="gap-4 py-3 -my-3">
+      {reels.map((r, i) => (
+        <button type="button" data-reel={i} aria-label={`Play video: ${r.title}`}
+          class="reel-card group relative aspect-[9/16] w-[62%] shrink-0 snap-start overflow-hidden rounded-2xl bg-ink text-left sm:w-[38%] md:w-[30%] lg:w-[calc((100%-4rem)/5)]">
+          <img src={r.poster} alt="" loading="lazy" class="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-110" />
+          <span class="absolute inset-0 bg-gradient-to-b from-ink/40 via-transparent to-ink/85"></span>
+          <!-- top: reel marker + duration -->
+          <span class="absolute inset-x-3 top-3 flex items-center justify-between text-white">
+            <span class="flex items-center gap-1.5 text-xs font-semibold">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M2 8h20M8 2l3 6M14 2l3 6"/><path d="m10 12 5 3-5 3z" fill="currentColor"/></svg>
+              Reel
+            </span>
+            <span class="rounded-full bg-black/40 px-2 py-0.5 text-[11px] font-semibold backdrop-blur">{r.duration}</span>
+          </span>
+          <!-- play -->
+          <span class="absolute left-1/2 top-1/2 grid size-14 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white/25 text-white backdrop-blur-md ring-1 ring-white/50 transition duration-300 group-hover:scale-110 group-hover:bg-white group-hover:text-ink">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+          </span>
+          <!-- bottom: caption -->
+          <span class="absolute inset-x-3 bottom-3 text-white">
+            <span class="block font-display text-[15px] font-semibold leading-snug">{r.title}</span>
+            <span class="mt-1 block text-xs text-white/75">{r.guest}</span>
+            <span class="mt-2 inline-flex items-center gap-1 rounded-full bg-white/15 px-2 py-0.5 text-[11px] font-medium backdrop-blur"><Icon name="pin" size={11} />{r.tour}</span>
+          </span>
+        </button>
+      ))}
+    </Carousel>
+  </div>
+
+  <!-- vertical player -->
+  <dialog id="reel-player" class="m-auto max-h-none max-w-none bg-transparent p-0 backdrop:bg-black/90" aria-label="Guest video">
+    <div class="relative flex h-[100dvh] w-screen items-center justify-center p-3">
+      <div class="reel-frame relative aspect-[9/16] h-[min(88dvh,calc(100vw*16/9-2rem))] overflow-hidden rounded-3xl bg-black shadow-2xl">
+        <div data-media class="absolute inset-0"></div>
+        <div class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-5 pt-16 text-white">
+          <p data-title class="font-display text-lg font-semibold"></p>
+          <p data-guest class="text-sm text-white/75"></p>
+          <a data-link href="#" class="pointer-events-auto mt-3 inline-flex items-center gap-1.5 rounded-full bg-brand-sand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-sand-dark">View this tour <Icon name="arrow-right" size={15} /></a>
+        </div>
+      </div>
+      <button type="button" data-close class="absolute right-4 top-4 grid size-11 place-items-center rounded-full bg-white/10 text-white hover:bg-white hover:text-ink" aria-label="Close video"><Icon name="x" size={22} /></button>
+      <button type="button" data-prev class="absolute left-3 top-1/2 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white hover:bg-white hover:text-ink sm:left-8" aria-label="Previous video"><Icon name="chevron-left" size={24} /></button>
+      <button type="button" data-next class="absolute right-3 top-1/2 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white hover:bg-white hover:text-ink sm:right-8" aria-label="Next video"><Icon name="chevron-right" size={24} /></button>
+    </div>
+  </dialog>
+  <script type="application/json" id="reels-data" set:html={JSON.stringify(reels)} />
+</section>
+
+<style>
+  #reel-player[open] .reel-frame { animation: reel-pop .35s cubic-bezier(.2,.9,.3,1.2) both; }
+  @keyframes reel-pop { from { opacity: 0; transform: scale(.92) translateY(12px); } to { opacity: 1; transform: none; } }
+</style>
+
+<script>
+  const data = JSON.parse(document.getElementById('reels-data')?.textContent || '[]');
+  const dlg = document.getElementById('reel-player') as HTMLDialogElement | null;
+  if (dlg && data.length) {
+    const media = dlg.querySelector<HTMLElement>('[data-media]')!;
+    const frame = dlg.querySelector<HTMLElement>('.reel-frame')!;
+    let i = 0;
+    const load = (n: number) => {
+      i = (n + data.length) % data.length;
+      const r = data[i];
+      media.innerHTML = r.video
+        ? `<video src="${r.video}" poster="${r.poster}" class="size-full object-cover" autoplay playsinline controls></video>`
+        : `<iframe class="size-full" src="https://www.youtube-nocookie.com/embed/${r.youtube}?autoplay=1&playsinline=1&rel=0&modestbranding=1" title="${r.title}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+      dlg.querySelector('[data-title]')!.textContent = r.title;
+      dlg.querySelector('[data-guest]')!.textContent = r.guest;
+      dlg.querySelector<HTMLAnchorElement>('[data-link]')!.href = r.tourHref;
+      frame.style.animation = 'none'; void frame.offsetWidth; frame.style.animation = '';
+    };
+    const stop = () => { media.innerHTML = ''; }; // removes the player = stops playback
+    const close = () => { stop(); dlg.close(); };
+    dlg.addEventListener('close', stop);
+    dlg.addEventListener('cancel', stop); // Esc key
+    document.querySelectorAll<HTMLElement>('[data-reel]').forEach(b => b.addEventListener('click', () => { load(+b.dataset.reel!); dlg.showModal(); }));
+    dlg.querySelector('[data-close]')!.addEventListener('click', close);
+    dlg.querySelector('[data-prev]')!.addEventListener('click', () => load(i - 1));
+    dlg.querySelector('[data-next]')!.addEventListener('click', () => load(i + 1));
+    dlg.addEventListener('click', e => { if (e.target === dlg || (e.target as HTMLElement).classList.contains('relative') && !(e.target as HTMLElement).closest('.reel-frame')) close(); });
+    dlg.addEventListener('keydown', e => { if (e.key === 'ArrowRight') load(i + 1); if (e.key === 'ArrowLeft') load(i - 1); });
+  }
+</script>

@@ -1,0 +1,162 @@
+---
+import Icon from './Icon.astro';
+import AwardBadge from './AwardBadge.astro';
+import { site } from '../data/site';
+import { categories } from '../data/tours';
+const year = new Date().getFullYear();
+const topLinks = [
+  { label: 'Home', href: '/' }, { label: 'Tours', href: '/tours' }, { label: 'Tickets', href: '/tickets' },
+  { label: 'About Us', href: '/about' }, { label: 'Blog', href: '/blog' }, { label: 'Contact Us', href: '/contact' },
+];
+---
+<footer class="relative isolate overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#fdf8f1_45%,#f9e3c8_78%,#f4c999_100%)]">
+  <!-- top links -->
+  <div class="container-x">
+    <nav class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 border-b border-ink/10 py-7 text-[15px] font-medium" aria-label="Footer">
+      {topLinks.map(l => <a href={l.href} class="text-ink transition hover:text-brand-sand-dark">{l.label}</a>)}
+    </nav>
+  </div>
+
+  <!-- columns -->
+  <div class="container-x relative grid gap-10 pb-44 pt-12 sm:grid-cols-2 sm:pb-52 lg:pb-60 2xl:pb-72 lg:grid-cols-[1.25fr_0.8fr_0.9fr_1.35fr]">
+    <div>
+      <img src="/images/logo.png" alt={site.name} width="220" height="91" class="h-16 w-auto" loading="lazy" />
+      <p class="mt-5 font-display text-2xl font-light leading-tight text-ink">
+        Discover the UAE<br /><span class="font-script text-4xl font-bold text-brand-sand-dark">the Voyagers way</span>
+      </p>
+      <AwardBadge variant="footer" class="mt-5" />
+      <ul class="mt-5 space-y-2.5 text-sm text-ink-soft">
+        <li class="flex gap-2.5"><Icon name="pin" size={17} class="mt-0.5 shrink-0 text-brand-sand" />{site.address}</li>
+        <li><a href={site.phoneHref} class="flex gap-2.5 hover:text-ink"><Icon name="phone" size={17} class="shrink-0 text-brand-sand" />{site.phone}</a></li>
+        <li><a href={`mailto:${site.email}`} class="flex gap-2.5 hover:text-ink"><Icon name="mail" size={17} class="shrink-0 text-brand-sand" />{site.email}</a></li>
+        <li class="flex gap-2.5"><Icon name="clock" size={17} class="shrink-0 text-brand-sand" />{site.hours}</li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="font-display text-lg font-semibold text-ink">Experiences</h3>
+      <ul class="mt-4 space-y-2.5 text-[15px] text-ink-soft">
+        {categories.map(c => <li><a class="transition hover:text-brand-sand-dark" href={c.slug === 'tickets' ? '/tickets' : `/tours?category=${c.slug}`}>{c.name}</a></li>)}
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="font-display text-lg font-semibold text-ink">Terms of use</h3>
+      <ul class="mt-4 space-y-2.5 text-[15px] text-ink-soft">
+        <li><a class="transition hover:text-brand-sand-dark" href="/terms">Terms & conditions</a></li>
+        <li><a class="transition hover:text-brand-sand-dark" href="/privacy">Privacy policy</a></li>
+        <li><a class="transition hover:text-brand-sand-dark" href="/cancellation-policy">Cancellation & refunds</a></li>
+        <li><a class="transition hover:text-brand-sand-dark" href="/booking">Manage booking</a></li>
+      </ul>
+      <h3 class="mt-7 font-display text-lg font-semibold text-ink">We accept</h3>
+      <div class="mt-3 flex gap-2">
+        <span class="grid h-8 w-12 place-items-center rounded-md border border-ink/10 bg-white text-[11px] font-extrabold italic text-[#1a1f71]">VISA</span>
+        <span class="grid h-8 w-12 place-items-center rounded-md border border-ink/10 bg-white" aria-label="Mastercard">
+          <svg width="28" height="18" viewBox="0 0 28 18" aria-hidden="true"><circle cx="10" cy="9" r="7" fill="#eb001b"/><circle cx="18" cy="9" r="7" fill="#f79e1b" fill-opacity=".9"/></svg>
+        </span>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="font-display text-lg font-semibold text-ink">Get offers & travel tips</h3>
+      <p class="mt-2 text-sm text-ink-soft">Seasonal deals on safaris, tours and tickets. No spam, unsubscribe anytime.</p>
+      <form class="mt-4 flex overflow-hidden rounded-full border border-ink/10 bg-white p-1 shadow-sm focus-within:border-brand-sand" data-newsletter>
+        <label for="ft-email" class="sr-only">Email address</label>
+        <input id="ft-email" type="email" required placeholder="Your email address" class="min-w-0 flex-1 bg-transparent px-4 text-[15px] outline-none" />
+        <button class="btn-primary !px-5">Subscribe</button>
+      </form>
+      <h3 class="mt-7 font-display text-lg font-semibold text-ink">Follow us</h3>
+      <div class="mt-3 flex gap-2.5">
+        <a href={site.social.facebook} target="_blank" rel="noopener" aria-label="Facebook" class="grid size-10 place-items-center rounded-full bg-ink text-white transition hover:-translate-y-0.5 hover:bg-[#1877f2]"><Icon name="facebook" size={16} /></a>
+        <a href={site.social.instagram} target="_blank" rel="noopener" aria-label="Instagram" class="grid size-10 place-items-center rounded-full bg-ink text-white transition hover:-translate-y-0.5 hover:bg-[#dd2a7b]"><Icon name="instagram" size={17} /></a>
+        <a href={site.social.youtube} target="_blank" rel="noopener" aria-label="YouTube" class="grid size-10 place-items-center rounded-full bg-ink text-white transition hover:-translate-y-0.5 hover:bg-[#ff0000]"><Icon name="youtube" size={18} /></a>
+        <a href={site.whatsapp} target="_blank" rel="noopener" aria-label="WhatsApp" class="grid size-10 place-items-center rounded-full bg-ink text-white transition hover:-translate-y-0.5 hover:bg-[#25D366]"><Icon name="whatsapp" size={17} /></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- desert & skyline scene -->
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[300px] sm:h-[360px] lg:h-[420px]">
+    <svg class="absolute inset-0 size-full [mask-image:linear-gradient(to_bottom,transparent_0%,rgba(0,0,0,.35)_30%,#000_62%)]" viewBox="0 0 1440 340" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <radialGradient id="ft-sun" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#fff4d6" /><stop offset=".45" stop-color="#ffd58a" /><stop offset="1" stop-color="#ffd58a" stop-opacity="0" />
+        </radialGradient>
+        <linearGradient id="ft-sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#c88a55" stop-opacity=".55" /><stop offset="1" stop-color="#9a5a2e" stop-opacity=".85" />
+        </linearGradient>
+        <linearGradient id="ft-dune1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e7a868" /><stop offset="1" stop-color="#d48848" /></linearGradient>
+        <linearGradient id="ft-dune2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cf7d3f" /><stop offset="1" stop-color="#b1602b" /></linearGradient>
+        <linearGradient id="ft-dune3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9f5226" /><stop offset="1" stop-color="#7a3c1c" /></linearGradient>
+      </defs>
+
+      <circle cx="1010" cy="170" r="120" fill="url(#ft-sun)" />
+      <circle cx="1010" cy="170" r="38" fill="#ffe7b3" opacity=".9" />
+
+      <!-- skyline (hazy, gold-brown) -->
+      <g fill="url(#ft-sky)">
+        <!-- Grand Mosque -->
+        <path d="M150 260v-34q0-26 30-32 30 6 30 32v34ZM112 260v-20q0-15 16-18 16 3 16 18v20ZM216 260v-20q0-15 16-18 16 3 16 18v20Z" />
+        <path d="M96 260V170l3-10 3 10v90ZM258 260V170l3-10 3 10v90Z" />
+        <rect x="104" y="236" width="152" height="24" />
+        <!-- Etihad Towers -->
+        <path d="M330 260V140q10-12 22 0v120ZM360 260V118q12-14 26 0v142ZM394 260V150q10-10 20 0v110Z" />
+        <!-- filler towers -->
+        <path d="M430 260v-70h18v70ZM452 260v-96h14v96ZM470 260v-60h22v60ZM500 260v-84l10-10 10 10v84Z" />
+        <!-- Dubai Frame -->
+        <path d="M548 260V150h52v110h-12V162h-28v98Z" />
+        <!-- towers near Burj -->
+        <path d="M612 260v-88h16v88ZM632 260v-120h12v120ZM648 260v-74h20v74Z" />
+        <!-- Burj Khalifa -->
+        <path d="M690 260v-60h12v-40h4v-46h4v-44h3v-38h2V-0h2v32h2v38h3v44h4v46h4v40h12v60Z" transform="translate(0 6)" />
+        <!-- towers -->
+        <path d="M748 260v-104h16v104ZM768 260v-70h22v70ZM794 260v-130l8-8 8 8v130ZM816 260v-82h18v82Z" />
+        <!-- Museum of the Future -->
+        <ellipse cx="880" cy="214" rx="30" ry="38" fill="none" stroke="url(#ft-sky)" stroke-width="12" />
+        <rect x="846" y="246" width="68" height="14" />
+        <!-- filler -->
+        <path d="M930 260v-64h20v64ZM954 260v-90h14v90Z" />
+        <!-- Burj Al Arab -->
+        <path d="M1150 260V150q0-56 46-92v202Z" /><path d="M1196 58v-22h3v224h-3Z" /><path d="M1196 140h22v120h-22Z" opacity=".7" />
+        <!-- right filler -->
+        <path d="M1250 260v-58h22v58ZM1278 260v-86h16v86ZM1300 260v-50h24v50ZM1330 260v-72h18v72Z" />
+      </g>
+
+      <!-- dunes -->
+      <path d="M0 250 C 160 205, 320 236, 470 238 S 760 200, 930 226 S 1240 214, 1440 232 V340 H0 Z" fill="url(#ft-dune1)" />
+      <path d="M0 282 C 200 248, 380 274, 560 268 S 900 236, 1080 258 S 1320 252, 1440 262 V340 H0 Z" fill="url(#ft-dune2)" />
+      <path d="M0 312 C 240 292, 520 306, 760 300 S 1180 288, 1440 298 V340 H0 Z" fill="url(#ft-dune3)" />
+      <!-- small camel caravan -->
+      <g fill="#7a3c1c" opacity=".85" transform="translate(1210 236) scale(.55)">
+        <path d="M0 20q4-14 14-10 4-10 12-4 6 2 8 10l6-6 4 2-6 10q0 8-4 10v12h-3V32h-14v12h-3V30q-6-2-8-6l-2 4v16H1V26Z" />
+        <path d="M60 20q4-14 14-10 4-10 12-4 6 2 8 10l6-6 4 2-6 10q0 8-4 10v12h-3V32h-14v12h-3V30q-6-2-8-6l-2 4v16h-3V26Z" />
+      </g>
+    </svg>
+
+    <div class="absolute inset-x-0 bottom-0 pointer-events-auto">
+      <div class="container-x flex flex-col items-center justify-between gap-2 py-4 text-center text-[13px] text-white/90 sm:flex-row sm:text-left">
+        <p>© {year} {site.legalName}. All rights reserved.</p>
+        <p class="text-white/75">Abu Dhabi · Dubai · UAE</p>
+      </div>
+    </div>
+
+    <button type="button" data-to-top aria-label="Back to top"
+      class="pointer-events-auto absolute bottom-28 right-6 grid size-12 place-items-center rounded-full bg-white/90 text-ink shadow-lg backdrop-blur transition hover:-translate-y-1 hover:bg-white sm:bottom-32">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+    </button>
+  </div>
+</footer>
+
+<!-- Floating WhatsApp -->
+<a href={site.whatsapp} target="_blank" rel="noopener" aria-label="Chat on WhatsApp"
+   class="wa-float fixed bottom-5 right-5 z-40 grid size-14 max-lg:in-[.has-cta]:bottom-[5.5rem] place-items-center rounded-full bg-[#25D366] text-white shadow-lg shadow-black/20 transition hover:scale-105">
+  <Icon name="whatsapp" size={28} />
+</a>
+
+<script>
+  document.querySelector('[data-to-top]')?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  document.querySelectorAll<HTMLFormElement>('[data-newsletter]').forEach(f => f.addEventListener('submit', e => {
+    e.preventDefault(); const b = f.querySelector('button')!; b.textContent = 'Subscribed ✓'; b.disabled = true;
+    // TODO (backend): POST to newsletter list.
+  }));
+</script>

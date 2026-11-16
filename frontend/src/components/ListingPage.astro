@@ -1,0 +1,112 @@
+---
+// Shared listing for /tours and /tickets with search (?q), category (?category) and sort (?sort).
+import Icon from './Icon.astro';
+import TourCard from './TourCard.astro';
+import { tours, categories, type Tour } from '../data/tours';
+import { site } from '../data/site';
+
+interface Props { mode: 'tours' | 'tickets' }
+const { mode } = Astro.props;
+const sp = Astro.url.searchParams;
+const q = (sp.get('q') || '').trim().slice(0, 80);
+const category = sp.get('category') || '';
+const sort = sp.get('sort') || 'popular';
+
+// /tickets → tickets only. /tours → tours only, unless searching or a ticket category is chosen.
+let pool: Tour[] = mode === 'tickets'
+  ? tours.filter(t => t.type === 'ticket')
+  : (q || category ? tours : tours.filter(t => t.type === 'tour'));
+if (category) pool = pool.filter(t => t.category === category);
+if (q) {
+  const words = q.toLowerCase().split(/\s+/);
+  pool = pool.filter(t => {
+    const hay = `${t.title} ${t.location} ${categories.find(c => c.slug === t.category)?.name ?? ''} ${t.highlights.join(' ')}`.toLowerCase();
+    return words.every(w => hay.includes(w));
+  });
+}
+const sorters: Record<string, (a: Tour, b: Tour) => number> = {
+  popular: (a, b) => Number(b.featured) - Number(a.featured) || b.reviews - a.reviews,
+  rating: (a, b) => b.rating - a.rating,
+  'price-asc': (a, b) => a.price - b.price,
+  'price-desc': (a, b) => b.price - a.price,
+};
+pool = [...pool].sort(sorters[sort] ?? sorters.popular);
+
+const chipCats = mode === 'tickets'
+  ? categories.filter(c => tours.some(t => t.type === 'ticket' && t.category === c.slug))
+  : categories;
+const base = mode === 'tickets' ? '/tickets' : '/tours';
+const link = (params: Record<string, string>) => {
+  const u = new URLSearchParams({ ...(q && { q }), ...(category && { category }), ...(sort !== 'popular' && { sort }), ...params });
+  [...u.entries()].forEach(([k, v]) => { if (!v) u.delete(k); });
+  const s = u.toString(); return s ? `${base}?${s}` : base;
+};
+const catName = categories.find(c => c.slug === category)?.name;
+const title = q ? `Results for “${q}”` : catName ?? (mode === 'tickets' ? 'Attraction tickets' : 'Tours & experiences');
+const sub = mode === 'tickets'
+  ? 'Buy online and get your e-ticket instantly by email and WhatsApp.'
+  : 'Book with no prepayment. We confirm your tour and hotel pickup on WhatsApp.';
+const heroImg = mode === 'tickets' ? '/images/tours/louvre-museum-jpg.webp' : '/images/tours/image-for-half-day-desert-safari.png';
+---
+<section class="relative isolate overflow-hidden bg-ink">
+  <img src={heroImg} alt="" class="absolute inset-0 -z-10 size-full object-cover opacity-45" />
+  <div class="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/70 to-ink/20"></div>
+  <div class="container-x py-12 sm:py-16">
+    <nav class="flex items-center gap-1.5 text-sm text-white/70" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-white">Home</a><Icon name="chevron-right" size={14} /><span class="text-white">{mode === 'tickets' ? 'Tickets' : 'Tours'}</span>
+    </nav>
+    <h1 class="mt-3 text-3xl font-semibold text-white sm:text-5xl">{title}</h1>
+    <p class="mt-2 max-w-xl text-white/80">{sub}</p>
+    <form action={base} method="get" class="mt-6 flex max-w-xl gap-2 rounded-full bg-white p-1.5 shadow-xl" role="search">
+      {category && <input type="hidden" name="category" value={category} />}
+      <label class="flex flex-1 items-center gap-2 pl-4">
+        <Icon name="search" size={18} class="text-brand-sand" />
+        <input name="q" value={q} placeholder={mode === 'tickets' ? 'Search attractions…' : 'Search tours, places, activities…'} class="w-full bg-transparent py-2 text-[15px] outline-none" aria-label="Search" />
+      </label>
+      <button class="btn-primary !px-6">Search</button>
+    </form>
+  </div>
+</section>
+
+<section class="bg-sand-50/60 py-8 sm:py-10">
+  <div class="container-x">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <div class="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4">
+        <a href={link({ category: '' })} class:list={['shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition', !category ? 'border-ink bg-ink text-white' : 'border-line bg-white hover:border-ink']}>All</a>
+        {chipCats.map(c => (
+          <a href={link({ category: c.slug })} class:list={['shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition', category === c.slug ? 'border-ink bg-ink text-white' : 'border-line bg-white hover:border-ink']}>{c.name}</a>
+        ))}
+      </div>
+      <form method="get" action={base} class="flex items-center gap-2 text-sm">
+        {q && <input type="hidden" name="q" value={q} />}
+        {category && <input type="hidden" name="category" value={category} />}
+        <label for="sort" class="text-ink-soft">Sort by</label>
+        <select id="sort" name="sort" onchange="this.form.submit()" class="rounded-full border border-line bg-white px-4 py-2 font-semibold outline-none focus:border-ink">
+          <option value="popular" selected={sort === 'popular'}>Most popular</option>
+          <option value="rating" selected={sort === 'rating'}>Top rated</option>
+          <option value="price-asc" selected={sort === 'price-asc'}>Price: low to high</option>
+          <option value="price-desc" selected={sort === 'price-desc'}>Price: high to low</option>
+        </select>
+      </form>
+    </div>
+
+    <p class="mt-6 text-sm text-ink-soft"><b class="text-ink">{pool.length}</b> {pool.length === 1 ? 'experience' : 'experiences'} found
+      {(q || category) && <a href={base} class="ml-2 font-semibold text-brand-blue hover:underline">Clear filters</a>}</p>
+
+    {pool.length > 0 ? (
+      <div class="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {pool.map(t => <TourCard tour={t} />)}
+      </div>
+    ) : (
+      <div class="mt-6 flex flex-col items-center gap-3 rounded-3xl border border-dashed border-sand-200 bg-white p-12 text-center">
+        <span class="grid size-16 place-items-center rounded-full bg-sand-100 text-brand-sand"><Icon name="search" size={28} /></span>
+        <p class="font-display text-xl font-semibold">No exact matches</p>
+        <p class="max-w-md text-sm text-ink-soft">Try a different word, or tell us what you’re looking for and we’ll arrange it for you.</p>
+        <div class="mt-2 flex flex-wrap justify-center gap-3">
+          <a href={base} class="btn-ghost">See everything</a>
+          <a href={site.whatsapp} target="_blank" rel="noopener" class="btn bg-[#25D366] text-white"><Icon name="whatsapp" size={16} />Ask on WhatsApp</a>
+        </div>
+      </div>
+    )}
+  </div>
+</section>

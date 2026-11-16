@@ -1,0 +1,63 @@
+---
+import Icon from './Icon.astro';
+interface Props { images: string[]; title: string; fallbackIcon?: string }
+const { images, title } = Astro.props;
+const main = images[0];
+const side = images.slice(1, 3);
+---
+<div class="gallery relative">
+  {images.length === 0 ? (
+    <div class="grid aspect-[16/7] place-items-center rounded-3xl bg-gradient-to-br from-brand-blue to-brand-blue-dark text-white/80">
+      <Icon name="ticket" size={56} />
+    </div>
+  ) : (
+    <div class:list={['grid gap-2 overflow-hidden rounded-3xl sm:h-[440px] sm:gap-3', side.length ? 'sm:grid-cols-[2fr_1fr]' : '']}>
+      <button type="button" data-open="0" class="group relative block aspect-[4/3] min-h-0 overflow-hidden bg-sand-100 sm:aspect-auto sm:h-full">
+        <img src={main} alt={title} class="size-full object-cover transition duration-500 group-hover:scale-105" fetchpriority="high" />
+      </button>
+      {side.length > 0 && (
+        <div class:list={['hidden h-full min-h-0 gap-3 sm:grid', side.length > 1 ? 'grid-rows-2' : 'grid-rows-1']}>
+          {side.map((src, i) => (
+            <button type="button" data-open={i + 1} class="group relative block min-h-0 overflow-hidden bg-sand-100">
+              <img src={src} alt="" loading="lazy" class="size-full object-cover transition duration-500 group-hover:scale-105" />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )}
+  {images.length > 1 && (
+    <button type="button" data-open="0" class="absolute bottom-4 right-4 flex items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-sm font-semibold text-ink shadow-lg hover:bg-white">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      View all {images.length} photos
+    </button>
+  )}
+
+  <dialog class="lightbox m-auto max-h-none max-w-none bg-transparent p-0 backdrop:bg-ink/90" aria-label={`${title} photos`}>
+    <div class="relative flex h-[100dvh] w-screen items-center justify-center p-4 sm:p-10">
+      <img data-lb-img src={main} alt="" class="max-h-full max-w-full rounded-2xl object-contain shadow-2xl" />
+      <p data-lb-count class="absolute left-1/2 top-5 -translate-x-1/2 rounded-full bg-white/10 px-3 py-1 text-sm text-white">1 / {images.length}</p>
+      <button type="button" data-lb-close class="absolute right-4 top-4 grid size-11 place-items-center rounded-full bg-white/10 text-white hover:bg-white hover:text-ink" aria-label="Close"><Icon name="x" size={22} /></button>
+      <button type="button" data-lb-prev class="absolute left-3 top-1/2 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white hover:bg-white hover:text-ink" aria-label="Previous photo"><Icon name="chevron-left" size={24} /></button>
+      <button type="button" data-lb-next class="absolute right-3 top-1/2 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white hover:bg-white hover:text-ink" aria-label="Next photo"><Icon name="chevron-right" size={24} /></button>
+    </div>
+  </dialog>
+  <script type="application/json" data-images set:html={JSON.stringify(images)} />
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.gallery').forEach(g => {
+    const imgs: string[] = JSON.parse(g.querySelector('[data-images]')?.textContent || '[]');
+    const dlg = g.querySelector<HTMLDialogElement>('dialog')!;
+    const el = dlg.querySelector<HTMLImageElement>('[data-lb-img]')!;
+    const count = dlg.querySelector<HTMLElement>('[data-lb-count]')!;
+    let i = 0;
+    const show = (n: number) => { i = (n + imgs.length) % imgs.length; el.src = imgs[i]; count.textContent = `${i + 1} / ${imgs.length}`; };
+    g.querySelectorAll<HTMLElement>('[data-open]').forEach(b => b.addEventListener('click', () => { if (!imgs.length) return; show(+b.dataset.open!); dlg.showModal(); }));
+    dlg.querySelector('[data-lb-close]')!.addEventListener('click', () => dlg.close());
+    dlg.querySelector('[data-lb-prev]')!.addEventListener('click', () => show(i - 1));
+    dlg.querySelector('[data-lb-next]')!.addEventListener('click', () => show(i + 1));
+    dlg.addEventListener('click', e => { if (e.target === dlg || (e.target as HTMLElement).classList.contains('relative')) dlg.close(); });
+    dlg.addEventListener('keydown', e => { if (e.key === 'ArrowRight') show(i + 1); if (e.key === 'ArrowLeft') show(i - 1); });
+  });
+</script>

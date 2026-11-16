@@ -1,0 +1,233 @@
+---
+// Shared layout for tour & ticket detail pages. The booking/purchase widget goes in slot="sidebar".
+import Icon from './Icon.astro';
+import Gallery from './Gallery.astro';
+import TourCard from './TourCard.astro';
+import Carousel from './Carousel.astro';
+import { type Tour, categories, discountPct, formatAED } from '../data/tours';
+import type { Details } from '../data/details';
+import { site } from '../data/site';
+
+interface Props { tour: Tour; details: Details; related: Tour[]; ctaLabel: string }
+const { tour, details: d, related, ctaLabel } = Astro.props;
+const cat = categories.find(c => c.slug === tour.category);
+const isTicket = tour.type === 'ticket';
+const listHref = isTicket ? '/tickets' : `/tours?category=${tour.category}`;
+const off = discountPct(tour);
+
+const facts = [
+  { icon: 'clock', label: 'Duration', value: tour.duration },
+  tour.timing ? { icon: 'sun', label: 'Timing', value: tour.timing } : null,
+  { icon: 'pin', label: 'Location', value: tour.location },
+  isTicket ? { icon: 'zap', label: 'Confirmation', value: 'Instant e-ticket' } : { icon: 'car', label: 'Pickup', value: tour.pickup ? 'Hotel pickup included' : 'Meet on site' },
+  { icon: 'users', label: 'Type', value: d.groupType },
+  { icon: 'headset', label: 'Language', value: d.language },
+].filter(Boolean) as { icon: string; label: string; value: string }[];
+
+const sections = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'included', label: 'What’s included' },
+  d.itinerary.length ? { id: 'itinerary', label: 'Itinerary' } : null,
+  d.pickup ? { id: 'pickup', label: 'Pickup' } : null,
+  { id: 'know', label: 'Good to know' },
+  d.faqs.length ? { id: 'faq', label: 'FAQ' } : null,
+].filter(Boolean) as { id: string; label: string }[];
+---
+<div class="bg-sand-50/60 pb-24 lg:pb-16">
+  <div class="container-x pt-5">
+    <!-- breadcrumb -->
+    <nav class="flex flex-wrap items-center gap-1.5 text-sm text-ink-soft" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-ink">Home</a><Icon name="chevron-right" size={14} />
+      <a href={listHref} class="hover:text-ink">{cat?.name ?? (isTicket ? 'Tickets' : 'Tours')}</a><Icon name="chevron-right" size={14} />
+      <span class="line-clamp-1 text-ink">{tour.title}</span>
+    </nav>
+
+    <!-- title block -->
+    <div class="mt-4 flex flex-wrap items-end justify-between gap-4">
+      <div class="max-w-3xl">
+        <div class="flex flex-wrap items-center gap-2">
+          {tour.badge && <span class="rounded-full bg-ink px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">{tour.badge}</span>}
+          <span class:list={['rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide', isTicket ? 'bg-green-50 text-brand-green' : 'bg-orange-50 text-brand-sand-dark']}>
+            {isTicket ? 'Instant e-ticket' : 'No prepayment'}
+          </span>
+        </div>
+        <h1 class="mt-3 text-3xl font-semibold leading-tight text-ink sm:text-4xl">{tour.title}</h1>
+        <div class="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+          <span class="flex items-center gap-1.5"><span class="flex text-amber-400">{[1,2,3,4,5].map(() => <Icon name="star" size={15} />)}</span><b>{tour.rating.toFixed(1)}</b><span class="text-ink-soft">({tour.reviews} reviews)</span></span>
+          <span class="flex items-center gap-1.5 text-ink-soft"><Icon name="pin" size={15} />{tour.location}</span>
+          <span class="flex items-center gap-1.5 text-ink-soft"><Icon name="clock" size={15} />{tour.duration}</span>
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <button type="button" data-share class="btn-ghost !px-4"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg><span data-share-label>Share</span></button>
+      </div>
+    </div>
+
+    <div class="mt-6"><Gallery images={d.gallery} title={tour.title} /></div>
+  </div>
+
+  <!-- section tabs -->
+  <div class="sticky top-[84px] z-30 mt-8 border-y border-line bg-white/95 backdrop-blur">
+    <nav class="container-x no-scrollbar flex gap-1 overflow-x-auto" aria-label="Sections">
+      {sections.map(s => (
+        <a href={`#${s.id}`} data-sec-link={s.id} class="sec-link shrink-0 border-b-2 border-transparent px-3 py-3.5 text-sm font-semibold text-ink-soft transition hover:text-ink">{s.label}</a>
+      ))}
+    </nav>
+  </div>
+
+  <div class="container-x mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-10">
+    <!-- main column -->
+    <div class="min-w-0 space-y-6">
+      <!-- quick facts -->
+      <div class="grid grid-cols-2 gap-3 rounded-2xl border border-line bg-white p-5 sm:grid-cols-3">
+        {facts.map(f => (
+          <div class="flex items-start gap-3">
+            <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-sand-100 text-brand-sand"><Icon name={f.icon} size={18} /></span>
+            <div class="min-w-0"><p class="text-xs text-ink-soft">{f.label}</p><p class="text-sm font-semibold text-ink">{f.value}</p></div>
+          </div>
+        ))}
+      </div>
+
+      <section id="overview" class="detail-sec scroll-mt-40 rounded-2xl border border-line bg-white p-6 sm:p-7">
+        <h2 class="font-display text-xl font-semibold">Overview</h2>
+        <div class="mt-3 space-y-3 leading-relaxed text-ink-soft">{d.overview.map(p => <p>{p}</p>)}</div>
+        {tour.highlights.length > 0 && (
+          <>
+            <h3 class="mt-6 font-display text-base font-semibold">Highlights</h3>
+            <ul class="mt-3 grid gap-2.5 sm:grid-cols-2">
+              {tour.highlights.map(h => <li class="flex items-start gap-2.5 text-[15px]"><span class="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-orange-50 text-brand-sand"><Icon name="star" size={11} /></span>{h}</li>)}
+            </ul>
+          </>
+        )}
+        {d.features.length > 0 && (
+          <div class="mt-6 flex flex-wrap gap-2">
+            {d.features.map(f => <span class="flex items-center gap-2 rounded-full bg-sand-50 px-3.5 py-2 text-sm font-medium"><Icon name={f.icon} size={16} class="text-brand-sand" />{f.label}</span>)}
+          </div>
+        )}
+      </section>
+
+      <section id="included" class="detail-sec scroll-mt-40 rounded-2xl border border-line bg-white p-6 sm:p-7">
+        <h2 class="font-display text-xl font-semibold">What’s included</h2>
+        <div class="mt-4 grid gap-6 sm:grid-cols-2">
+          <ul class="space-y-2.5">
+            {d.inclusions.map(x => <li class="flex items-start gap-2.5 text-[15px]"><span class="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-green-50 text-brand-green"><Icon name="check" size={13} /></span>{x}</li>)}
+          </ul>
+          <ul class="space-y-2.5">
+            {d.exclusions.map(x => <li class="flex items-start gap-2.5 text-[15px] text-ink-soft"><span class="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-red-50 text-red-500"><Icon name="x" size={12} /></span>{x}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      {d.itinerary.length > 0 && (
+        <section id="itinerary" class="detail-sec scroll-mt-40 rounded-2xl border border-line bg-white p-6 sm:p-7">
+          <h2 class="font-display text-xl font-semibold">Itinerary</h2>
+          <ol class="relative mt-5 space-y-6 before:absolute before:bottom-2 before:left-[15px] before:top-2 before:w-0.5 before:bg-sand-200">
+            {d.itinerary.map((s, i) => (
+              <li class="relative flex gap-4">
+                <span class:list={['relative z-10 grid size-8 shrink-0 place-items-center rounded-full text-xs font-bold', i === 0 || i === d.itinerary.length - 1 ? 'bg-brand-sand text-white' : 'border-2 border-brand-sand bg-white text-brand-sand']}>{i + 1}</span>
+                <div>
+                  <p class="text-xs font-bold uppercase tracking-wide text-brand-sand">{s.time}</p>
+                  <p class="font-semibold text-ink">{s.title}</p>
+                  <p class="mt-0.5 text-sm text-ink-soft">{s.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      {d.pickup && (
+        <section id="pickup" class="detail-sec scroll-mt-40 rounded-2xl border border-line bg-white p-6 sm:p-7">
+          <h2 class="font-display text-xl font-semibold">Pickup & drop-off</h2>
+          <div class="mt-4 grid gap-4 sm:grid-cols-2">
+            <div class="flex gap-3 rounded-xl bg-sand-50 p-4"><Icon name="pin" size={20} class="shrink-0 text-brand-sand" /><div><p class="text-sm font-semibold">Pickup areas</p><p class="mt-0.5 text-sm text-ink-soft">{d.pickup.areas}</p></div></div>
+            <div class="flex gap-3 rounded-xl bg-sand-50 p-4"><Icon name="clock" size={20} class="shrink-0 text-brand-sand" /><div><p class="text-sm font-semibold">Pickup time</p><p class="mt-0.5 text-sm text-ink-soft">{tour.timing ? `Around ${tour.timing.split('–')[0].trim()}. ` : ''}{d.pickup.time}</p></div></div>
+          </div>
+        </section>
+      )}
+
+      <section id="know" class="detail-sec scroll-mt-40 rounded-2xl border border-line bg-white p-6 sm:p-7">
+        <h2 class="font-display text-xl font-semibold">Good to know</h2>
+        <ul class="mt-4 space-y-2.5">
+          {d.info.map(x => <li class="flex items-start gap-2.5 text-[15px] text-ink-soft"><span class="mt-2 size-1.5 shrink-0 rounded-full bg-brand-sand"></span>{x}</li>)}
+        </ul>
+        <div class="mt-6 rounded-xl border border-orange-100 bg-orange-50/60 p-4">
+          <p class="flex items-center gap-2 font-semibold text-ink"><Icon name="calendar" size={18} class="text-brand-sand" />Cancellation policy</p>
+          <ul class="mt-2 space-y-1.5 text-sm text-ink-soft">{d.cancellation.map(x => <li>• {x}</li>)}</ul>
+        </div>
+      </section>
+
+      {d.faqs.length > 0 && (
+        <section id="faq" class="detail-sec scroll-mt-40 rounded-2xl border border-line bg-white p-6 sm:p-7">
+          <h2 class="font-display text-xl font-semibold">Frequently asked questions</h2>
+          <div class="mt-3 divide-y divide-line">
+            {d.faqs.map((f, i) => (
+              <details class="group py-4" open={i === 0}>
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-ink [&::-webkit-details-marker]:hidden">
+                  {f.q}<span class="grid size-7 shrink-0 place-items-center rounded-full bg-sand-100 transition group-open:rotate-180"><Icon name="chevron-down" size={15} /></span>
+                </summary>
+                <p class="mt-2 text-[15px] leading-relaxed text-ink-soft">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <div class="flex flex-col items-start justify-between gap-4 rounded-2xl bg-ink p-6 text-white sm:flex-row sm:items-center">
+        <div><p class="font-display text-lg font-semibold">Have a question before booking?</p><p class="text-sm text-white/70">Our team replies on WhatsApp, {site.hours.toLowerCase()}.</p></div>
+        <a href={site.whatsapp} target="_blank" rel="noopener" class="btn bg-[#25D366] !px-5 !py-3 text-white"><Icon name="whatsapp" size={18} />Chat on WhatsApp</a>
+      </div>
+    </div>
+
+    <!-- sidebar -->
+    <aside id="book" class="scroll-mt-40">
+      <div class="lg:sticky lg:top-[150px]">
+        <slot name="sidebar" />
+      </div>
+    </aside>
+  </div>
+
+  {related.length > 0 && (
+    <section class="container-x mt-16">
+      <div class="flex items-end justify-between gap-4">
+        <div><p class="eyebrow">You may also like</p><h2 class="section-title mt-2 !text-2xl sm:!text-3xl">More {cat?.name ?? 'experiences'}</h2></div>
+        <a href={listHref} class="btn-ghost hidden sm:inline-flex">See all <Icon name="arrow-right" size={16} /></a>
+      </div>
+      <Carousel class="mt-6" label="Related experiences">
+        {related.map(t => <div class="flex w-[82%] shrink-0 snap-start sm:w-[46%] lg:w-[calc((100%-3.75rem)/4)] [&>article]:w-full"><TourCard tour={t} /></div>)}
+      </Carousel>
+    </section>
+  )}
+</div>
+
+<!-- mobile sticky CTA -->
+<div class="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-3 border-t border-line bg-white px-4 py-3 shadow-[0_-8px_24px_rgba(27,35,51,.08)] lg:hidden">
+  <div>
+    <p class="text-[11px] uppercase text-ink-soft">From {tour.oldPrice && <s>{formatAED(tour.oldPrice)}</s>}</p>
+    <p class="font-display text-lg font-bold leading-tight">{formatAED(tour.price)} <span class="text-xs font-normal text-ink-soft">/ {isTicket ? 'ticket' : 'person'}</span></p>
+  </div>
+  <a href="#book" class="btn-primary !px-6 !py-3">{ctaLabel}</a>
+</div>
+
+<script>
+  // Share button (native share sheet or copy link)
+  document.querySelector('[data-share]')?.addEventListener('click', async () => {
+    const label = document.querySelector('[data-share-label]')!;
+    try {
+      if (navigator.share) await navigator.share({ title: document.title, url: location.href });
+      else { await navigator.clipboard.writeText(location.href); label.textContent = 'Link copied'; setTimeout(() => label.textContent = 'Share', 2000); }
+    } catch {}
+  });
+  // Highlight the section tab currently in view
+  const links = document.querySelectorAll<HTMLAnchorElement>('.sec-link');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      links.forEach(l => {
+        const on = l.dataset.secLink === e.target.id;
+        l.classList.toggle('border-brand-sand', on); l.classList.toggle('text-ink', on); l.classList.toggle('border-transparent', !on);
+      });
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  document.querySelectorAll('.detail-sec').forEach(s => io.observe(s));
+</script>

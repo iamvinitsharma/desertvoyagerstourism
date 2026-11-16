@@ -1,0 +1,633 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import TourCard from '../components/TourCard.astro';
+import SearchBar from '../components/SearchBar.astro';
+import CategoryIcon from '../components/CategoryIcon.astro';
+import Carousel from '../components/Carousel.astro';
+import WhyChooseUs from '../components/WhyChooseUs.astro';
+import VideoReels from '../components/VideoReels.astro';
+import ReviewsWall from '../components/ReviewsWall.astro';
+import BlogSection from '../components/BlogSection.astro';
+import { getTours, getCategories, tours as allTours, type Tour } from '../data/tours';
+import { site } from '../data/site';
+
+const categories = await getCategories();
+const tickets = (await getTours({ type: 'ticket' })).slice(0, 4);
+const minPrice = (slug: string) => {
+  const p = allTours.filter(t => t.category === slug).map(t => t.price);
+  return p.length ? Math.min(...p) : 0;
+};
+
+// Category tile colours (warm desert palette + brand blue/green)
+const tileStyle: Record<string, { bg: string; shadow: string }> = {
+  'desert-safari': { bg: 'bg-gradient-to-br from-[#f0954a] to-[#c9582a]', shadow: 'shadow-orange-900/25' },
+  'city-tours':    { bg: 'bg-gradient-to-br from-[#4b82cf] to-[#214b86]', shadow: 'shadow-blue-900/25' },
+  'tickets':       { bg: 'bg-gradient-to-br from-[#4fb35d] to-[#2a7a37]', shadow: 'shadow-green-900/25' },
+  'theme-parks':   { bg: 'bg-gradient-to-br from-[#f2b53a] to-[#cf7d10]', shadow: 'shadow-amber-900/25' },
+  'water':         { bg: 'bg-gradient-to-br from-[#25b5c0] to-[#0b7285]', shadow: 'shadow-cyan-900/25' },
+  'adventure':     { bg: 'bg-gradient-to-br from-[#d86a5a] to-[#9c3b3b]', shadow: 'shadow-red-900/25' },
+};
+
+
+// "Things to do" explorer content (later editable per category in the admin)
+const img = (f: string) => `/images/tours/${f}`;
+const exploreContent: Record<string, { heading: string; text: string; highlights: string[]; images: (string | null)[]; video?: string; color: string }> = {
+  'desert-safari': {
+    heading: 'From dune bashing to BBQ, all in one epic safari',
+    text: 'Ride the red dunes in a 4x4, glide down on a sandboard, watch the sun set over the desert and finish with a BBQ dinner and live shows at our Bedouin-style camp.',
+    highlights: ['4x4 dune drive', 'Sandboarding', 'Desert sunset', 'Camel riding', 'BBQ dinner', 'Live shows'],
+    images: [img('image-for-morning-desert-safari.png'), img('image-for-overnight-desert-safari1-jpg.webp')],
+    video: 'https://www.youtube.com/watch?v=pgq0S8YABu0', color: 'text-brand-sand',
+  },
+  'city-tours': {
+    heading: 'The UAE’s icons, guided and stress-free',
+    text: 'See the Sheikh Zayed Grand Mosque, Qasr Al Watan palace, the Louvre and modern Dubai with a friendly local guide, comfortable transport and hotel pickup.',
+    highlights: ['Grand Mosque', 'Qasr Al Watan', 'Louvre Abu Dhabi', 'Burj Khalifa', 'Al Ain Oasis', 'Hotel pickup'],
+    images: [img('grand-mosque-1.png'), img('qasr-al-watan.png')], color: 'text-brand-blue',
+  },
+  'tickets': {
+    heading: 'Skip the queue with instant e-tickets',
+    text: 'Book official entry tickets for the UAE’s top attractions and get them on your phone in seconds. Choose your date and time slot, then just scan and walk in.',
+    highlights: ['Instant e-ticket', 'Mobile entry', 'Pick a time slot', 'Child prices', 'WhatsApp delivery', 'Secure payment'],
+    images: [img('louvre-museum-jpg.webp'), img('dubai-mall-fountain-show-jpg.webp')], color: 'text-brand-green',
+  },
+  'theme-parks': {
+    heading: 'Non-stop thrills on Yas Island',
+    text: 'Ferrari World, Warner Bros. World and Yas Waterworld: world-class rides, shows and slides for every age, with full-day tickets delivered instantly.',
+    highlights: ['Ferrari World', 'Warner Bros. World', 'Yas Waterworld', 'Full-day access', 'Family tickets', 'Instant e-ticket'],
+    images: [null, null], color: 'text-amber-500',
+  },
+  'water': {
+    heading: 'Sunset dhow cruises & mangrove kayaking',
+    text: 'Dine on a traditional dhow along the Corniche or paddle through Abu Dhabi’s peaceful mangroves. Relaxed, scenic and perfect for families and couples.',
+    highlights: ['Dhow dinner cruise', 'Mangrove kayaking', 'Corniche views', 'Sunset sailing', 'Private boats', 'Hotel pickup'],
+    images: [null, null], color: 'text-cyan-600',
+  },
+  'adventure': {
+    heading: 'Get your adrenaline pumping in the dunes',
+    text: 'Take the wheel of a dune buggy, race across the sand on a quad bike or catch the sunrise from the top of a dune, with safety gear and expert guides included.',
+    highlights: ['Dune buggy', 'Quad biking', 'Sunrise safari', 'Camel trekking', 'Sandboarding', 'Pro guides'],
+    images: [img('image-for-dune-buggy-tour1-scaled.webp'), img('image-for-sunrise-safari1.png')], color: 'text-red-500',
+  },
+};
+const explore = categories.filter(c => exploreContent[c.slug]).map(c => ({
+  slug: c.slug, name: c.name, ...exploreContent[c.slug],
+  href: c.slug === 'tickets' ? '/tickets' : `/tours?category=${c.slug}`,
+}));
+
+const slides = [
+  { img: '/images/tours/image-for-half-day-desert-safari.png', eyebrow: 'Desert Safari', title: 'Ride the red dunes of Abu Dhabi', text: 'Evening safaris with dune bashing, camel rides, BBQ dinner and live shows from AED 170.' },
+  { img: '/images/tours/pexels-tommy-milanese-7891838-scaled.webp', eyebrow: 'City Tours', title: 'Discover the UAE’s iconic landmarks', text: 'Grand Mosque, Qasr Al Watan, Louvre and Dubai in one day, with hotel pickup and expert guides.' },
+  { img: '/images/tours/dubai-mall-fountain-show-jpg.webp', eyebrow: 'Attraction Tickets', title: 'Skip the line. Tickets in seconds.', text: 'Burj Khalifa, Louvre Abu Dhabi, Ferrari World and more. Instant e-tickets on WhatsApp and email.' },
+];
+
+// Panels shown below the tiles: "Featured" + one per category (top 12, featured first, then rating)
+const rank = (a: Tour, b: Tour) => Number(b.featured) - Number(a.featured) || b.rating - a.rating || b.reviews - a.reviews;
+const featuredAll = allTours.filter(t => t.featured);
+const panels = [
+  { slug: 'featured', name: 'Featured', title: 'Featured tours & tickets', blurb: 'Handpicked tours and attraction tickets our guests love most.', items: [...featuredAll].sort(rank).slice(0, 12), total: featuredAll.length, href: '/tours' },
+  ...categories.map(c => {
+    const all = allTours.filter(t => t.category === c.slug);
+    return { slug: c.slug, name: c.name, title: c.name, blurb: c.blurb, items: [...all].sort(rank).slice(0, 12), total: all.length,
+             href: c.slug === 'tickets' ? '/tickets' : `/tours?category=${c.slug}` };
+  }),
+];
+
+const trust = [
+  { icon: 'zap', title: 'Instant confirmation', text: 'E-ticket on WhatsApp & email' },
+  { icon: 'car', title: 'Free hotel pickup', text: 'Abu Dhabi hotels & malls' },
+  { icon: 'shield', title: 'Secure payment', text: 'Visa, Mastercard, Apple Pay' },
+  { icon: 'headset', title: '7-day local support', text: site.hours },
+];
+
+const advantages = [
+  { icon: 'award', title: 'Licensed local operator', text: 'An Abu Dhabi based tour operator. You book directly with the team that runs your tour.' },
+  { icon: 'tag', title: 'Clear prices, no surprises', text: 'Every tour page lists exactly what’s included, so the price you see is the price you pay.' },
+  { icon: 'car', title: 'Safe 4x4s & expert drivers', text: 'Experienced desert drivers and well-maintained 4x4 vehicles on every safari.' },
+  { icon: 'users', title: 'Private & group options', text: 'Join a shared tour or book a private car for your family, friends or company.' },
+  { icon: 'calendar', title: 'Flexible changes', text: 'Plans changed? Message us and we’ll help you move your date where availability allows.' },
+  { icon: 'headset', title: 'Real people, fast replies', text: 'Message us on WhatsApp before, during and after your tour, 7 days a week.' },
+];
+
+const howTo = [
+  {
+    title: 'Book a tour', sub: 'Desert safaris, city tours & adventures', tag: 'No prepayment',
+    icon: 'car', iconBg: 'bg-brand-sand text-white', tagBg: 'bg-brand-sand/15 text-brand-sand', numBg: 'bg-brand-sand text-white',
+    steps: [
+      { t: 'Choose your tour', d: 'See timings, pickup details and exactly what’s included.' },
+      { t: 'Send a booking request', d: 'Pick your date and guests and add your hotel. It takes under a minute.' },
+      { t: 'We confirm on WhatsApp', d: 'Our team confirms your pickup time and payment details personally.' },
+    ],
+    cta: 'Browse tours', href: '/tours', btn: 'bg-brand-sand text-white hover:bg-brand-sand-dark',
+  },
+  {
+    title: 'Buy tickets online', sub: 'Attractions, theme parks & museums', tag: 'Instant e-ticket',
+    icon: 'ticket', iconBg: 'bg-brand-green text-white', tagBg: 'bg-brand-green/20 text-green-300', numBg: 'bg-brand-green text-white',
+    steps: [
+      { t: 'Pick your attraction', d: 'Choose your date, time slot and adult or child tickets.' },
+      { t: 'Pay securely online', d: 'Checkout by card with encrypted, bank-grade payment.' },
+      { t: 'Get your e-ticket instantly', d: 'Tickets arrive on email and WhatsApp. Just scan at the gate.' },
+    ],
+    cta: 'Browse tickets', href: '/tickets', btn: 'bg-white text-ink hover:bg-sand-100',
+  },
+];
+---
+<Layout intro>
+  <!-- ============ HERO BANNER ============ -->
+  <section class="relative isolate">
+    <!-- slides (clipped separately so search dropdowns can overflow) -->
+    <div class="absolute inset-x-0 top-0 bottom-[100px] -z-10 overflow-hidden bg-ink md:bottom-[110px]">
+      {slides.map((s, i) => (
+        <div class:list={['hero-slide absolute inset-0 transition-opacity duration-1000', i === 0 ? 'opacity-100' : 'opacity-0']}>
+          <img src={s.img} alt="" class="hero-img size-full object-cover" fetchpriority={i === 0 ? 'high' : 'low'} loading={i === 0 ? 'eager' : 'lazy'} />
+        </div>
+      ))}
+      <div class="absolute inset-0 bg-ink/20"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(27,35,51,.25),rgba(27,35,51,.6))]"></div>
+      <div class="absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-ink/40 to-transparent"></div>
+    </div>
+
+    <div class="container-x relative flex min-h-[520px] flex-col items-center justify-center pb-10 pt-14 text-center sm:min-h-[560px]">
+      {slides.map((s, i) => (
+        <div class:list={['hero-copy max-w-4xl', i !== 0 && 'hidden']}>
+          <span class="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-white backdrop-blur">
+            <span class="size-1.5 rounded-full bg-brand-sand"></span>{s.eyebrow}
+          </span>
+          <h1 class="mt-5 text-balance text-4xl font-semibold leading-[1.08] text-white [text-shadow:0_4px_24px_rgba(0,0,0,.35)] sm:text-5xl lg:text-[64px]">{s.title}</h1>
+          <p class="mx-auto mt-4 max-w-2xl text-balance text-base text-white/90 [text-shadow:0_2px_12px_rgba(0,0,0,.4)] sm:text-lg">{s.text}</p>
+        </div>
+      ))}
+
+      <div class="relative z-30 mt-8 w-full">
+        <SearchBar />
+      </div>
+
+      <div class="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-white/85">
+        <span class="flex items-center gap-1.5"><Icon name="check" size={15} class="text-brand-sand" />Tours: no prepayment</span>
+        <span class="flex items-center gap-1.5"><Icon name="car" size={15} class="text-brand-sand" />Free hotel pickup</span>
+        <span class="flex items-center gap-1.5"><Icon name="zap" size={15} class="text-brand-sand" />Instant e-tickets</span>
+        <span class="flex items-center gap-1.5"><Icon name="headset" size={15} class="text-brand-sand" />7-day WhatsApp support</span>
+      </div>
+
+      <div class="mt-7 flex gap-2">
+        {slides.map((_, i) => (
+          <button class:list={['hero-dot h-1.5 rounded-full transition-all', i === 0 ? 'w-8 bg-brand-sand' : 'w-4 bg-white/50']} aria-label={`Slide ${i + 1}`}></button>
+        ))}
+      </div>
+    </div>
+
+    <!-- arrows -->
+    <button data-prev aria-label="Previous slide" class="absolute left-3 top-[260px] z-20 hidden size-12 place-items-center rounded-full border border-white/30 bg-white/10 text-white backdrop-blur transition hover:bg-white hover:text-ink md:grid lg:left-6"><Icon name="chevron-left" size={24} /></button>
+    <button data-next aria-label="Next slide" class="absolute right-3 top-[260px] z-20 hidden size-12 place-items-center rounded-full border border-white/30 bg-white/10 text-white backdrop-blur transition hover:bg-white hover:text-ink md:grid lg:right-6"><Icon name="chevron-right" size={24} /></button>
+
+
+
+    <!-- ============ CATEGORY TILES SLIDER (overlaps banner bottom) ============ -->
+    <div class="container-x relative z-10">
+      <Carousel id="cat-carousel" label="Categories" trackClass="gap-3 pt-4 pb-14 -mt-4 -mb-14 px-3 -mx-3 lg:gap-4">
+        {categories.map(c => {
+          const st = tileStyle[c.slug] ?? tileStyle['tickets'];
+          const from = minPrice(c.slug);
+          return (
+            <button type="button" data-cat={c.slug} aria-controls="cat-results" aria-pressed="false"
+               class={`cat-tile group relative isolate flex min-h-[170px] w-[46%] shrink-0 snap-start flex-col overflow-hidden rounded-3xl p-4 text-left text-white shadow-lg transition duration-300 hover:-translate-y-1.5 hover:shadow-xl sm:min-h-[200px] sm:w-[31%] sm:p-5 lg:w-[calc((100%-5rem)/6)] ${st.bg} ${st.shadow}`}>
+              <svg class="pointer-events-none absolute -bottom-2 left-0 -z-10 w-full text-white/12" viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M0 40 C 40 20, 80 30, 110 35 S 170 20, 200 30 L200 60 L0 60Z" fill="currentColor" />
+                <path d="M0 52 C 50 38, 120 50, 200 42 L200 60 L0 60Z" fill="currentColor" />
+              </svg>
+              <span class="pointer-events-none absolute -right-6 -top-6 -z-10 size-24 rounded-full bg-white/10 transition duration-500 group-hover:scale-150"></span>
+              <span class="cat-check absolute right-3 top-3 hidden size-7 place-items-center rounded-full bg-white text-ink shadow"><Icon name="check" size={15} /></span>
+              <CategoryIcon name={c.slug} size={58} class="transition duration-300 group-hover:-rotate-3 group-hover:scale-110" />
+              <span class="mt-auto block pt-4 font-display text-lg font-semibold leading-tight">{c.name}</span>
+              <span class="mt-1 flex items-center justify-between gap-2">
+                <span class:list={['text-[13px] text-white/85', from && 'whitespace-nowrap']}>{from ? `From AED ${from}` : c.blurb}</span>
+                <span class="grid size-8 shrink-0 place-items-center rounded-full bg-white/20 transition group-hover:bg-white group-hover:text-ink"><Icon name="chevron-down" size={16} /></span>
+              </span>
+            </button>
+          );
+        })}
+      </Carousel>
+      <div class="mt-5 flex justify-center">
+        <button type="button" id="cat-expand" aria-expanded="false" aria-controls="cat-carousel"
+          class="hidden items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm font-semibold text-ink shadow-sm hover:border-ink">
+          <span data-label>View all {categories.length} categories</span><Icon name="chevron-down" size={16} />
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CATEGORY RESULTS (driven by the tiles above — one merged block) ============ -->
+  <section id="cat-results" class="scroll-mt-24 pb-16 pt-6 sm:pb-20 sm:pt-8">
+    <div class="container-x">
+      {panels.map((p, i) => (
+        <div data-panel={p.slug} role="tabpanel" class:list={[i !== 0 && 'hidden']}>
+          <div class="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p class="eyebrow">{p.slug === 'featured' ? 'Most booked' : `${p.total} ${p.total === 1 ? 'experience' : 'experiences'}`}</p>
+              <h2 class="section-title mt-2">{p.title}</h2>
+              {p.blurb && <p class="mt-2 max-w-xl text-ink-soft">{p.blurb}</p>}
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              {p.slug !== 'featured' && (
+                <button type="button" data-back-featured class="inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-semibold text-ink-soft hover:bg-sand-100 hover:text-ink">
+                  <Icon name="chevron-left" size={16} />Back to featured
+                </button>
+              )}
+              {p.total > 0 && (
+                <a href={p.href} class="btn-ghost !px-5">See all {p.slug === 'featured' ? 'tours' : p.name} <Icon name="arrow-right" size={16} /></a>
+              )}
+            </div>
+          </div>
+
+          {p.items.length > 0 ? (
+            <Carousel class="mt-7" label={p.title} trackClass="gap-5 py-3 -my-3">
+              {p.items.map(t => (
+                <div class="flex w-[82%] shrink-0 snap-start sm:w-[46%] lg:w-[calc((100%-3.75rem)/4)] [&>article]:w-full">
+                  <TourCard tour={t} />
+                </div>
+              ))}
+              <a href={p.href} class="group flex w-[60%] shrink-0 snap-start flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-sand-200 bg-white p-6 text-center transition hover:border-brand-sand sm:w-[30%] lg:w-[calc((100%-3.75rem)/4)]">
+                <span class="grid size-14 place-items-center rounded-full bg-brand-sand text-white transition group-hover:scale-110"><Icon name="arrow-right" size={24} /></span>
+                <span class="font-display text-lg font-semibold">See all {p.slug === 'featured' ? 'tours' : p.name}</span>
+                <span class="text-sm text-ink-soft">{p.total} {p.total === 1 ? 'option' : 'options'} available</span>
+              </a>
+            </Carousel>
+          ) : (
+            <div class="mt-7 flex flex-col items-center gap-3 rounded-2xl border border-dashed border-sand-200 bg-white p-10 text-center">
+              <span class="grid size-14 place-items-center rounded-full bg-sand-100 text-brand-sand"><Icon name="compass" size={26} /></span>
+              <p class="font-display text-lg font-semibold">{p.name} experiences are coming soon</p>
+              <p class="max-w-md text-sm text-ink-soft">We can still arrange this for you. Message us and we’ll plan it around your dates.</p>
+              <a href={site.whatsapp} target="_blank" rel="noopener" class="btn bg-[#25D366] text-white"><Icon name="whatsapp" size={16} />Ask on WhatsApp</a>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ============ TICKETS ============ -->
+  <section class="container-x py-16 sm:py-20">
+    <div class="grid gap-8 lg:grid-cols-[1fr_2.4fr] lg:items-start">
+      <div class="lg:sticky lg:top-28">
+        <p class="eyebrow">Attraction tickets</p>
+        <h2 class="section-title mt-2">Skip the queue at the UAE’s top attractions</h2>
+        <p class="mt-3 text-ink-soft">Buy official entry tickets online and get them on your phone in seconds. No printing, no waiting at the counter.</p>
+        <ul class="mt-6 space-y-3 text-sm">
+          {['Instant e-ticket by WhatsApp & email', 'Choose your date and time slot', 'Adult, child & family prices'].map(x => (
+            <li class="flex items-center gap-2.5"><span class="grid size-6 place-items-center rounded-full bg-green-50 text-brand-green"><Icon name="check" size={14} /></span>{x}</li>
+          ))}
+        </ul>
+        <a href="/tickets" class="btn-dark mt-7 !px-6 !py-3">Browse all tickets <Icon name="arrow-right" size={16} /></a>
+      </div>
+      <div class="grid gap-5 sm:grid-cols-2">
+        {tickets.map(t => <TourCard tour={t} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THINGS TO DO (category explorer) ============ -->
+  <section class="py-16 sm:py-24">
+    <div class="container-x">
+      <div class="mx-auto max-w-2xl text-center">
+        <p class="font-script text-3xl text-brand-sand-dark">Things to do</p>
+        <h2 class="section-title mt-1">Discover the best of the UAE</h2>
+        <p class="mt-3 text-ink-soft">Pick an experience to see what’s included, then book in a few clicks.</p>
+      </div>
+
+      <div class="mt-12 grid items-start gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.6fr)] lg:gap-12">
+        <!-- tiles -->
+        <div class="grid grid-cols-3 gap-3 sm:gap-4 lg:grid-cols-2" role="tablist" aria-label="Things to do">
+          {explore.map((e, i) => {
+            const st = tileStyle[e.slug] ?? tileStyle['tickets'];
+            return (
+              <button type="button" role="tab" data-xtab={e.slug} aria-selected={i === 0 ? 'true' : 'false'} data-active-bg={st.bg}
+                class:list={['x-tile group relative flex aspect-[5/4] flex-col items-center justify-center gap-2 overflow-hidden rounded-2xl p-3 text-center transition duration-300 sm:gap-3',
+                  i === 0 ? `${st.bg} text-white shadow-xl ${st.shadow}` : 'bg-sand-50 text-ink hover:-translate-y-1 hover:bg-sand-100']}>
+                <CategoryIcon name={e.slug} size={52} class:list={['x-icon transition duration-300 group-hover:scale-110', i === 0 ? 'text-white' : e.color]} />
+                <span class="font-display text-[13px] font-semibold leading-tight sm:text-base">{e.name}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <!-- detail panels -->
+        <div>
+          {explore.map((e, i) => (
+            <div data-xpanel={e.slug} role="tabpanel" class:list={['grid gap-8 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] md:items-center', i !== 0 && 'hidden']}>
+              <div>
+                <p class="font-script text-3xl text-brand-sand-dark">{e.name}</p>
+                <h3 class="mt-2 text-balance font-display text-3xl font-semibold leading-tight text-ink sm:text-[34px]">{e.heading}</h3>
+                <p class="mt-4 leading-relaxed text-ink-soft">{e.text}</p>
+                <ul class="mt-6 grid grid-cols-2 gap-x-5 gap-y-3 xl:grid-cols-3">
+                  {e.highlights.map(h => (
+                    <li class="flex items-center gap-2 text-[15px] font-medium text-ink">
+                      <span class="size-2 shrink-0 rounded-full bg-brand-sand"></span>{h}
+                    </li>
+                  ))}
+                </ul>
+                <div class="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+                  <a href={e.href} class="btn-primary !px-7 !py-3 !text-base">More details <Icon name="arrow-right" size={17} /></a>
+                  {e.video && (
+                    <a href={e.video} target="_blank" rel="noopener" class="group flex items-center gap-3 font-semibold text-ink">
+                      <span class="relative grid size-14 place-items-center rounded-full border-2 border-ink/80 transition group-hover:border-brand-sand group-hover:bg-brand-sand group-hover:text-white">
+                        <span class="absolute inset-0 animate-ping rounded-full border border-brand-sand/50"></span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+                      </span>
+                      Watch video
+                    </a>
+                  )}
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-4 md:grid-cols-1">
+                {e.images.map((src, k) => src ? (
+                  <img src={src} alt="" loading="lazy" class:list={['aspect-[4/3] w-full rounded-2xl object-cover shadow-lg shadow-ink/10', k === 1 && 'md:ml-8 md:w-[calc(100%-2rem)]']} />
+                ) : (
+                  <div class:list={[`grid aspect-[4/3] w-full place-items-center rounded-2xl text-white ${(tileStyle[e.slug] ?? tileStyle['tickets']).bg}`, k === 1 && 'md:ml-8 md:w-[calc(100%-2rem)]']}>
+                    <CategoryIcon name={e.slug} size={72} class="opacity-90" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS (tours = request, tickets = pay online) ============ -->
+  <section class="relative overflow-hidden bg-ink py-16 text-white sm:py-20">
+    <div class="pointer-events-none absolute -right-24 -top-24 size-96 rounded-full bg-brand-sand/20 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-32 -left-24 size-96 rounded-full bg-brand-blue/25 blur-3xl"></div>
+    <div class="container-x relative">
+      <div class="mx-auto max-w-2xl text-center">
+        <p class="eyebrow">Easy booking</p>
+        <h2 class="mt-2 font-display text-3xl font-semibold sm:text-4xl">Two simple ways to book</h2>
+        <p class="mt-3 text-white/70">Reserve tours with no prepayment, or buy attraction tickets online and get them instantly.</p>
+      </div>
+
+      <div class="mt-12 grid gap-6 lg:grid-cols-2">
+        {howTo.map(h => (
+          <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur sm:p-8">
+            <div class="flex items-center gap-4">
+              <span class:list={['grid size-14 shrink-0 place-items-center rounded-2xl', h.iconBg]}><Icon name={h.icon} size={26} /></span>
+              <div>
+                <h3 class="font-display text-xl font-semibold">{h.title}</h3>
+                <p class="text-sm text-white/60">{h.sub}</p>
+              </div>
+              <span class:list={['ml-auto hidden rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide sm:inline', h.tagBg]}>{h.tag}</span>
+            </div>
+            <ol class="relative mt-8 space-y-6 before:absolute before:bottom-3 before:left-[19px] before:top-3 before:w-px before:bg-white/15">
+              {h.steps.map((st, i) => (
+                <li class="relative flex gap-4">
+                  <span class:list={['relative z-10 grid size-10 shrink-0 place-items-center rounded-full font-display text-sm font-bold', h.numBg]}>{i + 1}</span>
+                  <div class="pt-1.5">
+                    <p class="font-semibold">{st.t}</p>
+                    <p class="mt-1 text-sm leading-relaxed text-white/65">{st.d}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <a href={h.href} class:list={['btn mt-8 !px-6 !py-3', h.btn]}>{h.cta} <Icon name="arrow-right" size={16} /></a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROMOS ============ -->
+  <section class="container-x py-16 sm:py-20">
+    <div class="grid gap-5 lg:grid-cols-2">
+      <a href="/tours/evening-desert-safari" class="group relative isolate flex min-h-[280px] overflow-hidden rounded-3xl p-8 text-white">
+        <img src="/images/tours/image-for-overnight-desert-safari1-jpg.webp" alt="" loading="lazy" class="absolute inset-0 -z-10 size-full object-cover transition duration-700 group-hover:scale-105" />
+        <div class="absolute inset-0 -z-10 bg-gradient-to-r from-ink/85 to-ink/20"></div>
+        <div class="mt-auto max-w-sm">
+          <span class="rounded-full bg-brand-sand px-3 py-1 text-xs font-bold uppercase tracking-wide">Winter deal</span>
+          <h3 class="mt-4 font-display text-3xl font-semibold">Up to 23% off desert safaris</h3>
+          <p class="mt-2 text-white/80">Evening, morning and overnight safaris at this season’s best prices.</p>
+          <span class="mt-5 inline-flex items-center gap-2 font-semibold">Book the deal <Icon name="arrow-right" size={18} /></span>
+        </div>
+      </a>
+      <a href={site.whatsapp} target="_blank" rel="noopener" class="group relative isolate flex min-h-[280px] overflow-hidden rounded-3xl p-8 text-white">
+        <img src="/images/tours/sheikh-zayed-grand-mosque-jpg.webp" alt="" loading="lazy" class="absolute inset-0 -z-10 size-full object-cover transition duration-700 group-hover:scale-105" />
+        <div class="absolute inset-0 -z-10 bg-gradient-to-r from-brand-blue-dark/90 to-brand-blue/30"></div>
+        <div class="mt-auto max-w-sm">
+          <span class="rounded-full bg-white px-3 py-1 text-xs font-bold uppercase tracking-wide text-brand-blue">Private & groups</span>
+          <h3 class="mt-4 font-display text-3xl font-semibold">Plan a private or custom tour</h3>
+          <p class="mt-2 text-white/80">Families, corporate groups and events. Tell us your plan and get a quote within the hour.</p>
+          <span class="mt-5 inline-flex items-center gap-2 font-semibold"><Icon name="whatsapp" size={18} />Get a quote on WhatsApp</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ WELCOME / ABOUT ============ -->
+  <section class="relative isolate overflow-hidden py-16 sm:py-24">
+    <!-- cream → sunset orange wash -->
+    <div class="absolute inset-0 -z-10 bg-[linear-gradient(100deg,#fdf7f0_0%,#fdf3ea_38%,#f8c8a0_62%,#ef8f4f_82%,#e8782f_100%)] max-lg:bg-[linear-gradient(180deg,#fdf7f0_0%,#fdf3ea_45%,#f6b98a_75%,#ec8444_100%)]"></div>
+    <svg class="absolute bottom-0 left-0 -z-10 w-full text-white/25" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 80 C 300 30, 600 90, 900 70 C 1150 55, 1300 20, 1440 50 L1440 120 L0 120 Z" fill="currentColor" />
+    </svg>
+
+    <div class="container-x grid items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+      <div>
+        <p class="flex items-center gap-2 font-script text-3xl text-brand-sand-dark">
+          <svg width="26" height="14" viewBox="0 0 26 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M1 7h20M15 2l6 5-6 5M1 2l3 5-3 5" /></svg>
+          Welcome to
+          <svg width="26" height="14" viewBox="0 0 26 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="rotate-180" aria-hidden="true"><path d="M1 7h20M15 2l6 5-6 5M1 2l3 5-3 5" /></svg>
+        </p>
+        <h2 class="mt-3 text-balance font-display text-4xl font-semibold leading-[1.1] text-ink sm:text-5xl">
+          Desert Voyagers Tourism, your local tour experts in Abu Dhabi
+        </h2>
+
+        <div class="mt-8 flex flex-wrap gap-x-7 gap-y-3 border-b border-ink/10" role="tablist" aria-label="About Desert Voyagers">
+          {[
+            { k: 'about', icon: 'pin', label: 'About us' },
+            { k: 'services', icon: 'compass', label: 'Our services' },
+          ].map((t, i) => (
+            <button type="button" role="tab" data-wtab={t.k} aria-selected={i === 0 ? 'true' : 'false'}
+              class:list={['welcome-tab -mb-px flex items-center gap-2 border-b-2 pb-3 text-[15px] font-semibold transition',
+                i === 0 ? 'border-brand-sand text-brand-sand-dark' : 'border-transparent text-ink hover:text-brand-sand-dark']}>
+              <span class:list={['grid size-8 place-items-center rounded-full', i === 0 ? 'bg-brand-sand text-white' : 'bg-white text-ink-soft']}><Icon name={t.icon} size={16} /></span>
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        <div data-wpanel="about" class="mt-6 space-y-4 text-[16px] leading-relaxed text-ink-soft">
+          <p>
+            <b class="text-ink">Desert Voyagers Tourism LLC</b> is a professional tour operator based on Hamdan Street, Abu Dhabi, also offering destination management services across the UAE.
+          </p>
+          <p>
+            From red-dune desert safaris and overnight Bedouin camps to guided tours of the Grand Mosque, Qasr Al Watan and modern Dubai, our local team plans every detail, from hotel pickup to your attraction tickets, so you can simply enjoy the experience.
+          </p>
+          <div class="flex flex-wrap gap-3 pt-2">
+            <a href="/about" class="btn-dark !px-6 !py-3">More about us <Icon name="arrow-right" size={16} /></a>
+            <a href={site.whatsapp} target="_blank" rel="noopener" class="btn !px-6 !py-3 border border-ink/15 bg-white text-ink hover:border-ink"><Icon name="whatsapp" size={17} class="text-[#25D366]" />Chat with us</a>
+          </div>
+        </div>
+
+        <div data-wpanel="services" class="mt-6 hidden">
+          <div class="grid gap-3 sm:grid-cols-2">
+            {[
+              { icon: 'sun', t: 'Desert safaris', d: 'Evening, morning, overnight & sunrise' },
+              { icon: 'landmark', t: 'City sightseeing', d: 'Abu Dhabi, Dubai, Al Ain & East Coast' },
+              { icon: 'ticket', t: 'Attraction tickets', d: 'Louvre, Burj Khalifa, Yas Island parks' },
+              { icon: 'car', t: 'Private transfers', d: 'Airport & hotel transfers with driver' },
+              { icon: 'users', t: 'Groups & events', d: 'Corporate outings, families & schools' },
+              { icon: 'compass', t: 'Custom itineraries', d: 'Multi-day UAE packages built for you' },
+            ].map(x => (
+              <div class="flex items-center gap-3 rounded-xl bg-white/80 p-3 backdrop-blur">
+                <span class="grid size-10 shrink-0 place-items-center rounded-lg bg-sand-100 text-brand-sand"><Icon name={x.icon} size={18} /></span>
+                <div><p class="text-sm font-semibold text-ink">{x.t}</p><p class="text-xs text-ink-soft">{x.d}</p></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- staggered photo collage -->
+      <div class="relative grid grid-cols-2 gap-4 sm:gap-5">
+        <div class="space-y-4 sm:space-y-5">
+          <img src="/images/tours/image-for-morning-desert-safari.png" alt="Camel caravan on the dunes" loading="lazy" class="aspect-[4/5] w-full rounded-3xl object-cover shadow-2xl shadow-orange-900/25 ring-4 ring-white/70" />
+          <img src="/images/tours/image-for-half-day-desert-safari.png" alt="4x4 dune bashing" loading="lazy" class="aspect-[4/3] w-full rounded-3xl object-cover shadow-2xl shadow-orange-900/25 ring-4 ring-white/70" />
+        </div>
+        <div class="space-y-4 pt-12 sm:space-y-5 sm:pt-16">
+          <img src="/images/tours/image-for-dune-buggy-tour1-scaled.webp" alt="Dune buggy adventure" loading="lazy" class="aspect-[4/3] w-full rounded-3xl object-cover shadow-2xl shadow-orange-900/25 ring-4 ring-white/70" />
+          <img src="/images/tours/image-for-overnight-desert-safari1-jpg.webp" alt="Bedouin camp at night" loading="lazy" class="aspect-[4/5] w-full rounded-3xl object-cover shadow-2xl shadow-orange-900/25 ring-4 ring-white/70" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <WhyChooseUs />
+  <VideoReels />
+  <ReviewsWall />
+  <BlogSection />
+</Layout>
+
+<script>
+  import { replay, initReveal } from '../lib/motion';
+
+  // Hero slider
+  const slides = document.querySelectorAll<HTMLElement>('.hero-slide');
+  const copies = document.querySelectorAll<HTMLElement>('.hero-copy');
+  const dots = document.querySelectorAll<HTMLElement>('.hero-dot');
+  let cur = 0, timer: number;
+  const show = (i: number) => {
+    cur = (i + slides.length) % slides.length;
+    slides.forEach((s, k) => { s.classList.toggle('opacity-100', k === cur); s.classList.toggle('opacity-0', k !== cur); });
+    copies.forEach((c, k) => c.classList.toggle('hidden', k !== cur));
+    replay(copies[cur], true);
+    dots.forEach((d, k) => {
+      d.classList.toggle('w-8', k === cur); d.classList.toggle('bg-brand-sand', k === cur);
+      d.classList.toggle('w-4', k !== cur); d.classList.toggle('bg-white/50', k !== cur);
+    });
+  };
+  const start = () => { clearInterval(timer); timer = window.setInterval(() => show(cur + 1), 6500); };
+  dots.forEach((d, k) => d.addEventListener('click', () => { show(k); start(); }));
+  document.querySelector('[data-prev]')?.addEventListener('click', () => { show(cur - 1); start(); });
+  document.querySelector('[data-next]')?.addEventListener('click', () => { show(cur + 1); start(); });
+  // Don't change slides while the visitor is using the search bar
+  const search = document.getElementById('dv-search');
+  search?.addEventListener('focusin', () => clearInterval(timer));
+  search?.addEventListener('focusout', () => start());
+  start();
+
+  // ---- Category tiles → show that category's slider directly below.
+  // Clicking the selected tile again (or "Back to featured") returns to Featured.
+  const tiles = document.querySelectorAll<HTMLButtonElement>('.cat-tile');
+  const panelsEl = document.querySelectorAll<HTMLElement>('[data-panel]');
+  const results = document.getElementById('cat-results')!;
+  let current = 'featured';
+  const selectCat = (slug: string, scroll: boolean) => {
+    current = slug;
+    tiles.forEach(t => {
+      const on = t.dataset.cat === slug;
+      t.classList.toggle('is-active', on); t.setAttribute('aria-pressed', String(on));
+    });
+    panelsEl.forEach(p => {
+      const on = p.dataset.panel === slug;
+      p.classList.toggle('hidden', !on);
+      if (on) {
+        (p.querySelector('[data-carousel]') as any)?.refresh?.();
+        replay(p.firstElementChild);
+        replay(p.querySelector('[data-track]'), true);
+      }
+    });
+    if (scroll && results.getBoundingClientRect().top > innerHeight * 0.55) results.scrollIntoView({ behavior: 'smooth' });
+  };
+  tiles.forEach(t => t.addEventListener('click', () => {
+    const slug = t.dataset.cat!;
+    selectCat(current === slug ? 'featured' : slug, current !== slug);
+  }));
+  document.querySelectorAll('[data-back-featured]').forEach(b => b.addEventListener('click', () => selectCat('featured', false)));
+
+  // ---- "View all categories" (only shown when tiles don't all fit)
+  const catCar = document.getElementById('cat-carousel')!;
+  const catTrack = catCar.querySelector<HTMLElement>('[data-track]')!;
+  const expand = document.getElementById('cat-expand')!;
+  const syncExpand = () => {
+    const overflow = catTrack.scrollWidth > catTrack.clientWidth + 2;
+    const open = catCar.hasAttribute('data-expanded');
+    expand.classList.toggle('hidden', !overflow && !open); expand.classList.toggle('inline-flex', overflow || open);
+  };
+  expand.addEventListener('click', () => {
+    const open = catCar.toggleAttribute('data-expanded');
+    expand.setAttribute('aria-expanded', String(open));
+    expand.querySelector('[data-label]')!.textContent = open ? 'Show less' : `View all ${tiles.length} categories`;
+    expand.querySelector('svg')!.style.transform = open ? 'rotate(180deg)' : '';
+    syncExpand();
+  });
+  new ResizeObserver(syncExpand).observe(catTrack);
+  addEventListener('resize', syncExpand);
+  addEventListener('load', syncExpand);
+  syncExpand();
+
+  // ---- Welcome section tabs
+  const wtabs = document.querySelectorAll<HTMLButtonElement>('.welcome-tab');
+  wtabs.forEach(t => t.addEventListener('click', () => {
+    wtabs.forEach(x => {
+      const on = x === t;
+      x.setAttribute('aria-selected', String(on));
+      x.classList.toggle('border-brand-sand', on); x.classList.toggle('text-brand-sand-dark', on);
+      x.classList.toggle('border-transparent', !on); x.classList.toggle('text-ink', !on);
+      const dot = x.querySelector('span')!;
+      dot.classList.toggle('bg-brand-sand', on); dot.classList.toggle('text-white', on);
+      dot.classList.toggle('bg-white', !on); dot.classList.toggle('text-ink-soft', !on);
+    });
+    document.querySelectorAll<HTMLElement>('[data-wpanel]').forEach(p => {
+      const on = p.dataset.wpanel === t.dataset.wtab;
+      p.classList.toggle('hidden', !on);
+      if (on) replay(p);
+    });
+  }));
+
+  // ---- Things-to-do explorer tabs
+  const xtabs = document.querySelectorAll<HTMLButtonElement>('.x-tile');
+  xtabs.forEach(t => t.addEventListener('click', () => {
+    xtabs.forEach(x => {
+      const on = x === t;
+      const bg = (x.dataset.activeBg || '').split(' ');
+      x.setAttribute('aria-selected', String(on));
+      bg.forEach(c => c && x.classList.toggle(c, on));
+      ['text-white', 'shadow-xl'].forEach(c => x.classList.toggle(c, on));
+      ['bg-sand-50', 'text-ink', 'hover:-translate-y-1', 'hover:bg-sand-100'].forEach(c => x.classList.toggle(c, !on));
+      x.querySelector('.x-icon')?.classList.toggle('!text-white', on);
+    });
+    document.querySelectorAll<HTMLElement>('[data-xpanel]').forEach(p => {
+      const on = p.dataset.xpanel === t.dataset.xtab;
+      p.classList.toggle('hidden', !on);
+      if (on) { replay(p.firstElementChild); replay(p.lastElementChild, true); replay(p.querySelector('ul'), true); }
+    });
+  }));
+
+  // ---- Gentle reveal for sections below the banner
+  document.querySelectorAll('main > section:nth-of-type(n+3) > .container-x').forEach(el => el.setAttribute('data-reveal', ''));
+  initReveal();
+</script>
+
+<style is:global>
+  .cat-tile.is-active { transform: translateY(-6px); outline: 3px solid #fff; outline-offset: -3px; box-shadow: 0 18px 40px -12px rgba(27,35,51,.45); }
+  .cat-tile.is-active .cat-check { display: grid; }
+</style>

@@ -1,0 +1,83 @@
+---
+// Written reviews: rating summary card + review card slider.
+import Icon from './Icon.astro';
+import Carousel from './Carousel.astro';
+import { reviews, reviewSummary as S } from '../data/reviews';
+import { site } from '../data/site';
+const avatarBg = ['bg-brand-sand', 'bg-brand-blue', 'bg-brand-green', 'bg-[#8e4a9e]', 'bg-[#d86a5a]', 'bg-[#0b7285]'];
+const isDev = import.meta.env.DEV;
+---
+<section class="relative overflow-hidden bg-sand-50 py-16 sm:py-20">
+  <svg class="pointer-events-none absolute -top-10 right-0 w-[520px] text-sand-100" viewBox="0 0 200 200" aria-hidden="true">
+    <path fill="currentColor" d="M44 26c12 0 22 10 22 22v26c0 26-14 46-40 54l-6-12c14-6 22-16 24-30H26V26Zm80 0c12 0 22 10 22 22v26c0 26-14 46-40 54l-6-12c14-6 22-16 24-30h-18V26Z" />
+  </svg>
+  <div class="container-x relative">
+    <div class="max-w-2xl">
+      <p class="font-script text-3xl text-brand-sand-dark">Guest reviews</p>
+      <h2 class="section-title mt-1">What travellers say about us</h2>
+    </div>
+    {isDev && <p class="mt-3 inline-block rounded-lg border border-dashed border-amber-400 bg-amber-50 px-3 py-1.5 text-xs text-amber-800">Dev note: sample reviews. Replace with real guest reviews in the admin before launch.</p>}
+
+    <div class="mt-10 grid gap-6 lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-8">
+      <!-- summary -->
+      <div class="rounded-3xl bg-ink p-7 text-white">
+        <p class="text-sm font-semibold uppercase tracking-wider text-white/60">Overall rating</p>
+        <div class="mt-3 flex items-end gap-3">
+          <span class="font-display text-6xl font-bold leading-none">{S.average.toFixed(1)}</span>
+          <span class="pb-1.5 text-white/60">/ 5</span>
+        </div>
+        <div class="mt-3 flex text-amber-400">{[1,2,3,4,5].map(() => <Icon name="star" size={20} />)}</div>
+        <p class="mt-2 text-sm text-white/70">Based on {S.total} guest reviews</p>
+        <ul class="mt-6 space-y-2.5">
+          {S.breakdown.map((pct, k) => (
+            <li class="flex items-center gap-3 text-sm">
+              <span class="w-6 shrink-0 text-white/80">{5 - k}★</span>
+              <span class="h-2 flex-1 overflow-hidden rounded-full bg-white/10"><span class="block h-full rounded-full bg-amber-400" style={`width:${pct}%`}></span></span>
+              <span class="w-9 shrink-0 text-right text-white/60">{pct}%</span>
+            </li>
+          ))}
+        </ul>
+        <a href={site.whatsapp} target="_blank" rel="noopener" class="btn mt-7 w-full bg-white !py-3 text-ink hover:bg-sand-100">
+          <Icon name="star" size={16} class="text-amber-500" />Share your experience
+        </a>
+      </div>
+
+      <!-- review cards -->
+      <Carousel label="Guest reviews" trackClass="gap-5 py-3 -my-3">
+        {reviews.map((r, i) => (
+          <article class="review-card flex w-[86%] shrink-0 snap-start flex-col rounded-3xl border border-line bg-white p-6 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-ink/5 sm:w-[calc((100%-1.25rem)/2)] xl:w-[calc((100%-2.5rem)/3)]">
+            <div class="flex items-center justify-between">
+              <div class="flex text-amber-400">{Array.from({ length: 5 }).map((_, k) => <Icon name="star" size={16} class={k < r.rating ? '' : 'text-sand-200'} />)}</div>
+              <span class="text-xs text-ink-soft">{r.date}</span>
+            </div>
+            <h3 class="mt-4 font-display text-[17px] font-semibold leading-snug text-ink">“{r.title}”</h3>
+            <p data-clamp class="mt-2 line-clamp-4 text-[15px] leading-relaxed text-ink-soft">{r.text}</p>
+            <button type="button" data-more class="mt-1 self-start text-sm font-semibold text-brand-blue hover:underline">Read more</button>
+            <div class="mt-auto flex items-center gap-3 border-t border-line pt-4 mt-5">
+              <span class:list={['grid size-11 shrink-0 place-items-center rounded-full font-display text-base font-bold text-white', avatarBg[i % avatarBg.length]]}>
+                {r.name.split(/[\s&]+/).filter(Boolean).map(w => w[0]).slice(0, 2).join('')}
+              </span>
+              <div class="min-w-0">
+                <p class="truncate font-semibold text-ink">{r.name}</p>
+                <p class="truncate text-xs text-ink-soft">{r.country} · <a href={r.tourHref} class="hover:text-brand-blue">{r.tour}</a></p>
+              </div>
+            </div>
+          </article>
+        ))}
+      </Carousel>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.review-card').forEach(card => {
+    const p = card.querySelector<HTMLElement>('[data-clamp]')!;
+    const btn = card.querySelector<HTMLButtonElement>('[data-more]')!;
+    // hide "Read more" when the text already fits
+    requestAnimationFrame(() => { if (p.scrollHeight <= p.clientHeight + 2) btn.hidden = true; });
+    btn.addEventListener('click', () => {
+      const open = p.classList.toggle('line-clamp-4') === false;
+      btn.textContent = open ? 'Show less' : 'Read more';
+    });
+  });
+</script>

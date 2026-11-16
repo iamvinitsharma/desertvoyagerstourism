@@ -1,0 +1,203 @@
+---
+// Desert intro: sand blows across the screen, a Desert Voyagers 4x4 drives in,
+// the driver waves "Yalla!", then speeds off and a dust storm wipes to the site.
+// Plays once per browser session (see Layout.astro). Total ≈ 3.8s, skippable.
+---
+<div id="dvi" aria-hidden="true">
+  <div class="dvi-sky"></div>
+  <div class="dvi-sun"></div>
+  <div class="dvi-grain"></div>
+
+  <svg class="dvi-dunes dvi-dunes-back" viewBox="0 0 1440 400" preserveAspectRatio="none">
+    <path d="M0 170 C 220 90, 420 120, 620 150 C 820 180, 1000 80, 1220 110 C 1330 125, 1400 140, 1440 150 L1440 400 L0 400 Z" fill="#efc48d" />
+  </svg>
+  <svg class="dvi-dunes dvi-dunes-front" viewBox="0 0 1440 400" preserveAspectRatio="none">
+    <path d="M0 230 C 300 180, 600 210, 900 205 C 1150 200, 1300 170, 1440 190 L1440 400 L0 400 Z" fill="#dfa25a" />
+    <path d="M0 300 C 400 260, 800 300, 1440 270 L1440 400 L0 400 Z" fill="#d18f45" opacity=".6" />
+  </svg>
+
+  <div class="dvi-wind">
+    {Array.from({ length: 9 }).map(() => <i></i>)}
+  </div>
+
+  <div class="dvi-brand">
+    <img src="/images/logo.png" alt="" width="220" height="91" />
+    <p>Your desert adventure is arriving…</p>
+    <div class="dvi-bar"><span></span></div>
+  </div>
+
+  <!-- the 4x4 -->
+  <div class="dvi-road">
+    <div class="dvi-out">
+      <div class="dvi-in">
+        <div class="dvi-dust">{Array.from({ length: 10 }).map(() => <span></span>)}</div>
+        <div class="dvi-bubble">Yalla! Hop in 👋</div>
+        <svg class="dvi-car" viewBox="0 0 232 110" xmlns="http://www.w3.org/2000/svg">
+          <!-- spare wheel -->
+          <circle cx="12" cy="58" r="11" fill="#1f2937" /><circle cx="12" cy="58" r="5" fill="#9ca3af" />
+          <g class="dvi-body">
+            <!-- roof rack -->
+            <rect x="24" y="15" width="122" height="4" rx="2" fill="#374151" />
+            <rect x="36" y="19" width="3" height="6" fill="#374151" /><rect x="132" y="19" width="3" height="6" fill="#374151" />
+            <!-- body -->
+            <path d="M14 80 L14 34 Q14 24 24 24 L150 24 Q158 24 163 30 L180 50 L208 54 Q218 56 218 66 L218 78 Q218 84 212 84 L196 84 A18 18 0 0 0 160 84 L76 84 A18 18 0 0 0 40 84 L20 84 Q14 84 14 80 Z" fill="#ffffff" stroke="#cfc6b8" stroke-width="1.5" />
+            <!-- windows -->
+            <rect x="22" y="30" width="40" height="18" rx="3" fill="#8fb8df" />
+            <rect x="68" y="30" width="44" height="18" rx="3" fill="#8fb8df" />
+            <path d="M118 30 h30 q5 0 8 4 l11 14 h-49 z" fill="#8fb8df" />
+            <!-- driver -->
+            <circle cx="136" cy="39" r="5" fill="#b9773f" />
+            <path d="M130 38 q6 -11 12 0 l1 9 h-2.5 l-1 -6 h-7 l-1 6 h-2.5 z" fill="#ffffff" />
+            <path d="M129 48 q7 -6 14 0 z" fill="#ffffff" />
+            <g class="dvi-arm">
+              <path d="M150 46 L161 30" stroke="#b9773f" stroke-width="3.2" stroke-linecap="round" />
+              <circle cx="161.5" cy="29" r="3" fill="#b9773f" />
+            </g>
+            <!-- stripes & details -->
+            <rect x="14" y="58" width="204" height="5" fill="#e8873a" />
+            <rect x="14" y="64" width="204" height="2" fill="#2f64ae" />
+            <line x1="65" y1="30" x2="65" y2="83" stroke="#ddd5c9" stroke-width="1.2" />
+            <line x1="115" y1="30" x2="115" y2="83" stroke="#ddd5c9" stroke-width="1.2" />
+            <rect x="54" y="52" width="7" height="2.5" rx="1" fill="#9ca3af" />
+            <rect x="104" y="52" width="7" height="2.5" rx="1" fill="#9ca3af" />
+            <text x="80" y="77" font-family="Lexend, sans-serif" font-size="6.5" font-weight="700" fill="#2f64ae" letter-spacing=".6">DESERT VOYAGERS</text>
+            <rect x="210" y="57" width="8" height="5" rx="2" fill="#fde68a" />
+            <rect x="211" y="70" width="12" height="8" rx="2" fill="#374151" />
+            <rect x="12" y="34" width="4" height="10" rx="1" fill="#ef4444" />
+          </g>
+          <!-- wheels -->
+          <g transform="translate(58 84)"><g class="dvi-wheel">
+            <circle r="16" fill="#1f2937" /><circle r="9" fill="#a3a3a3" /><circle r="3" fill="#374151" />
+            <rect x="-1" y="-9" width="2" height="18" fill="#6b7280" /><rect x="-9" y="-1" width="18" height="2" fill="#6b7280" />
+          </g></g>
+          <g transform="translate(178 84)"><g class="dvi-wheel">
+            <circle r="16" fill="#1f2937" /><circle r="9" fill="#a3a3a3" /><circle r="3" fill="#374151" />
+            <rect x="-1" y="-9" width="2" height="18" fill="#6b7280" /><rect x="-9" y="-1" width="18" height="2" fill="#6b7280" />
+          </g></g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="dvi-storm"></div>
+  <button type="button" class="dvi-skip" data-dvi-skip>Skip intro</button>
+</div>
+
+<script>
+  const el = document.getElementById('dvi');
+  const html = document.documentElement;
+  if (el && html.classList.contains('intro-playing')) {
+    let done = false;
+    const finish = (fast = false) => {
+      if (done) return; done = true;
+      try { sessionStorage.setItem('dv_intro', '1'); } catch {}
+      el.classList.add(fast ? 'dvi-hide-fast' : 'dvi-hide');
+      setTimeout(() => { html.classList.remove('intro-playing'); html.classList.add('intro-seen'); el.remove(); }, fast ? 300 : 650);
+    };
+    if (!location.search.includes('intro=hold')) setTimeout(() => finish(), 3300);
+    el.querySelector('[data-dvi-skip]')?.addEventListener('click', () => finish(true));
+  } else el?.remove();
+</script>
+
+<style is:global>
+  html.intro-seen #dvi { display: none; }
+  html.intro-playing body { overflow: hidden; }
+
+  #dvi { position: fixed; inset: 0; z-index: 100; overflow: hidden; transition: opacity .6s ease; }
+  #dvi.dvi-hide { opacity: 0; }
+  #dvi.dvi-hide-fast { opacity: 0; transition-duration: .25s; }
+
+  .dvi-sky { position: absolute; inset: 0; background: linear-gradient(180deg, #8ec5e8 0%, #cfe3ea 38%, #f7dcb0 70%, #f2c486 100%); }
+  .dvi-sun { position: absolute; top: 14vh; right: 14vw; width: 16vmin; height: 16vmin; border-radius: 50%;
+    background: radial-gradient(circle, #fff6d8 0 40%, #ffd98a 60%, rgba(255,200,110,0) 72%); filter: blur(1px); }
+
+  /* floating sand grains */
+  .dvi-grain { position: absolute; inset: -20%; opacity: .55; pointer-events: none;
+    background-image: radial-gradient(#c98a45 1px, transparent 1.4px), radial-gradient(#e9b878 1.2px, transparent 1.6px);
+    background-size: 46px 46px, 73px 73px; background-position: 0 0, 20px 30px;
+    animation: dvi-grain 1.6s linear infinite; }
+  @keyframes dvi-grain { to { transform: translate3d(18%, 3%, 0); } }
+
+  .dvi-dunes { position: absolute; left: 0; bottom: 0; width: 100%; }
+  .dvi-dunes-back { height: 52vh; }
+  .dvi-dunes-front { height: 45vh; }
+
+  /* wind streaks */
+  .dvi-wind i { position: absolute; left: -30vw; height: 2px; width: 26vw; border-radius: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255,240,215,.95), transparent);
+    animation: dvi-wind 1.1s linear infinite; }
+  .dvi-wind i:nth-child(1) { top: 22%; animation-delay: 0s; }
+  .dvi-wind i:nth-child(2) { top: 34%; animation-delay: .35s; width: 18vw; }
+  .dvi-wind i:nth-child(3) { top: 46%; animation-delay: .7s; }
+  .dvi-wind i:nth-child(4) { top: 58%; animation-delay: .15s; width: 32vw; }
+  .dvi-wind i:nth-child(5) { top: 66%; animation-delay: .55s; }
+  .dvi-wind i:nth-child(6) { top: 74%; animation-delay: .9s; width: 20vw; }
+  .dvi-wind i:nth-child(7) { top: 82%; animation-delay: .25s; }
+  .dvi-wind i:nth-child(8) { top: 28%; animation-delay: .8s; width: 14vw; }
+  .dvi-wind i:nth-child(9) { top: 88%; animation-delay: .45s; }
+  @keyframes dvi-wind { to { transform: translateX(160vw); } }
+
+  /* brand */
+  .dvi-brand { position: absolute; top: 15vh; left: 50%; transform: translateX(-50%); text-align: center; width: min(90vw, 420px);
+    animation: dvi-rise .7s .15s ease-out both; }
+  .dvi-brand img { width: min(68vw, 300px); height: auto; margin: 0 auto; filter: drop-shadow(0 6px 14px rgba(120,70,20,.18)); }
+  .dvi-brand p { margin-top: 14px; font: 600 15px/1.4 "Lexend", sans-serif; color: #5b3a17; letter-spacing: .02em; }
+  .dvi-bar { margin: 14px auto 0; width: 180px; height: 5px; border-radius: 9px; background: rgba(120,70,20,.15); overflow: hidden; }
+  .dvi-bar span { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #e8873a, #3c9a4a); transform-origin: left;
+    animation: dvi-bar 3.1s cubic-bezier(.4,0,.2,1) both; }
+  @keyframes dvi-bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes dvi-rise { from { opacity: 0; transform: translate(-50%, 16px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+  /* car motion: drive in → stop & wave → speed off */
+  .dvi-road { position: absolute; left: 50%; bottom: 19vh; width: clamp(220px, 30vw, 360px); transform: translateX(-50%); }
+  .dvi-out { animation: dvi-out 1s 2.15s cubic-bezier(.55,0,.9,.5) both; }
+  .dvi-in  { position: relative; animation: dvi-in 1.25s cubic-bezier(.15,.75,.3,1) both; }
+  @keyframes dvi-in  { from { transform: translateX(-90vw); } to { transform: translateX(0); } }
+  @keyframes dvi-out { 0% { transform: translateX(0); } 15% { transform: translateX(-3vw); } 100% { transform: translateX(115vw); } }
+
+  .dvi-car { position: relative; width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 10px 8px rgba(110,60,15,.28)); }
+  .dvi-body { animation: dvi-bob .32s ease-in-out infinite alternate; }
+  @keyframes dvi-bob { from { transform: translateY(0); } to { transform: translateY(-1.6px); } }
+  .dvi-wheel { transform-box: fill-box; transform-origin: center; animation: dvi-spin .35s linear infinite; }
+  @keyframes dvi-spin { to { transform: rotate(360deg); } }
+
+  .dvi-arm { transform-box: fill-box; transform-origin: 0% 100%; opacity: 0; animation: dvi-wave .25s 1.15s ease-in-out 4 alternate, dvi-show 1s 1.1s step-end both; }
+  @keyframes dvi-wave { from { transform: rotate(0); } to { transform: rotate(-28deg); } }
+  @keyframes dvi-show { 0% { opacity: 1; } 100% { opacity: 0; } }
+
+  .dvi-bubble { position: absolute; left: 52%; top: -46px; white-space: nowrap; padding: 8px 14px; border-radius: 14px;
+    background: #fff; color: #1b2333; font: 600 14px/1 "Lexend", sans-serif; box-shadow: 0 8px 20px rgba(80,40,10,.18);
+    opacity: 0; animation: dvi-pop 1s 1.15s ease both; }
+  .dvi-bubble::after { content: ""; position: absolute; left: 22px; bottom: -6px; width: 12px; height: 12px; background: #fff; transform: rotate(45deg); }
+  @keyframes dvi-pop { 0% { opacity: 0; transform: translateY(8px) scale(.9); } 15%, 85% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+
+  /* dust kicked up behind the rear wheel */
+  .dvi-dust { position: absolute; left: 4%; bottom: 2%; width: 30%; height: 40%; }
+  .dvi-dust span { position: absolute; left: 0; bottom: 0; width: 44px; height: 44px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(176,118,58,1), rgba(204,148,86,.75) 45%, rgba(226,178,118,0) 70%);
+    animation: dvi-puff .9s ease-out infinite; }
+  .dvi-dust span:nth-child(2n) { width: 62px; height: 62px; animation-duration: 1.1s; }
+  .dvi-dust span:nth-child(1) { animation-delay: 0s; }   .dvi-dust span:nth-child(2) { animation-delay: .09s; }
+  .dvi-dust span:nth-child(3) { animation-delay: .18s; } .dvi-dust span:nth-child(4) { animation-delay: .27s; }
+  .dvi-dust span:nth-child(5) { animation-delay: .36s; } .dvi-dust span:nth-child(6) { animation-delay: .45s; }
+  .dvi-dust span:nth-child(7) { animation-delay: .54s; } .dvi-dust span:nth-child(8) { animation-delay: .63s; }
+  .dvi-dust span:nth-child(9) { animation-delay: .72s; } .dvi-dust span:nth-child(10) { animation-delay: .81s; }
+  @keyframes dvi-puff { from { opacity: .95; transform: translate(0,0) scale(.4); } to { opacity: 0; transform: translate(-150px,-34px) scale(2.6); } }
+
+  /* final dust storm wipe */
+  /* leading (right) edge is a soft, billowing cloud */
+  .dvi-storm { position: absolute; inset: 0 -60% 0 -20%; transform: translateX(-100%);
+    background:
+      radial-gradient(14% 30% at 76% 22%, rgba(226,178,118,.9), transparent 70%),
+      radial-gradient(16% 34% at 79% 58%, rgba(214,160,98,.85), transparent 70%),
+      radial-gradient(12% 26% at 77% 88%, rgba(226,178,118,.9), transparent 70%),
+      linear-gradient(90deg, #f8ecd9 0%, #f3dcb9 45%, #e7bd86 64%, rgba(222,170,110,.7) 74%, rgba(222,170,110,0) 84%);
+    filter: blur(10px); animation: dvi-storm 1s 2.45s cubic-bezier(.5,0,.6,1) both; }
+  @keyframes dvi-storm { to { transform: translateX(0); } }
+
+  .dvi-skip { position: absolute; right: 18px; bottom: 18px; z-index: 2; padding: 8px 14px; border-radius: 999px;
+    background: rgba(255,255,255,.75); color: #5b3a17; font: 600 13px "Plus Jakarta Sans", sans-serif; backdrop-filter: blur(4px); }
+  .dvi-skip:hover { background: #fff; }
+
+  @media (prefers-reduced-motion: reduce) { #dvi { display: none; } }
+</style>

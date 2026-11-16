@@ -1,0 +1,49 @@
+---
+// Scroll-snap slider with prev/next arrows (arrows auto-hide at the ends or
+// when everything fits). Children should be `shrink-0 snap-start` items.
+import Icon from './Icon.astro';
+interface Props { id?: string; class?: string; trackClass?: string; arrows?: 'outside' | 'inside'; label?: string }
+const { id, class: cls = '', trackClass = 'gap-5 py-3 -my-3', arrows = 'outside', label = 'Slider' } = Astro.props;
+const pos = arrows === 'outside' ? ['-left-3 lg:-left-6', '-right-3 lg:-right-6'] : ['left-2', 'right-2'];
+---
+<div id={id} class:list={['dv-carousel relative', cls]} data-carousel role="region" aria-roledescription="carousel" aria-label={label}>
+  <div data-track class:list={['no-scrollbar flex snap-x snap-mandatory overflow-x-auto scroll-smooth', trackClass]}>
+    <slot />
+  </div>
+  <button type="button" data-prev aria-label="Previous"
+    class:list={['dv-arrow absolute top-1/2 z-20 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-line bg-white text-ink shadow-lg shadow-ink/15 transition hover:bg-ink hover:text-white', pos[0]]}>
+    <Icon name="chevron-left" size={20} />
+  </button>
+  <button type="button" data-next aria-label="Next"
+    class:list={['dv-arrow absolute top-1/2 z-20 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-line bg-white text-ink shadow-lg shadow-ink/15 transition hover:bg-ink hover:text-white', pos[1]]}>
+    <Icon name="chevron-right" size={20} />
+  </button>
+</div>
+
+<style is:global>
+  .dv-arrow[hidden] { display: none; }
+  .dv-carousel[data-expanded] [data-track] { flex-wrap: wrap; overflow: visible; }
+  .dv-carousel[data-expanded] .dv-arrow { display: none; }
+</style>
+
+<script>
+  const init = (root: HTMLElement) => {
+    if (root.dataset.ready) return; root.dataset.ready = '1';
+    const track = root.querySelector<HTMLElement>('[data-track]')!;
+    const prev = root.querySelector<HTMLButtonElement>('[data-prev]')!;
+    const next = root.querySelector<HTMLButtonElement>('[data-next]')!;
+    const update = () => {
+      const max = track.scrollWidth - track.clientWidth - 2;
+      prev.hidden = track.scrollLeft <= 2;
+      next.hidden = track.scrollLeft >= max;
+    };
+    const step = () => Math.max(track.clientWidth * 0.85, 200);
+    prev.addEventListener('click', () => track.scrollBy({ left: -step() }));
+    next.addEventListener('click', () => track.scrollBy({ left: step() }));
+    track.addEventListener('scroll', update, { passive: true });
+    new ResizeObserver(update).observe(track);
+    (root as any).refresh = () => { track.scrollLeft = 0; update(); };
+    update();
+  };
+  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach(init);
+</script>

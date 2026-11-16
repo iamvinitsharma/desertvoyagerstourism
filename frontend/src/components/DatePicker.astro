@@ -1,0 +1,124 @@
+---
+// Booking calendar: availability colours, no preselected date, legend, month navigation.
+// Emits `change` on the hidden input and `dp:change` (detail = ISO date) on the root.
+import Icon from './Icon.astro';
+interface Props { name: string; slug: string; label: string; minOffsetDays?: number; accent?: 'green' | 'sand' }
+const { name, slug, label, minOffsetDays = 0, accent = 'green' } = Astro.props;
+const focusRing = accent === 'green' ? 'focus-visible:ring-green-100 focus-visible:border-brand-green' : 'focus-visible:ring-orange-100 focus-visible:border-brand-sand';
+---
+<div class="dp relative" data-dp data-slug={slug} data-min-offset={minOffsetDays} data-accent={accent}>
+  <span class="mb-1.5 block text-sm font-semibold">{label}</span>
+  <button type="button" data-dp-field aria-haspopup="dialog" aria-expanded="false"
+    class={`flex w-full items-center gap-3 rounded-xl border border-line bg-white px-3.5 py-3 text-left transition hover:border-ink/40 focus-visible:outline-none focus-visible:ring-4 ${focusRing}`}>
+    <Icon name="calendar" size={18} class={accent === 'green' ? 'text-brand-green' : 'text-brand-sand'} />
+    <span data-dp-text class="flex-1 text-[15px] text-ink-soft">Select a date</span>
+    <Icon name="chevron-down" size={16} class="text-ink-soft transition" />
+  </button>
+  <input type="hidden" name={name} required />
+
+  <div data-dp-panel role="dialog" aria-label="Choose a date"
+    class="dp-panel absolute left-0 right-0 z-30 mt-2 hidden min-w-[288px] rounded-2xl border border-line bg-white p-4 shadow-2xl shadow-ink/15">
+    <div class="flex items-center justify-between">
+      <button type="button" data-dp-prev class="grid size-9 place-items-center rounded-full hover:bg-sand-100 disabled:opacity-25 disabled:hover:bg-transparent" aria-label="Previous month"><Icon name="chevron-left" size={18} /></button>
+      <p data-dp-month class="font-display text-[15px] font-semibold"></p>
+      <button type="button" data-dp-next class="grid size-9 place-items-center rounded-full hover:bg-sand-100 disabled:opacity-25 disabled:hover:bg-transparent" aria-label="Next month"><Icon name="chevron-right" size={18} /></button>
+    </div>
+    <div class="mt-3 grid grid-cols-7 gap-1 text-center text-[11px] font-semibold uppercase tracking-wide text-ink-soft">
+      {['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map(d => <span class="py-1">{d}</span>)}
+    </div>
+    <div data-dp-grid class="mt-1 grid grid-cols-7 gap-1"></div>
+    <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-line pt-3 text-[12px] text-ink-soft">
+      <span class="flex items-center gap-1.5"><span class="size-2.5 rounded-full bg-brand-green"></span>Available</span>
+      <span class="flex items-center gap-1.5"><span class="size-2.5 rounded-full bg-amber-500"></span>Few left</span>
+      <span class="flex items-center gap-1.5"><span class="size-2.5 rounded-full bg-ink/20"></span>Sold out</span>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  .dp-panel:not(.hidden) { animation: dp-pop .18s cubic-bezier(.2,.8,.3,1) both; }
+  @keyframes dp-pop { from { opacity: 0; transform: translateY(-6px) scale(.98); } to { opacity: 1; transform: none; } }
+  .dp-day { position: relative; display: grid; place-items: center; aspect-ratio: 1; border-radius: .75rem; font-size: .875rem; font-weight: 600; transition: background-color .15s, color .15s, transform .15s; }
+  .dp-day[data-s="available"] { background: #eef8f0; color: #24632f; }
+  .dp-day[data-s="available"]:hover { background: #d6efdb; transform: translateY(-1px); }
+  .dp-day[data-s="limited"] { background: #fff5e3; color: #9a5b06; }
+  .dp-day[data-s="limited"]:hover { background: #ffe8bf; transform: translateY(-1px); }
+  .dp-day[data-s="limited"]::after { content: ""; position: absolute; bottom: 5px; width: 4px; height: 4px; border-radius: 9999px; background: #f59e0b; }
+  .dp-day[data-s="soldout"] { color: rgba(27,35,51,.3); text-decoration: line-through; cursor: not-allowed; }
+  .dp-day[data-s="past"] { color: rgba(27,35,51,.22); cursor: not-allowed; }
+  .dp-day[data-today] { box-shadow: inset 0 0 0 1.5px rgba(27,35,51,.25); }
+  .dp-day[aria-pressed="true"] { background: #1b2333 !important; color: #fff !important; transform: none; }
+  .dp-day[aria-pressed="true"]::after { background: #fff; }
+</style>
+
+<script>
+  import { dayStatus, isoDate, MAX_DAYS_AHEAD } from '../lib/availability';
+  document.querySelectorAll<HTMLElement>('[data-dp]').forEach(root => {
+    const slug = root.dataset.slug!;
+    const input = root.querySelector<HTMLInputElement>('input[type=hidden]')!;
+    const field = root.querySelector<HTMLButtonElement>('[data-dp-field]')!;
+    const text = root.querySelector<HTMLElement>('[data-dp-text]')!;
+    const panel = root.querySelector<HTMLElement>('[data-dp-panel]')!;
+    const grid = root.querySelector<HTMLElement>('[data-dp-grid]')!;
+    const monthEl = root.querySelector<HTMLElement>('[data-dp-month]')!;
+    const prev = root.querySelector<HTMLButtonElement>('[data-dp-prev]')!;
+    const next = root.querySelector<HTMLButtonElement>('[data-dp-next]')!;
+
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const todayIso = isoDate(today);
+    const min = new Date(today); min.setDate(min.getDate() + +(root.dataset.minOffset || 0));
+    const minIso = isoDate(min);
+    const max = new Date(today); max.setDate(max.getDate() + MAX_DAYS_AHEAD);
+    const maxIso = isoDate(max);
+    let view = new Date(min.getFullYear(), min.getMonth(), 1);
+
+    const pretty = (iso: string) => new Date(iso + 'T00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+    const status = (iso: string) => iso > maxIso ? 'past' : dayStatus(slug, iso, minIso);
+
+    const render = () => {
+      monthEl.textContent = view.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+      prev.disabled = view <= new Date(min.getFullYear(), min.getMonth(), 1);
+      next.disabled = view >= new Date(max.getFullYear(), max.getMonth(), 1);
+      const lead = (view.getDay() + 6) % 7; // Monday first
+      const days = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
+      let html = '<span></span>'.repeat(lead);
+      for (let d = 1; d <= days; d++) {
+        const iso = isoDate(new Date(view.getFullYear(), view.getMonth(), d));
+        const s = status(iso);
+        const off = s === 'past' || s === 'soldout';
+        const label = s === 'soldout' ? 'sold out' : s === 'limited' ? 'few left' : s === 'past' ? 'unavailable' : 'available';
+        html += `<button type="button" class="dp-day" data-iso="${iso}" data-s="${s}" ${iso === todayIso ? 'data-today' : ''}
+          aria-pressed="${input.value === iso}" ${off ? 'disabled' : ''} aria-label="${pretty(iso)}, ${label}">${d}</button>`;
+      }
+      grid.innerHTML = html;
+    };
+
+    const open = (v: boolean) => {
+      panel.classList.toggle('hidden', !v); field.setAttribute('aria-expanded', String(v));
+      field.querySelector('svg:last-child')?.classList.toggle('rotate-180', v);
+      if (v) { if (input.value) { const d = new Date(input.value + 'T00:00'); view = new Date(d.getFullYear(), d.getMonth(), 1); } render(); }
+    };
+    const choose = (iso: string) => {
+      input.value = iso;
+      text.textContent = pretty(iso); text.classList.remove('text-ink-soft'); text.classList.add('text-ink', 'font-semibold');
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      root.dispatchEvent(new CustomEvent('dp:change', { detail: iso, bubbles: true }));
+      open(false);
+    };
+
+    field.addEventListener('click', () => open(panel.classList.contains('hidden')));
+    prev.addEventListener('click', () => { view = new Date(view.getFullYear(), view.getMonth() - 1, 1); render(); });
+    next.addEventListener('click', () => { view = new Date(view.getFullYear(), view.getMonth() + 1, 1); render(); });
+    grid.addEventListener('click', e => {
+      const b = (e.target as HTMLElement).closest<HTMLButtonElement>('.dp-day');
+      if (b && !b.disabled) choose(b.dataset.iso!);
+    });
+    document.addEventListener('click', e => { if (!root.contains(e.target as Node)) open(false); });
+    root.addEventListener('keydown', e => { if (e.key === 'Escape') { open(false); field.focus(); } });
+    (root as any).openPicker = () => { open(true); field.focus(); };
+
+    // Prefill from ?date= (e.g. homepage search) if that date is bookable
+    const q = new URLSearchParams(location.search).get('date');
+    if (q && /^\d{4}-\d{2}-\d{2}$/.test(q) && ['available', 'limited'].includes(status(q))) choose(q);
+  });
+</script>

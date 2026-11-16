@@ -1,0 +1,29 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import { posts, formatDate } from '../../data/blog';
+---
+<Layout title="Travel Blog: UAE Tips & Guides | Desert Voyagers Tourism" description="Desert safari tips, Abu Dhabi and Dubai city guides and attraction advice from our local team.">
+  <section class="bg-sand-50/60 py-12 sm:py-16">
+    <div class="container-x">
+      <nav class="flex items-center gap-1.5 text-sm text-ink-soft" aria-label="Breadcrumb"><a href="/" class="hover:text-ink">Home</a><Icon name="chevron-right" size={14} /><span class="text-ink">Blog</span></nav>
+      <p class="mt-4 font-script text-3xl text-brand-sand-dark">Travel journal</p>
+      <h1 class="text-3xl font-semibold sm:text-5xl">Tips & guides for your UAE trip</h1>
+      <p class="mt-3 max-w-xl text-ink-soft">Practical advice from our Abu Dhabi team to help you plan safaris, city tours and attraction visits.</p>
+
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {posts.map(p => (
+          <a href={`/blog/${p.slug}`} class="group flex flex-col overflow-hidden rounded-3xl border border-line bg-white transition hover:-translate-y-1 hover:shadow-xl hover:shadow-ink/5">
+            <span class="relative aspect-[16/10] overflow-hidden"><img src={p.image} alt="" loading="lazy" class="size-full object-cover transition duration-500 group-hover:scale-105" /></span>
+            <span class="flex flex-1 flex-col p-5">
+              <span class="text-xs font-bold uppercase tracking-wide text-brand-sand">{p.category}</span>
+              <span class="mt-2 font-display text-lg font-semibold leading-snug text-ink group-hover:text-brand-blue">{p.title}</span>
+              <span class="mt-2 line-clamp-3 text-sm text-ink-soft">{p.excerpt}</span>
+              <span class="mt-auto pt-4 text-xs text-ink-soft">{formatDate(p.date)} · {p.readTime}</span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,165 @@
+---
+// Ticket purchase widget: date → time slot (if any) → quantities → Add to cart / Buy now.
+import Icon from './Icon.astro';
+import DatePicker from './DatePicker.astro';
+import { type Tour, formatAED } from '../data/tours';
+import type { Details } from '../data/details';
+interface Props { tour: Tour; details: Details }
+const { tour, details: d } = Astro.props;
+---
+<div class="overflow-hidden rounded-3xl border border-line bg-white shadow-xl shadow-ink/5">
+  <div class="border-b border-line bg-gradient-to-br from-green-50/60 to-white p-5">
+    <p class="text-xs font-semibold uppercase tracking-wide text-ink-soft">From {tour.oldPrice && <s class="ml-1">{formatAED(tour.oldPrice)}</s>}</p>
+    <p class="mt-0.5 flex items-baseline gap-2"><span class="font-display text-3xl font-bold text-ink">{formatAED(tour.price)}</span><span class="text-sm text-ink-soft">per adult</span></p>
+    <p class="mt-2 flex items-center gap-1.5 text-sm font-medium text-brand-green"><Icon name="zap" size={16} />Instant e-ticket by email & WhatsApp</p>
+  </div>
+
+  <form id="ticket-form" class="space-y-4 p-5" data-slug={tour.slug} data-slots={JSON.stringify(d.timeSlots)} novalidate>
+    <DatePicker name="date" slug={tour.slug} label="Visit date" accent="green" />
+
+    {d.timeSlots.length > 0 && (
+      <fieldset data-slots-wrap>
+        <legend class="mb-1.5 block text-sm font-semibold">Visit time</legend>
+        <p data-slots-hint class="flex items-center gap-2 rounded-xl border border-dashed border-line px-3.5 py-3 text-sm text-ink-soft">
+          <Icon name="clock" size={16} />Select a date to see available times
+        </p>
+        <div data-slots class="hidden grid-cols-3 gap-2"></div>
+      </fieldset>
+    )}
+
+    <div>
+      <span class="mb-1.5 block text-sm font-semibold">Tickets</span>
+      <div class="divide-y divide-line rounded-xl border border-line">
+        {d.prices.map(p => (
+          <div class="flex items-center justify-between gap-3 px-3.5 py-2.5">
+            <div>
+              <p class="text-[15px] font-semibold">{p.label} <span class="text-xs font-normal text-ink-soft">{p.sub}</span></p>
+              <p class="text-xs text-ink-soft">{p.price ? formatAED(p.price) : 'Free'}</p>
+            </div>
+            <div class="flex items-center gap-2.5" data-qty={p.key} data-price={p.price}>
+              <button type="button" data-dec class="grid size-8 place-items-center rounded-full border border-line text-lg leading-none hover:border-ink disabled:opacity-30" aria-label={`Fewer ${p.label} tickets`}>−</button>
+              <input type="text" inputmode="numeric" name={p.key} value={p.key === 'adult' ? 1 : 0} data-min="0" data-max="20" readonly class="w-8 bg-transparent text-center text-base font-semibold tabular-nums outline-none" aria-label={`${p.label} tickets`} />
+              <button type="button" data-inc class="grid size-8 place-items-center rounded-full border border-line text-lg leading-none hover:border-ink" aria-label={`More ${p.label} tickets`}>+</button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="flex items-center justify-between rounded-xl bg-sand-50 p-3.5">
+      <span class="text-sm text-ink-soft">Total <span data-count class="text-xs"></span></span>
+      <span data-total class="font-display text-xl font-bold">AED 0</span>
+    </div>
+
+    <p data-error class="hidden rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600" role="alert"></p>
+
+    <div class="grid grid-cols-2 gap-2">
+      <button type="button" data-add class="btn border-2 border-ink !py-3 text-ink hover:bg-ink hover:text-white"><Icon name="cart" size={17} />Add to cart</button>
+      <button type="button" data-buy class="btn bg-brand-green !py-3 text-white hover:bg-[#2f7f3b]">Buy now <Icon name="arrow-right" size={17} /></button>
+    </div>
+    <p class="flex items-center justify-center gap-1.5 text-center text-xs text-ink-soft"><Icon name="shield" size={14} />Secure card payment · Visa · Mastercard</p>
+  </form>
+</div>
+
+<!-- toast -->
+<div id="cart-toast" class="pointer-events-none fixed left-1/2 top-24 z-50 flex -translate-x-1/2 -translate-y-4 items-center gap-3 rounded-2xl bg-ink px-4 py-3 text-sm text-white opacity-0 shadow-2xl transition duration-300" role="status">
+  <span class="grid size-7 place-items-center rounded-full bg-brand-green"><Icon name="check" size={15} /></span>
+  <span>Added to cart</span>
+  <a href="/cart" class="pointer-events-auto rounded-full bg-white px-3 py-1 font-semibold text-ink">View cart</a>
+</div>
+
+<script>
+  import { addToCart } from '../lib/cart';
+  import { slotStatus } from '../lib/availability';
+  const form = document.getElementById('ticket-form') as HTMLFormElement | null;
+  if (form) {
+    const aed = (n: number) => 'AED ' + n.toLocaleString('en-AE');
+    const slug = form.dataset.slug!;
+    const slots: string[] = JSON.parse(form.dataset.slots || '[]');
+    const date = form.elements.namedItem('date') as HTMLInputElement;
+    const picker = form.querySelector<HTMLElement>('[data-dp]');
+
+    // ---- time slots: rendered for the chosen date with availability
+    const slotsEl = form.querySelector<HTMLElement>('[data-slots]');
+    const hint = form.querySelector<HTMLElement>('[data-slots-hint]');
+    const renderSlots = () => {
+      if (!slotsEl || !hint) return;
+      if (!date.value) { hint.classList.remove('hidden'); slotsEl.classList.add('hidden'); slotsEl.classList.remove('grid'); return; }
+      const prevPick = (form.querySelector('input[name=time]:checked') as HTMLInputElement | null)?.value;
+      hint.classList.add('hidden'); slotsEl.classList.remove('hidden'); slotsEl.classList.add('grid');
+      slotsEl.innerHTML = slots.map(t => {
+        const st = slotStatus(slug, date.value, t);
+        const off = st === 'soldout';
+        const sub = st === 'soldout' ? 'Sold out' : st === 'limited' ? 'Few left' : 'Available';
+        return `<label class="slot ${off ? 'cursor-not-allowed' : 'cursor-pointer'}" data-st="${st}">
+          <input type="radio" name="time" value="${t}" class="peer sr-only" ${off ? 'disabled' : ''} ${prevPick === t && !off ? 'checked' : ''}>
+          <span class="slot-box">${t}<small>${sub}</small></span>
+        </label>`;
+      }).join('');
+    };
+    date.addEventListener('change', renderSlots);
+
+    // ---- ticket quantities
+    const steppers = [...form.querySelectorAll<HTMLElement>('[data-qty]')];
+    const qty = () => Object.fromEntries(steppers.map(s => [s.dataset.qty, +s.querySelector('input')!.value])) as { adult: number; child: number; infant: number };
+    const calc = () => {
+      const q = qty();
+      const total = steppers.reduce((sum, s) => sum + +s.dataset.price! * +s.querySelector('input')!.value, 0);
+      const n = q.adult + q.child + q.infant;
+      form.querySelector('[data-total]')!.textContent = aed(total);
+      form.querySelector('[data-count]')!.textContent = n ? `(${n} ticket${n > 1 ? 's' : ''})` : '';
+    };
+    steppers.forEach(s => {
+      const input = s.querySelector('input')!;
+      const dec = s.querySelector<HTMLButtonElement>('[data-dec]')!;
+      const set = (n: number) => { input.value = String(Math.max(0, Math.min(20, n))); dec.disabled = +input.value <= 0; calc(); };
+      dec.addEventListener('click', () => set(+input.value - 1));
+      s.querySelector('[data-inc]')!.addEventListener('click', () => set(+input.value + 1));
+      set(+input.value);
+    });
+
+    // ---- validation + cart
+    const err = form.querySelector<HTMLElement>('[data-error]')!;
+    const valid = () => {
+      err.classList.add('hidden');
+      const q = qty();
+      let msg = '';
+      if (!date.value) { msg = 'Please choose your visit date.'; (picker as any)?.openPicker?.(); }
+      else if (slots.length && !form.querySelector('input[name=time]:checked')) msg = 'Please choose a visit time.';
+      else if (q.adult + q.child === 0) msg = 'Please add at least one adult or child ticket.';
+      else if (q.infant > 0 && q.adult === 0) msg = 'Infants must be accompanied by an adult.';
+      if (msg) { err.textContent = msg; err.classList.remove('hidden'); }
+      return !msg;
+    };
+    const add = () => {
+      const time = (form.querySelector('input[name=time]:checked') as HTMLInputElement | null)?.value;
+      addToCart({ slug, date: date.value, time, qty: qty() });
+    };
+    const toast = document.getElementById('cart-toast')!;
+    form.querySelector('[data-add]')!.addEventListener('click', () => {
+      if (!valid()) return; add();
+      toast.classList.remove('opacity-0', '-translate-y-4');
+      setTimeout(() => toast.classList.add('opacity-0', '-translate-y-4'), 3000);
+    });
+    form.querySelector('[data-buy]')!.addEventListener('click', () => {
+      if (!valid()) return; add(); location.href = '/checkout';
+    });
+    form.addEventListener('change', () => err.classList.add('hidden'));
+    renderSlots();
+  }
+</script>
+
+<style is:global>
+  .slot .slot-box { display: flex; flex-direction: column; align-items: center; gap: 1px; border-radius: .75rem; border: 1px solid #e7e1d7; padding: .55rem .25rem; font-weight: 700; font-size: .9rem; font-variant-numeric: tabular-nums; transition: all .15s; }
+  .slot .slot-box small { font-size: 10.5px; font-weight: 600; letter-spacing: .01em; }
+  .slot[data-st="available"] .slot-box small { color: #3c9a4a; }
+  .slot[data-st="limited"] .slot-box { background: #fffaf0; }
+  .slot[data-st="limited"] .slot-box small { color: #b45309; }
+  .slot[data-st="soldout"] .slot-box { color: rgba(27,35,51,.3); background: #faf8f5; text-decoration: line-through; }
+  .slot[data-st="soldout"] .slot-box small { text-decoration: none; color: rgba(27,35,51,.35); }
+  .slot:not([data-st="soldout"]):hover .slot-box { border-color: #1b2333; transform: translateY(-1px); }
+  .slot input:checked + .slot-box { background: #3c9a4a; border-color: #3c9a4a; color: #fff; }
+  .slot input:checked + .slot-box small { color: rgba(255,255,255,.85); }
+  .slot input:focus-visible + .slot-box { box-shadow: 0 0 0 4px #dcfce7; }
+</style>
+

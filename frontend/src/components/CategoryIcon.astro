@@ -1,0 +1,62 @@
+---
+// Illustrated duotone icons for the category tiles (drawn in white on coloured tiles).
+interface Props { name: string; size?: number; class?: string }
+const { name, size = 56, class: cls = '' } = Astro.props;
+
+const icons: Record<string, string> = {
+  // 4x4 on a dune
+  'desert-safari': `
+    <path d="M2 56c10-6 20-6 30 0s20 6 30 0" opacity=".55"/>
+    <path d="M19 13h24M23 13v4M39 13v4"/>
+    <path class="f" d="M6 41V31c0-2 1.5-3.5 3.5-3.5H13l7.5-9.6c.8-1 2-1.4 3.2-1.4h19.8c1.3 0 2.5.6 3.2 1.7l6 9.3h3.8c2 0 3.5 1.5 3.5 3.5v10Z"/>
+    <path d="M23 20h7v7.5H17.5ZM34 20h8.6l4.8 7.5H34Z"/>
+    <path d="M6 35h52" opacity=".6"/>
+    <circle class="w" cx="19" cy="42" r="6"/><circle cx="19" cy="42" r="1.6"/>
+    <circle class="w" cx="45" cy="42" r="6"/><circle cx="45" cy="42" r="1.6"/>`,
+  // skyline: mosque dome, minaret, Burj tower
+  'city-tours': `
+    <path d="M4 54h56"/>
+    <path class="f" d="M8 54V40c0-6 5-9 10-12 5 3 10 6 10 12v14Z"/>
+    <path d="M18 28v-4M15 54v-7a3 3 0 0 1 6 0v7"/>
+    <path d="M24 26v28M24 26l1.5-4 1.5 4M27 26v28"/>
+    <path class="f" d="M38 54V22l3-12 3 12v32Z"/><path d="M41 10V4"/>
+    <path class="f" d="M47 54V32h9v22Z"/><path d="M50 37h3M50 42h3M50 47h3"/>`,
+  // ticket with star
+  'tickets': `
+    <path class="f" d="M8 20h48v8a4.5 4.5 0 0 0 0 9v8H8v-8a4.5 4.5 0 0 0 0-9Z" transform="rotate(-8 32 32)"/>
+    <path d="M23 21v4M23 29v4M23 37v4M23 45v1" transform="rotate(-8 32 32)"/>
+    <path class="w" d="m40 25 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.6-4.8 2.6.9-5.4-3.9-3.8 5.4-.8Z" transform="rotate(-8 32 32)"/>`,
+  // ferris wheel
+  'theme-parks': `
+    <circle class="f" cx="32" cy="26" r="17"/>
+    <circle cx="32" cy="26" r="3"/>
+    <path d="M32 9v34M15 26h34M20 14l24 24M44 14 20 38" opacity=".7"/>
+    <circle class="w" cx="32" cy="9" r="2.8"/><circle class="w" cx="49" cy="26" r="2.8"/>
+    <circle class="w" cx="15" cy="26" r="2.8"/><circle class="w" cx="44" cy="14" r="2.8"/>
+    <circle class="w" cx="20" cy="14" r="2.8"/><circle class="w" cx="44" cy="38" r="2.8"/><circle class="w" cx="20" cy="38" r="2.8"/>
+    <path d="M32 26 22 56M32 26l10 30M16 56h32"/>`,
+  // dhow on waves
+  'water': `
+    <path d="M31 40V8"/>
+    <path class="f" d="M31 10c8 6 14 15 16 26H31Z"/>
+    <path class="f" d="M29 14c-6 6-9 13-10 22h10Z" opacity=".9"/>
+    <path d="M31 8l6 2-6 2"/>
+    <path class="f" d="M6 40h52l-7 10H13Z"/>
+    <path d="M3 57c4-3 7-3 10 0s7 3 10 0 7-3 10 0 7 3 10 0 7-3 10 0 7 3 8 1" opacity=".75"/>`,
+  // sun over dunes with flag
+  'adventure': `
+    <circle class="f" cx="45" cy="18" r="7"/>
+    <path d="M45 5v3M45 28v3M32 18h3M55 18h3M36 9l2 2M52 25l2 2M54 9l-2 2" opacity=".75"/>
+    <path class="f" d="M2 52c8-12 18-18 30-8 8-9 20-10 30 6v8H2Z"/>
+    <path d="M18 40V28l7 3-7 3"/>
+    <path d="M10 56c6-3 14-4 22-2" opacity=".6"/>`,
+};
+---
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width={size} height={size} fill="none"
+     stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
+     class:list={['cat-icon', cls]} aria-hidden="true" set:html={icons[name] ?? icons['tickets']} />
+
+<style is:global>
+  .cat-icon .f { fill: currentColor; fill-opacity: .18; }
+  .cat-icon .w { fill: currentColor; fill-opacity: .95; }
+</style>

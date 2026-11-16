@@ -1,0 +1,13 @@
+---
+// Tripadvisor award badge (official image in public/images/awards/).
+import { site } from '../data/site';
+interface Props { variant?: 'header' | 'menu' | 'footer'; class?: string }
+const { variant = 'header', class: cls = '' } = Astro.props;
+const a = site.award;
+const size = { header: 'h-[19px]', menu: 'h-7', footer: 'h-10' }[variant];
+---
+<a href={a.href} target="_blank" rel="noopener" title={`Tripadvisor ${a.name} ${a.year}`}
+   class:list={['inline-flex shrink-0 items-center transition hover:opacity-80', cls]}>
+  <img src="/images/awards/tripadvisor-award.webp" alt={`Tripadvisor ${a.name} ${a.year}`}
+       width="2000" height="214" class:list={[size, 'w-auto max-w-full']} loading={variant === 'header' ? 'eager' : 'lazy'} />
+</a>

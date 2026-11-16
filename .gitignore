@@ -1,0 +1,19 @@
+# dependencies & build output
+node_modules/
+dist/
+.astro/
+
+# local tools (Composer download) and editor/assistant settings
+tools/
+.claude/
+.idea/
+.vscode/
+
+# environment & local data
+.env
+.env.*
+.data/
+
+# OS files
+.DS_Store
+Thumbs.db
