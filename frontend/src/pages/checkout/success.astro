@@ -2,12 +2,21 @@
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import { find } from '../../lib/store';
+import { dataSource, getApi } from '../../lib/data';
 import { site } from '../../data/site';
 
 // GitHub Pages preview: no server, the demo order is rendered in the browser from sessionStorage.
 const preview = import.meta.env.PUBLIC_STATIC_PREVIEW === 'true';
 const ref = preview ? '' : (Astro.url.searchParams.get('ref') || '').slice(0, 20);
-const order = !preview && /^DT-[A-Z0-9]{6}$/.test(ref) ? await find('orders', ref) : null;
+let order: any = null;
+if (!preview && /^DT-[A-Z0-9]{6}$/.test(ref)) {
+  if (dataSource() === 'api') {
+    // Order lives in the admin database
+    try { const { status, data } = await getApi(`/orders/${ref}`); if (status === 200 && data?.ok) order = data; } catch {}
+  } else {
+    order = await find('orders', ref);
+  }
+}
 const home = import.meta.env.BASE_URL;
 const aed = (n: number) => `AED ${n.toLocaleString('en-AE')}`;
 const fmt = (d: string) => new Date(d + 'T00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' });

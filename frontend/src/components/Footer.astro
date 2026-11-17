@@ -155,8 +155,22 @@ const topLinks = [
 
 <script>
   document.querySelector('[data-to-top]')?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-  document.querySelectorAll<HTMLFormElement>('[data-newsletter]').forEach(f => f.addEventListener('submit', e => {
-    e.preventDefault(); const b = f.querySelector('button')!; b.textContent = 'Subscribed ✓'; b.disabled = true;
-    // TODO (backend): POST to newsletter list.
+  import { STATIC_PREVIEW, url } from '../lib/preview';
+  document.querySelectorAll<HTMLFormElement>('[data-newsletter]').forEach(f => f.addEventListener('submit', async e => {
+    e.preventDefault();
+    const b = f.querySelector('button')!; const email = f.querySelector('input')!.value;
+    b.disabled = true; b.textContent = '…';
+    try {
+      if (!STATIC_PREVIEW) {
+        const r = await fetch(url('/api/subscribe'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+        const d = await r.json();
+        if (!r.ok || !d.ok) throw new Error(d.error);
+      }
+      b.textContent = 'Subscribed ✓';
+    } catch (x: any) {
+      b.disabled = false; b.textContent = 'Subscribe';
+      f.querySelector('input')!.setCustomValidity(x?.message || 'Please try again'); f.reportValidity();
+      setTimeout(() => f.querySelector('input')!.setCustomValidity(''), 2500);
+    }
   }));
 </script>

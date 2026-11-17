@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { ticketCatalog } from '../../lib/catalog';
 import { newRef, save } from '../../lib/store';
 import { dayStatus, slotStatus, isoDate } from '../../lib/availability';
+import { dataSource, postApi } from '../../lib/data';
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
@@ -17,6 +18,16 @@ const int = (v: unknown) => { const n = Math.floor(Number(v)); return Number.isF
 export const POST: APIRoute = async ({ request }) => {
   let b: any;
   try { b = await request.json(); } catch { return json({ ok: false, error: 'Invalid request' }, 400); }
+
+  // Connected to the admin: create the order there (it re-checks prices, availability and slots).
+  if (dataSource() === 'api') {
+    try {
+      const { status, data } = await postApi('/orders', b);
+      return json(data, status);
+    } catch {
+      return json({ ok: false, error: 'Payment could not be started. Please try again in a moment' }, 503);
+    }
+  }
 
   const catalog = ticketCatalog();
   const today = isoDate(new Date());

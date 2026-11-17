@@ -1,0 +1,2233 @@
+{
+  "categories": [
+    {
+      "slug": "desert-safari",
+      "name": "Desert Safari",
+      "icon": "sun",
+      "blurb": "Dune bashing, camels & BBQ camps"
+    },
+    {
+      "slug": "city-tours",
+      "name": "City Tours",
+      "icon": "landmark",
+      "blurb": "Abu Dhabi, Dubai & Al Ain"
+    },
+    {
+      "slug": "tickets",
+      "name": "Attraction Tickets",
+      "icon": "ticket",
+      "blurb": "Skip-the-line entry passes"
+    },
+    {
+      "slug": "theme-parks",
+      "name": "Theme Parks",
+      "icon": "ferris",
+      "blurb": "Yas Island & Dubai parks"
+    },
+    {
+      "slug": "water",
+      "name": "Cruises & Water",
+      "icon": "waves",
+      "blurb": "Dhow dinners & kayaking"
+    },
+    {
+      "slug": "adventure",
+      "name": "Adventures",
+      "icon": "mountain",
+      "blurb": "Buggies, quads & sunrise"
+    }
+  ],
+  "products": [
+    {
+      "slug": "evening-desert-safari",
+      "type": "tour",
+      "title": "Evening Desert Safari with BBQ Dinner",
+      "category": "desert-safari",
+      "location": "Abu Dhabi",
+      "image": "/images/tours/image-for-half-day-desert-safari.png",
+      "duration": "6 hours",
+      "timing": "3:00 pm – 9:00 pm",
+      "price": 170,
+      "oldPrice": 220,
+      "rating": 4.9,
+      "reviews": 412,
+      "badge": "Best Seller",
+      "featured": true,
+      "pickup": true,
+      "instant": true,
+      "highlights": [
+        "Dune bashing in a 4x4",
+        "Camel ride & sandboarding",
+        "BBQ buffet & live shows"
+      ],
+      "sort_order": 0,
+      "details": {
+        "gallery": [
+          "media/image-for-half-day-desert-safari.png",
+          "media/image-for-morning-desert-safari.png",
+          "media/image-for-overnight-desert-safari1-jpg.webp",
+          "media/image-for-sunrise-safari1.png",
+          "media/image-for-dune-buggy-tour1-scaled.webp"
+        ],
+        "overview": [
+          "Swap the city skyline for endless red dunes on our most popular experience. Your driver picks you up in a 4x4 and heads into the desert for an adrenaline-filled dune bashing session.",
+          "Watch the sun set over the sand, try sandboarding and a camel ride, then relax at our Bedouin-style camp with a BBQ buffet dinner and live Tanura, belly and fire shows under the stars."
+        ],
+        "features": [
+          {
+            "icon": "car",
+            "label": "Hotel pickup by 4x4"
+          },
+          {
+            "icon": "sun",
+            "label": "Desert sunset"
+          },
+          {
+            "icon": "mountain",
+            "label": "Dune bashing"
+          },
+          {
+            "icon": "users",
+            "label": "Shared or private"
+          }
+        ],
+        "inclusions": [
+          "Hotel or mall pickup & drop-off in a 4x4",
+          "Dune bashing with a licensed desert driver",
+          "Sandboarding & sunset photo stop",
+          "Short camel ride",
+          "Arabic coffee, tea & dates",
+          "Henna painting & Arabic costume photos",
+          "BBQ buffet dinner (veg & non-veg)",
+          "Tanura, belly dance & fire shows",
+          "Water & soft drinks"
+        ],
+        "exclusions": [
+          "Quad biking (available as an add-on)",
+          "Alcoholic drinks",
+          "Tips and personal expenses"
+        ],
+        "itinerary": [
+          {
+            "time": "3:00 pm",
+            "title": "Hotel pickup",
+            "text": "Your driver collects you from your hotel or mall in a 4x4."
+          },
+          {
+            "time": "4:15 pm",
+            "title": "Dune bashing",
+            "text": "A thrilling drive over the red dunes with a photo stop at the top."
+          },
+          {
+            "time": "5:15 pm",
+            "title": "Sandboarding & sunset",
+            "text": "Slide down the dunes and watch the sun set over the desert."
+          },
+          {
+            "time": "6:00 pm",
+            "title": "Camp activities",
+            "text": "Camel ride, henna, Arabic coffee and traditional costume photos."
+          },
+          {
+            "time": "7:00 pm",
+            "title": "BBQ dinner & shows",
+            "text": "Buffet dinner with Tanura, belly dance and fire shows."
+          },
+          {
+            "time": "9:00 pm",
+            "title": "Drop-off",
+            "text": "Return transfer to your hotel or mall."
+          }
+        ],
+        "pickup": {
+          "areas": "Hotels and malls in Abu Dhabi city, Yas Island and Saadiyat",
+          "time": "Exact pickup time is confirmed on WhatsApp the day before"
+        },
+        "info": [
+          "Avoid heavy meals 1–2 hours before dune bashing.",
+          "Wear comfortable clothes, sunglasses and closed shoes.",
+          "Dune bashing is not recommended for pregnant guests, guests with back problems or children under 3.",
+          "Vehicles are shared with other guests unless you book a private car."
+        ],
+        "cancellation": [
+          "Free cancellation up to 24 hours before the tour start time.",
+          "Cancellations within 24 hours and no-shows are non-refundable.",
+          "Tours may be rescheduled due to weather; you can choose another date or a full refund."
+        ],
+        "faqs": [
+          {
+            "q": "Is the safari suitable for children?",
+            "a": "Yes. Children aged 3+ can join. For very young children we recommend a gentle drive. Let us know in your booking notes."
+          },
+          {
+            "q": "What should I wear?",
+            "a": "Light, comfortable clothes, closed shoes and sunglasses. Evenings in winter can be cool, so bring a light jacket."
+          },
+          {
+            "q": "Can I book a private car?",
+            "a": "Yes. Choose the Private 4x4 add-on and the whole vehicle is for your group."
+          },
+          {
+            "q": "How do I pay?",
+            "a": "No online payment is needed for tours. We confirm your booking on WhatsApp and share the payment options."
+          }
+        ],
+        "language": "English, Arabic",
+        "groupType": "Shared group (private available)",
+        "prices": [
+          {
+            "key": "adult",
+            "label": "Adult",
+            "sub": "Age 12+",
+            "price": 170
+          },
+          {
+            "key": "child",
+            "label": "Child",
+            "sub": "Age 3–11",
+            "price": 128
+          },
+          {
+            "key": "infant",
+            "label": "Infant",
+            "sub": "Under 3",
+            "price": 0
+          }
+        ],
+        "addons": [
+          {
+            "key": "private",
+            "label": "Private 4x4 for your group",
+            "sub": "Up to 6 guests",
+            "price": 650,
+            "per": "booking"
+          },
+          {
+            "key": "quad",
+            "label": "Quad bike (30 min)",
+            "sub": "Per rider",
+            "price": 150,
+            "per": "person"
+          }
+        ],
+        "timeSlots": [],
+        "minGuests": 1
+      },
+      "cover_image": "media/image-for-half-day-desert-safari.png"
+    },
+    {
+      "slug": "morning-desert-safari",
+      "type": "tour",
+      "title": "Morning Desert Safari & Sandboarding",
+      "category": "desert-safari",
+      "location": "Abu Dhabi",
+      "image": "/images/tours/image-for-morning-desert-safari.png",
+      "duration": "3–4 hours",
+      "timing": "8:00 am – 11:30 am",
+      "price": 260,
+      "oldPrice": 310,
+      "rating": 4.8,
+      "reviews": 198,
+      "featured": true,
+      "pickup": true,
+      "instant": true,
+      "highlights": [
+        "Red dune drive",
+        "Sandboarding",
+        "Camel farm visit"
+      ],
+      "sort_order": 1,
+      "details": {
+        "gallery": [
+          "media/image-for-morning-desert-safari.png",
+          "media/image-for-half-day-desert-safari.png",
+          "media/image-for-overnight-desert-safari1-jpg.webp",
+          "media/image-for-sunrise-safari1.png",
+          "media/image-for-dune-buggy-tour1-scaled.webp"
+        ],
+        "overview": [
+          "Morning Desert Safari & Sandboarding is one of our most loved experiences in Abu Dhabi. Red dune drive, Sandboarding, Camel farm visit.",
+          "Send a booking request in under a minute. Our team confirms your booking and pickup time on WhatsApp, with no prepayment needed."
+        ],
+        "features": [
+          {
+            "icon": "car",
+            "label": "Hotel pickup by 4x4"
+          },
+          {
+            "icon": "sun",
+            "label": "Desert sunset"
+          },
+          {
+            "icon": "mountain",
+            "label": "Dune bashing"
+          },
+          {
+            "icon": "users",
+            "label": "Shared or private"
+          }
+        ],
+        "inclusions": [
+          "Hotel or mall pickup & drop-off in a 4x4",
+          "Dune bashing with a licensed desert driver",
+          "Sandboarding",
+          "Short camel ride",
+          "Arabic coffee, tea & dates",
+          "Henna painting",
+          "Water & soft drinks"
+        ],
+        "exclusions": [
+          "Quad biking (available as an add-on)",
+          "Alcoholic drinks",
+          "Tips and personal expenses"
+        ],
+        "itinerary": [],
+        "pickup": {
+          "areas": "Hotels and malls in Abu Dhabi city, Yas Island and Saadiyat",
+          "time": "Exact pickup time is confirmed on WhatsApp the day before"
+        },
+        "info": [
+          "Avoid heavy meals 1–2 hours before dune bashing.",
+          "Wear comfortable clothes, sunglasses and closed shoes.",
+          "Dune bashing is not recommended for pregnant guests, guests with back problems or children under 3.",
+          "Vehicles are shared with other guests unless you book a private car."
+        ],
+        "cancellation": [
+          "Free cancellation up to 24 hours before the tour start time.",
+          "Cancellations within 24 hours and no-shows are non-refundable.",
+          "Tours may be rescheduled due to weather; you can choose another date or a full refund."
+        ],
+        "faqs": [
+          {
+            "q": "Is the safari suitable for children?",
+            "a": "Yes. Children aged 3+ can join. For very young children we recommend a gentle drive. Let us know in your booking notes."
+          },
+          {
+            "q": "What should I wear?",
+            "a": "Light, comfortable clothes, closed shoes and sunglasses. Evenings in winter can be cool, so bring a light jacket."
+          },
+          {
+            "q": "Can I book a private car?",
+            "a": "Yes. Choose the Private 4x4 add-on and the whole vehicle is for your group."
+          },
+          {
+            "q": "How do I pay?",
+            "a": "No online payment is needed for tours. We confirm your booking on WhatsApp and share the payment options."
+          }
+        ],
+        "language": "English, Arabic",
+        "groupType": "Shared group (private available)",
+        "prices": [
+          {
+            "key": "adult",
+            "label": "Adult",
+            "sub": "Age 12+",
+            "price": 260
+          },
+          {
+            "key": "child",
+            "label": "Child",
+            "sub": "Age 3–11",
+            "price": 195
+          },
+          {
+            "key": "infant",
+            "label": "Infant",
+            "sub": "Under 3",
+            "price": 0
+          }
+        ],
+        "addons": [
+          {
+            "key": "private",
+            "label": "Private 4x4 for your group",
+            "sub": "Up to 6 guests",
+            "price": 650,
+            "per": "booking"
+          },
+          {
+            "key": "quad",
+            "label": "Quad bike (30 min)",
+            "sub": "Per rider",
+            "price": 150,
+            "per": "person"
+          }
+        ],
+        "timeSlots": [],
+        "minGuests": 1
+      },
+      "cover_image": "media/image-for-morning-desert-safari.png"
+    },
+    {
+      "slug": "overnight-desert-safari",
+      "type": "tour",
+      "title": "Overnight Desert Safari under the Stars",
+      "category": "desert-safari",
+      "location": "Abu Dhabi",
+      "image": "/images/tours/image-for-overnight-desert-safari1-jpg.webp",
+      "duration": "Overnight",
+      "timing": "3:30 pm – 10:00 am",
+      "price": 450,
+      "oldPrice": 500,
+      "rating": 4.9,
+      "reviews": 96,
+      "badge": "Limited Offer",
+      "featured": true,
+      "pickup": true,
+      "instant": false,
+      "highlights": [
+        "Bedouin camp stay",
+        "Dinner & breakfast",
+        "Sunrise over the dunes"
+      ],
+      "sort_order": 2,
+      "details": {
+        "gallery": [
+          "media/image-for-overnight-desert-safari1-jpg.webp",
+          "media/image-for-half-day-desert-safari.png",
+          "media/image-for-morning-desert-safari.png",
+          "media/image-for-sunrise-safari1.png",
+          "media/image-for-dune-buggy-tour1-scaled.webp"
+        ],
+        "overview": [
+          "Overnight Desert Safari under the Stars is one of our most loved experiences in Abu Dhabi. Bedouin camp stay, Dinner & breakfast, Sunrise over the dunes.",
+          "Send a booking request in under a minute. Our team confirms your booking and pickup time on WhatsApp, with no prepayment needed."
+        ],
+        "features": [
+          {
+            "icon": "car",
+            "label": "Hotel pickup by 4x4"
+          },
+          {
+            "icon": "sun",
+            "label": "Desert sunset"
+          },
+          {
+            "icon": "mountain",
+            "label": "Dune bashing"
+          },
+          {
+            "icon": "users",
+            "label": "Shared or private"
+          }
+        ],
+        "inclusions": [
+          "Hotel or mall pickup & drop-off in a 4x4",
+          "Dune bashing with a licensed desert driver",
+          "Sandboarding",
+          "Short camel ride",
+          "Arabic coffee, tea & dates",
+          "Henna painting",
+          "Water & soft drinks"
+        ],
+        "exclusions": [
+          "Quad biking (available as an add-on)",
+          "Alcoholic drinks",
+          "Tips and personal expenses"
+        ],
+        "itinerary": [],
+        "pickup": {
+          "areas": "Hotels and malls in Abu Dhabi city, Yas Island and Saadiyat",
+          "time": "Exact pickup time is confirmed on WhatsApp the day before"
+        },
+        "info": [
+          "Avoid heavy meals 1–2 hours before dune bashing.",
+          "Wear comfortable clothes, sunglasses and closed shoes.",
+          "Dune bashing is not recommended for pregnant guests, guests with back problems or children under 3.",
+          "Vehicles are shared with other guests unless you book a private car."
+        ],
+        "cancellation": [
+          "Free cancellation up to 24 hours before the tour start time.",
+          "Cancellations within 24 hours and no-shows are non-refundable.",
+          "Tours may be rescheduled due to weather; you can choose another date or a full refund."
+        ],
+        "faqs": [
+          {
+            "q": "Is the safari suitable for children?",
+            "a": "Yes. Children aged 3+ can join. For very young children we recommend a gentle drive. Let us know in your booking notes."
+          },
+          {
+            "q": "What should I wear?",
+            "a": "Light, comfortable clothes, closed shoes and sunglasses. Evenings in winter can be cool, so bring a light jacket."
+          },
+          {
+            "q": "Can I book a private car?",
+            "a": "Yes. Choose the Private 4x4 add-on and the whole vehicle is for your group."
+          },
+          {
+            "q": "How do I pay?",
+            "a": "No online payment is needed for tours. We confirm your booking on WhatsApp and share the payment options."
+          }
+        ],
+        "language": "English, Arabic",
+        "groupType": "Shared group (private available)",
+        "prices": [
+          {
+            "key": "adult",
+            "label": "Adult",
+            "sub": "Age 12+",
+            "price": 450
+          },
+          {
+            "key": "child",
+            "label": "Child",
+            "sub": "Age 3–11",
+            "price": 338
+          },
+          {
+            "key": "infant",
+            "label": "Infant",
+            "sub": "Under 3",
+            "price": 0
+          }
+        ],
+        "addons": [
+          {
+            "key": "private",
+            "label": "Private 4x4 for your group",
+            "sub": "Up to 6 guests",
+            "price": 650,
+            "per": "booking"
+          },
+          {
+            "key": "quad",
+            "label": "Quad bike (30 min)",
+            "sub": "Per rider",
+            "price": 150,
+            "per": "person"
+          }
+        ],
+        "timeSlots": [],
+        "minGuests": 1
+      },
+      "cover_image": "media/image-for-overnight-desert-safari1-jpg.webp"
+    },
+    {
+      "slug": "full-day-abu-dhabi-city-tour",
+      "type": "tour",
+      "title": "Full Day Abu Dhabi City Tour with Qasr Al Watan",
+      "category": "city-tours",
+      "location": "Abu Dhabi",
+      "image": "/images/tours/qasr-al-watan.png",
+      "duration": "8.5 hours",
+      "timing": "9:00 am – 5:30 pm",
+      "price": 300,
+      "oldPrice": 350,
+      "rating": 4.8,
+      "reviews": 254,
+      "badge": "Featured",
+      "featured": true,
+      "pickup": true,
+      "instant": true,
+      "highlights": [
+        "Sheikh Zayed Grand Mosque",
+        "Qasr Al Watan palace",
+        "Heritage Village & Corniche"
+      ],
+      "sort_order": 3,
+      "details": {
+        "gallery": [
+          "media/qasr-al-watan.png",
+          "media/grand-mosque-1.png",
+          "media/sheikh-zayed-grand-mosque-jpg.webp",
+          "media/louvre-museum-jpg.webp",
+          "media/pexels-tommy-milanese-7891838-scaled.webp"
+        ],
+        "overview": [
+          "Full Day Abu Dhabi City Tour with Qasr Al Watan is one of our most loved experiences in Abu Dhabi. Sheikh Zayed Grand Mosque, Qasr Al Watan palace, Heritage Village & Corniche.",
+          "Send a booking request in under a minute. Our team confirms your booking and pickup time on WhatsApp, with no prepayment needed."
+        ],
+        "features": [
+          {
+            "icon": "car",
+            "label": "Hotel pickup"
+          },
+          {
+            "icon": "landmark",
+            "label": "Top landmarks"
+          },
+          {
+            "icon": "users",
+            "label": "Expert local guide"
+          },
+          {
+            "icon": "clock",
+            "label": "Flexible pace"
+          }
+        ],
+        "inclusions": [
+          "Hotel pickup & drop-off in an air-conditioned vehicle",
+          "Professional English-speaking guide",
+          "Photo stops at major landmarks",
+          "Bottled water"
+        ],
+        "exclusions": [
+          "Meals unless stated",
+          "Entry tickets unless stated",
+          "Tips and personal expenses"
+        ],
+        "itinerary": [],
+        "pickup": {
+          "areas": "Hotels in Abu Dhabi city, Yas Island and Saadiyat",
+          "time": "Pickup time is confirmed on WhatsApp the day before"
+        },
+        "info": [
+          "Modest dress is required at the Grand Mosque: shoulders and knees covered; women should cover their hair (abayas available).",
+          "Opening hours of attractions may change on public holidays.",
+          "Carry your passport or Emirates ID."
+        ],
+        "cancellation": [
+          "Free cancellation up to 24 hours before the tour start time.",
+          "Cancellations within 24 hours and no-shows are non-refundable.",
+          "Tours may be rescheduled due to weather; you can choose another date or a full refund."
+        ],
+        "faqs": [
+          {
+            "q": "Is the Grand Mosque open every day?",
+            "a": "It is open daily to visitors except Friday mornings. We plan your itinerary around opening hours."
+          },
+          {
+            "q": "Can the tour be private?",
+            "a": "Yes. Choose the private car add-on and we customise stops to your interests."
+          },
+          {
+            "q": "How do I pay?",
+            "a": "No online payment is needed for tours. We confirm on WhatsApp and share payment options."
+          }
+        ],
+        "language": "English, Arabic",
+        "groupType": "Small group (private available)",
+        "prices": [
+          {
+            "key": "adult",
+            "label": "Adult",
+            "sub": "Age 12+",
+            "price": 300
+          },
+          {
+            "key": "child",
+            "label": "Child",
+            "sub": "Age 3–11",
+            "price": 225
+          },
+          {
+            "key": "infant",
+            "label": "Infant",
+            "sub": "Under 3",
+            "price": 0
+          }
+        ],
+        "addons": [
+          {
+            "key": "private",
+            "label": "Private car & guide",
+            "sub": "Up to 4 guests",
+            "price": 500,
+            "per": "booking"
+          }
+        ],
+        "timeSlots": [],
+        "minGuests": 1
+      },
+      "cover_image": "media/qasr-al-watan.png"
+    },
+    {
+      "slug": "half-day-abu-dhabi-city-tour",
+      "type": "tour",
+      "title": "Half Day Abu Dhabi City Tour",
+      "category": "city-tours",
+      "location": "Abu Dhabi",
+      "image": "/images/tours/grand-mosque-1.png",
+      "duration": "4.5 hours",
+      "timing": "8:30 am – 1:00 pm",
+      "price": 150,
+      "oldPrice": 200,
+      "rating": 4.7,
+      "reviews": 187,
+      "featured": true,
+      "pickup": true,
+      "instant": true,
+      "highlights": [
+        "Grand Mosque visit",
+        "Emirates Palace photo stop",
+        "Date market"
+      ],
+      "sort_order": 4,
+      "details": {
+        "gallery": [
+          "media/grand-mosque-1.png",
+          "media/qasr-al-watan.png",
+          "media/sheikh-zayed-grand-mosque-jpg.webp",
+          "media/louvre-museum-jpg.webp",
+          "media/pexels-tommy-milanese-7891838-scaled.webp"
+        ],
+        "overview": [
+          "Half Day Abu Dhabi City Tour is one of our most loved experiences in Abu Dhabi. Grand Mosque visit, Emirates Palace photo stop, Date market.",
+          "Send a booking request in under a minute. Our team confirms your booking and pickup time on WhatsApp, with no prepayment needed."
+        ],
+        "features": [
+          {
+            "icon": "car",
+            "label": "Hotel pickup"
+          },
+          {
+            "icon": "landmark",
+            "label": "Top landmarks"
+          },
+          {
+            "icon": "users",
+            "label": "Expert local guide"
+          },
+          {
+            "icon": "clock",
+            "label": "Flexible pace"
+          }
+        ],
+        "inclusions": [
+          "Hotel pickup & drop-off in an air-conditioned vehicle",
+          "Professional English-speaking guide",
+          "Photo stops at major landmarks",
+          "Bottled water"
+        ],
+        "exclusions": [
+          "Meals unless stated",
+          "Entry tickets unless stated",
+          "Tips and personal expenses"
+        ],
+        "itinerary": [],
+        "pickup": {
+          "areas": "Hotels in Abu Dhabi city, Yas Island and Saadiyat",
+          "time": "Pickup time is confirmed on WhatsApp the day before"
+        },
+        "info": [
+          "Modest dress is required at the Grand Mosque: shoulders and knees covered; women should cover their hair (abayas available).",
+          "Opening hours of attractions may change on public holidays.",
+          "Carry your passport or Emirates ID."
+        ],
+        "cancellation": [
+          "Free cancellation up to 24 hours before the tour start time.",
+          "Cancellations within 24 hours and no-shows are non-refundable.",
+          "Tours may be rescheduled due to weather; you can choose another date or a full refund."
+        ],
+        "faqs": [
+          {
+            "q": "Is the Grand Mosque open every day?",
+            "a": "It is open daily to visitors except Friday mornings. We plan your itinerary around opening hours."
+          },
+          {
+            "q": "Can the tour be private?",
+            "a": "Yes. Choose the private car add-on and we customise stops to your interests."
+          },
+          {
+            "q": "How do I pay?",
+            "a": "No online payment is needed for tours. We confirm on WhatsApp and share payment options."
+          }
+        ],
+        "language": "English, Arabic",
+        "groupType": "Small group (private available)",
+        "prices": [
+          {
+            "key": "adult",
+            "label": "Adult",
+            "sub": "Age 12+",
+            "price": 150
+          },
+          {
+            "key": "child",
+            "label": "Child",
+            "sub": "Age 3–11",
+            "price": 113
+          },
+          {
+            "key": "infant",
+            "label": "Infant",
+            "sub": "Under 3",
+            "price": 0
+          }
+        ],
+        "addons": [
+          {
+            "key": "private",
+            "label": "Private car & guide",
+            "sub": "Up to 4 guests",
+            "price": 500,
+            "per": "booking"
+          }
+        ],
+        "timeSlots": [],
+        "minGuests": 1
+      },
+      "cover_image": "media/grand-mosque-1.png"
+    },
+    {
+      "slug": "al-ain-oasis-tour",
+      "type": "tour",
+      "title": "Full Day Al Ain Oasis Tour with Lunch",
+      "category": "city-tours",
+      "location": "Al Ain",
+      "image": "/images/tours/al-ain-jahil-fort.png",
+      "duration": "10 hours",
+      "timing": "8:30 am – 6:30 pm",
+      "price": 330,
+      "oldPrice": 370,
+      "rating": 4.7,
+      "reviews": 88,
+      "featured": false,
+      "pickup": true,
+      "instant": true,
+      "highlights": [
+        "Al Jahili Fort",
+        "Al Ain Oasis walk",
+        "Lunch included"
+      ],
+      "sort_order": 5,
+      "details": {
+        "gallery": [
+          "media/al-ain-jahil-fort.png",
+          "media/grand-mosque-1.png",
+          "media/qasr-al-watan.png",
+          "media/sheikh-zayed-grand-mosque-jpg.webp",
+          "media/louvre-museum-jpg.webp",
+          "media/pexels-tommy-milanese-7891838-scaled.webp"
+        ],
+        "overview": [
+          "Full Day Al Ain Oasis Tour with Lunch is one of our most loved experiences in Al Ain. Al Jahili Fort, Al Ain Oasis walk, Lunch included.",
+          "Send a booking request in under a minute. Our team confirms your booking and pickup time on WhatsApp, with no prepayment needed."
+        ],
+        "features": [
+          {
+            "icon": "car",
+            "label": "Hotel pickup"
+          },
+          {
+            "icon": "landmark",
+            "label": "Top landmarks"
+          },
+          {
+            "icon": "users",
+            "label": "Expert local guide"
+          },
+          {
+            "icon": "clock",
+            "label": "Flexible pace"
+          }
+        ],
+        "inclusions": [
+          "Hotel pickup & drop-off in an air-conditioned vehicle",
+          "Professional English-speaking guide",
+          "Photo stops at major landmarks",
+          "Bottled water"
+        ],
+        "exclusions": [
+          "Meals unless stated",
+          "Entry tickets unless stated",
+          "Tips and personal expenses"
+        ],
+        "itinerary": [],
+        "pickup": {
+          "areas": "Hotels in Abu Dhabi city, Yas Island and Saadiyat",
+          "time": "Pickup time is confirmed on WhatsApp the day before"
+        },
+        "info": [
+          "Modest dress is required at the Grand Mosque: shoulders and knees covered; women should cover their hair (abayas available).",
+          "Opening hours of attractions may change on public holidays.",
+          "Carry your passport or Emirates ID."
+        ],
+        "cancellation": [
+          "Free cancellation up to 24 hours before the tour start time.",
+          "Cancellations within 24 hours and no-shows are non-refundable.",
+          "Tours may be rescheduled due to weather; you can choose another date or a full refund."
+        ],
+        "faqs": [
+          {
+            "q": "Is the Grand Mosque open every day?",
+            "a": "It is open daily to visitors except Friday mornings. We plan your itinerary around opening hours."
+          },
+          {
+            "q": "Can the tour be private?",
+            "a": "Yes. Choose the private car add-on and we customise stops to your interests."
+          },
+          {
+            "q": "How do I pay?",
+            "a": "No online payment is needed for tours. We confirm on WhatsApp and share payment options."
+          }
+        ],
+        "language": "English, Arabic",
+        "groupType": "Small group (private available)",
+        "prices": [
+          {
+            "key": "adult",
+            "label": "Adult",
+            "sub": "Age 12+",
+            "price": 330
+          },
+          {
+            "key": "child",
+            "label": "Child",
+            "sub": "Age 3–11",
+            "price": 248
+          },
+          {
+            "key": "infant",
+            "label": "Infant",
+            "sub": "Under 3",
+            "price": 0
+          }
+        ],
+        "addons": [
+          {
+            "key": "private",
+            "label": "Private car & guide",
+            "sub": "Up to 4 guests",
+            "price": 500,
+            "per": "booking"
+          }
+        ],
+        "timeSlots": [],
+        "minGuests": 1
+      },
+      "cover_image": "media/al-ain-jahil-fort.png"
+    },
+    {
+      "slug": "modern-dubai-tour",
+      "type": "tour",
+      "title": "Full Day Modern Dubai Tour from Abu Dhabi",
+      "category": "city-tours",
+      "location": "Dubai",
+      "image": "/images/tours/dubai-mall-fountain-show-jpg.webp",
+      "duration": "9 hours",
+      "timing": "11:00 am – 8:00 pm",
+      "price": 450,
+      "oldPrice": 500,
+      "rating": 4.8,
+      "reviews": 143,
+      "badge": "Best Seller",
+      "featured": true,
+      "pickup": true,
+      "instant": true,
+      "highlights": [
+        "Burj Khalifa & Dubai Mall",
+        "Dubai Fountain show",
+        "Palm Jumeirah"
+      ],
+      "sort_order": 6,
+      "details": {
+        "gallery": [
+          "media/dubai-mall-fountain-show-jpg.webp",
+          "media/grand-mosque-1.png",
+          "media/qasr-al-watan.png",
+          "media/sheikh-zayed-grand-mosque-jpg.webp",
+          "media/louvre-museum-jpg.webp",
+          "media/pexels-tommy-milanese-7891838-scaled.webp"
+        ],
+        "overview": [
+          "Full Day Modern Dubai Tour from Abu Dhabi is one of our most loved experiences in Dubai. Burj Khalifa & Dubai Mall, Dubai Fountain show, Palm Jumeirah.",
+          "Send a booking request in under a minute. Our team confirms your booking and pickup time on WhatsApp, with no prepayment needed."
+        ],
+        "features": [
+          {
+            "icon": "car",
+            "label": "Hotel pickup"
+          },
+          {
+            "icon": "landmark",
+            "label": "Top landmarks"
+          },
+          {
+            "icon": "users",
+            "label": "Expert local guide"
+          },
+          {
+            "icon": "clock",
+            "label": "Flexible pace"
+          }
+        ],
+        "inclusions": [
+          "Hotel pickup & drop-off in an air-conditioned vehicle",
+          "Professional English-speaking guide",
+          "Photo stops at major landmarks",
+          "Bottled water"
+        ],
+        "exclusions": [
+          "Meals unless stated",
+          "Entry tickets unless stated",
+          "Tips and personal expenses"
+        ],
+        "itinerary": [],
+        "pickup": {
+          "areas": "Hotels in Abu Dhabi city, Yas Island and Saadiyat",
+          "time": "Pickup time is confirmed on WhatsApp the day before"
+        },
+        "info": [
+          "Modest dress is required at the Grand Mosque: shoulders and knees covered; women should cover their hair (abayas available).",
+          "Opening hours of attractions may change on public holidays.",
+          "Carry your passport or Emirates ID."
+        ],
+        "cancellation": [
+          "Free cancellation up to 24 hours before the tour start time.",
+          "Cancellations within 24 hours and no-shows are non-refundable.",
+          "Tours may be rescheduled due to weather; you can choose another date or a full refund."
+        ],
+        "faqs": [
+          {
+            "q": "Is the Grand Mosque open every day?",
+            "a": "It is open daily to visitors except Friday mornings. We plan your itinerary around opening hours."
+          },
+          {
+            "q": "Can the tour be private?",
+            "a": "Yes. Choose the private car add-on and we customise stops to your interests."
+          },
+          {
+            "q": "How do I pay?",
+            "a": "No online payment is needed for tours. We confirm on WhatsApp and share payment options."
+          }
+        ],
+        "language": "English, Arabic",
+        "groupType": "Small group (private available)",
+        "prices": [
+          {
+            "key": "adult",
+            "label": "Adult",
+            "sub": "Age 12+",
+            "price": 450
+          },
+          {
+            "key": "child",
+            "label": "Child",
+            "sub": "Age 3–11",
+            "price": 338
+          },
+          {
+            "key": "infant",
+            "label": "Infant",
+            "sub": "Under 3",
+            "price": 0
+          }
+        ],
+        "addons": [
+          {
+            "key": "private",
+            "label": "Private car & guide",
+            "sub": "Up to 4 guests",
+            "price": 500,
+            "per": "booking"
+          }
+        ],
+        "timeSlots": [],
+        "minGuests": 1
+      },
+      "cover_image": "media/dubai-mall-fountain-show-jpg.webp"
+    },
+    {
+      "slug": "dune-buggy-tour",
+      "type": "tour",
+      "title": "Dune Buggy Adventure Tour",
+      "category": "adventure",
+      "location": "Abu Dhabi",
+      "image": "/images/tours/image-for-dune-buggy-tour1-scaled.webp",
+      "duration": "3 hours",
+      "timing": "8:00 am – 11:00 am",
+      "price": 1838,
+      "oldPrice": 1870,
+      "rating": 4.9,
+      "reviews": 61,
+      "badge": "New",
+      "featured": true,
+      "pickup": true,
+      "instant": false,
+      "highlights": [
+        "Self-drive buggy",
+        "Safety gear & briefing",
+        "Pro guide"
+      ],
+      "sort_order": 7,
+      "details": {
+        "gallery": [
+          "media/image-for-dune-buggy-tour1-scaled.webp",
+          "media/image-for-sunrise-safari1.png",
+          "media/image-for-half-day-desert-safari.png",
+          "media/image-for-morning-desert-safari.png"
+        ],
+        "overview": [
+          "Dune Buggy Adventure Tour is one of our most loved experiences in Abu Dhabi. Self-drive buggy, Safety gear & briefing, Pro guide.",
+          "Send a booking request in under a minute. Our team confirms your booking and pickup time on WhatsApp, with no prepayment needed."
+        ],
+        "features": [
+          {
+            "icon": "car",
+            "label": "Hotel pickup"
+          },
+          {
+            "icon": "mountain",
+            "label": "Desert adventure"
+          },
+          {
+            "icon": "shield",
+            "label": "Safety gear included"
+          },
+          {
+            "icon": "users",
+            "label": "Expert guide"
+          }
+        ],
+        "inclusions": [
+          "Hotel pickup & drop-off",
+          "Safety briefing and gear",
+          "Professional desert guide",
+          "Water"
+        ],
+        "exclusions": [
+          "Personal expenses",
+          "Tips"
+        ],
+        "itinerary": [],
+        "pickup": {
+          "areas": "Hotels and malls in Abu Dhabi city",
+          "time": "Pickup time is confirmed on WhatsApp the day before"
+        },
+        "info": [
+          "Drivers must be 18+ with a valid driving licence.",
+          "Wear closed shoes and comfortable clothing."
+        ],
+        "cancellation": [
+          "Free cancellation up to 24 hours before the tour start time.",
+          "Cancellations within 24 hours and no-shows are non-refundable.",
+          "Tours may be rescheduled due to weather; you can choose another date or a full refund."
+        ],
+        "faqs": [
+          {
+            "q": "Do I need experience?",
+            "a": "No. Your guide gives a full briefing and leads the group at a comfortable pace."
+          }
+        ],
+        "language": "English, Arabic",
+        "groupType": "Small group",
+        "prices": [
+          {
+            "key": "adult",
+            "label": "Adult",
+            "sub": "Age 12+",
+            "price": 1838
+          },
+          {
+            "key": "child",
+            "label": "Child",
+            "sub": "Age 3–11",
+            "price": 1379
+          },
+          {
+            "key": "infant",
+            "label": "Infant",
+            "sub": "Under 3",
+            "price": 0
+          }
+        ],
+        "addons": [],
+        "timeSlots": [],
+        "minGuests": 1
+      },
+      "cover_image": "media/image-for-dune-buggy-tour1-scaled.webp"
+    },
+    {
+      "slug": "sunrise-safari",
+      "type": "tour",
+      "title": "Sunrise Desert Safari",
+      "category": "adventure",
+      "location": "Abu Dhabi",
+      "image": "/images/tours/image-for-sunrise-safari1.png",
+      "duration": "4 hours",
+      "timing": "5:00 am – 9:00 am",
+      "price": 200,
+      "oldPrice": 250,
+      "rating": 4.8,
+      "reviews": 72,
+      "featured": true,
+      "pickup": true,
+      "instant": true,
+      "highlights": [
+        "Sunrise over the dunes",
+        "Camel ride",
+        "Breakfast"
+      ],
+      "sort_order": 8,
+      "details": {
+        "gallery": [
+          "media/image-for-sunrise-safari1.png",
+          "media/image-for-dune-buggy-tour1-scaled.webp",
+          "media/image-for-half-day-desert-safari.png",
+          "media/image-for-morning-desert-safari.png"
+        ],
+        "overview": [
+          "Sunrise Desert Safari is one of our most loved experiences in Abu Dhabi. Sunrise over the dunes, Camel ride, Breakfast.",
+          "Send a booking request in under a minute. Our team confirms your booking and pickup time on WhatsApp, with no prepayment needed."
+        ],
+        "features": [
+          {
+            "icon": "car",
+            "label": "Hotel pickup"
+          },
+          {
+            "icon": "mountain",
+            "label": "Desert adventure"
+          },
+          {
+            "icon": "shield",
+            "label": "Safety gear included"
+          },
+          {
+            "icon": "users",
+            "label": "Expert guide"
+          }
+        ],
+        "inclusions": [
+          "Hotel pickup & drop-off",
+          "Safety briefing and gear",
+          "Professional desert guide",
+          "Water"
+        ],
+        "exclusions": [
+          "Personal expenses",
+          "Tips"
+        ],
+        "itinerary": [],
+        "pickup": {
+          "areas": "Hotels and malls in Abu Dhabi city",
+          "time": "Pickup time is confirmed on WhatsApp the day before"
+        },
+        "info": [
+          "Drivers must be 18+ with a valid driving licence.",
+          "Wear closed shoes and comfortable clothing."
+        ],
+        "cancellation": [
+          "Free cancellation up to 24 hours before the tour start time.",
+          "Cancellations within 24 hours and no-shows are non-refundable.",
+          "Tours may be rescheduled due to weather; you can choose another date or a full refund."
+        ],
+        "faqs": [
+          {
+            "q": "Do I need experience?",
+            "a": "No. Your guide gives a full briefing and leads the group at a comfortable pace."
+          }
+        ],
+        "language": "English, Arabic",
+        "groupType": "Small group",
+        "prices": [
+          {
+            "key": "adult",
+            "label": "Adult",
+            "sub": "Age 12+",
+            "price": 200
+          },
+          {
+            "key": "child",
+            "label": "Child",
+            "sub": "Age 3–11",
+            "price": 150
+          },
+          {
+            "key": "infant",
+            "label": "Infant",
+            "sub": "Under 3",
+            "price": 0
+          }
+        ],
+        "addons": [],
+        "timeSlots": [],
+        "minGuests": 1
+      },
+      "cover_image": "media/image-for-sunrise-safari1.png"
+    },
+    {
+      "slug": "louvre-abu-dhabi-tickets",
+      "type": "ticket",
+      "title": "Louvre Abu Dhabi Entry Ticket",
+      "category": "tickets",
+      "location": "Saadiyat Island",
+      "image": "/images/tours/louvre-museum-jpg.webp",
+      "duration": "Flexible",
+      "price": 63,
+      "rating": 4.9,
+      "reviews": 320,
+      "badge": "Best Seller",
+      "featured": true,
+      "pickup": false,
+      "instant": true,
+      "highlights": [
+        "Instant e-ticket",
+        "Valid on chosen date",
+        "Mobile ticket"
+      ],
+      "sort_order": 9,
+      "details": {
+        "gallery": [
+          "media/louvre-museum-jpg.webp"
+        ],
+        "overview": [
+          "Louvre Abu Dhabi Entry Ticket is one of our most loved experiences in Saadiyat Island. Instant e-ticket, Valid on chosen date, Mobile ticket.",
+          "Book online in a few clicks, pay securely and receive your e-ticket instantly on email and WhatsApp."
+        ],
+        "features": [
+          {
+            "icon": "zap",
+            "label": "Instant e-ticket"
+          },
+          {
+            "icon": "ticket",
+            "label": "Mobile entry"
+          },
+          {
+            "icon": "calendar",
+            "label": "Choose your date"
+          },
+          {
+            "icon": "shield",
+            "label": "Secure payment"
+          }
+        ],
+        "inclusions": [
+          "Official entry ticket for the selected date",
+          "E-ticket by email and WhatsApp"
+        ],
+        "exclusions": [
+          "Transport (ask us for a transfer)",
+          "Food and drinks"
+        ],
+        "itinerary": [],
+        "info": [
+          "Show the e-ticket on your phone at the entrance; printing is not needed.",
+          "Children under 3 usually enter free; carry ID for proof of age.",
+          "Arrive 15 minutes before your time slot."
+        ],
+        "cancellation": [
+          "Tickets are issued for the selected date and time and are non-refundable once issued.",
+          "Date changes may be possible up to 48 hours before your visit. Message us on WhatsApp.",
+          "If the attraction closes or cancels, you receive a full refund."
+        ],
+        "faqs": [
+          {
+            "q": "When do I receive my ticket?",
+            "a": "Immediately after payment, by email and WhatsApp."
+          },
+          {
+            "q": "Can I change my date?",
+            "a": "Message us on WhatsApp at least 48 hours before your visit and we’ll check availability."
+          }
+        ],
+        "language": "English, Arabic",
+        "groupType": "Self-guided entry",
+        "prices": [
+          {
+            "key": "adult",
+            "label": "Adult",
+            "sub": "Age 12+",
+            "price": 63
+          },
+          {
+            "key": "child",
+            "label": "Child",
+            "sub": "Age 3–11",
+            "price": 50
+          },
+          {
+            "key": "infant",
+            "label": "Infant",
+            "sub": "Under 3",
+            "price": 0
+          }
+        ],
+        "addons": [],
+        "timeSlots": [
+          "10:00",
+          "11:30",
+          "13:00",
+          "14:30",
+          "16:00",
+          "17:30"
+        ],
+        "minGuests": 1
+      },
+      "cover_image": "media/louvre-museum-jpg.webp"
+    },
+    {
+      "slug": "qasr-al-watan-tickets",
+      "type": "ticket",
+      "title": "Qasr Al Watan Palace Ticket",
+      "category": "tickets",
+      "location": "Abu Dhabi",
+      "image": "/images/tours/qasr-al-watan.png",
+      "duration": "2–3 hours",
+      "price": 65,
+      "rating": 4.8,
+      "reviews": 140,
+      "featured": true,
+      "pickup": false,
+      "instant": true,
+      "highlights": [
+        "Palace & gardens",
+        "Instant e-ticket",
+        "Mobile ticket"
+      ],
+      "sort_order": 10,
+      "details": {
+        "gallery": [
+          "media/qasr-al-watan.png"
+        ],
+        "overview": [
+          "Qasr Al Watan Palace Ticket is one of our most loved experiences in Abu Dhabi. Palace & gardens, Instant e-ticket, Mobile ticket.",
+          "Book online in a few clicks, pay securely and receive your e-ticket instantly on email and WhatsApp."
+        ],
+        "features": [
+          {
+            "icon": "zap",
+            "label": "Instant e-ticket"
+          },
+          {
+            "icon": "ticket",
+            "label": "Mobile entry"
+          },
+          {
+            "icon": "calendar",
+            "label": "Choose your date"
+          },
+          {
+            "icon": "shield",
+            "label": "Secure payment"
+          }
+        ],
+        "inclusions": [
+          "Official entry ticket for the selected date",
+          "E-ticket by email and WhatsApp"
+        ],
+        "exclusions": [
+          "Transport (ask us for a transfer)",
+          "Food and drinks"
+        ],
+        "itinerary": [],
+        "info": [
+          "Show the e-ticket on your phone at the entrance; printing is not needed.",
+          "Children under 3 usually enter free; carry ID for proof of age.",
+          "Arrive 15 minutes before your time slot."
+        ],
+        "cancellation": [
+          "Tickets are issued for the selected date and time and are non-refundable once issued.",
+          "Date changes may be possible up to 48 hours before your visit. Message us on WhatsApp.",
+          "If the attraction closes or cancels, you receive a full refund."
+        ],
+        "faqs": [
+          {
+            "q": "When do I receive my ticket?",
+            "a": "Immediately after payment, by email and WhatsApp."
+          },
+          {
+            "q": "Can I change my date?",
+            "a": "Message us on WhatsApp at least 48 hours before your visit and we’ll check availability."
+          }
+        ],
+        "language": "English, Arabic",
+        "groupType": "Self-guided entry",
+        "prices": [
+          {
+            "key": "adult",
+            "label": "Adult",
+            "sub": "Age 12+",
+            "price": 65
+          },
+          {
+            "key": "child",
+            "label": "Child",
+            "sub": "Age 3–11",
+            "price": 52
+          },
+          {
+            "key": "infant",
+            "label": "Infant",
+            "sub": "Under 3",
+            "price": 0
+          }
+        ],
+        "addons": [],
+        "timeSlots": [
+          "10:00",
+          "11:30",
+          "13:00",
+          "14:30",
+          "16:00",
+          "17:30"
+        ],
+        "minGuests": 1
+      },
+      "cover_image": "media/qasr-al-watan.png"
+    },
+    {
+      "slug": "burj-khalifa-at-the-top",
+      "type": "ticket",
+      "title": "Burj Khalifa At The Top (Levels 124 & 125)",
+      "category": "tickets",
+      "location": "Dubai",
+      "image": "/images/tours/dubai-mall-fountain-show-jpg.webp",
+      "duration": "1–2 hours",
+      "price": 169,
+      "oldPrice": 189,
+      "rating": 4.9,
+      "reviews": 510,
+      "badge": "Featured",
+      "featured": true,
+      "pickup": false,
+      "instant": true,
+      "highlights": [
+        "Choose your time slot",
+        "Instant e-ticket",
+        "Skip the ticket line"
+      ],
+      "sort_order": 11,
+      "details": {
+        "gallery": [
+          "media/dubai-mall-fountain-show-jpg.webp"
+        ],
+        "overview": [
+          "Burj Khalifa At The Top (Levels 124 & 125) is one of our most loved experiences in Dubai. Choose your time slot, Instant e-ticket, Skip the ticket line.",
+          "Book online in a few clicks, pay securely and receive your e-ticket instantly on email and WhatsApp."
+        ],
+        "features": [
+          {
+            "icon": "zap",
+            "label": "Instant e-ticket"
+          },
+          {
+            "icon": "ticket",
+            "label": "Mobile entry"
+          },
+          {
+            "icon": "calendar",
+            "label": "Choose your date"
+          },
+          {
+            "icon": "shield",
+            "label": "Secure payment"
+          }
+        ],
+        "inclusions": [
+          "Official entry ticket for the selected date",
+          "E-ticket by email and WhatsApp"
+        ],
+        "exclusions": [
+          "Transport (ask us for a transfer)",
+          "Food and drinks"
+        ],
+        "itinerary": [],
+        "info": [
+          "Show the e-ticket on your phone at the entrance; printing is not needed.",
+          "Children under 3 usually enter free; carry ID for proof of age.",
+          "Arrive 15 minutes before your time slot."
+        ],
+        "cancellation": [
+          "Tickets are issued for the selected date and time and are non-refundable once issued.",
+          "Date changes may be possible up to 48 hours before your visit. Message us on WhatsApp.",
+          "If the attraction closes or cancels, you receive a full refund."
+        ],
+        "faqs": [
+          {
+            "q": "When do I receive my ticket?",
+            "a": "Immediately after payment, by email and WhatsApp."
+          },
+          {
+            "q": "Can I change my date?",
+            "a": "Message us on WhatsApp at least 48 hours before your visit and we’ll check availability."
+          }
+        ],
+        "language": "English, Arabic",
+        "groupType": "Self-guided entry",
+        "prices": [
+          {
+            "key": "adult",
+            "label": "Adult",
+            "sub": "Age 12+",
+            "price": 169
+          },
+          {
+            "key": "child",
+            "label": "Child",
+            "sub": "Age 3–11",
+            "price": 135
+          },
+          {
+            "key": "infant",
+            "label": "Infant",
+            "sub": "Under 3",
+            "price": 0
+          }
+        ],
+        "addons": [],
+        "timeSlots": [
+          "10:00",
+          "12:00",
+          "14:00",
+          "16:00",
+          "17:30",
+          "19:00",
+          "20:30",
+          "22:00"
+        ],
+        "minGuests": 1
+      },
+      "cover_image": "media/dubai-mall-fountain-show-jpg.webp"
+    },
+    {
+      "slug": "ferrari-world-tickets",
+      "type": "ticket",
+      "title": "Ferrari World Yas Island Ticket",
+      "category": "theme-parks",
+      "location": "Yas Island",
+      "duration": "Full day",
+      "price": 345,
+      "rating": 4.8,
+      "reviews": 230,
+      "featured": true,
+      "pickup": false,
+      "instant": true,
+      "highlights": [
+        "Formula Rossa access",
+        "Instant e-ticket",
+        "Valid 1 day"
+      ],
+      "sort_order": 12,
+      "details": {
+        "gallery": [],
+        "overview": [
+          "Ferrari World Yas Island Ticket is one of our most loved experiences in Yas Island. Formula Rossa access, Instant e-ticket, Valid 1 day.",
+          "Book online in a few clicks, pay securely and receive your e-ticket instantly on email and WhatsApp."
+        ],
+        "features": [
+          {
+            "icon": "zap",
+            "label": "Instant e-ticket"
+          },
+          {
+            "icon": "ferris",
+            "label": "Full-day access"
+          },
+          {
+            "icon": "calendar",
+            "label": "Choose your date"
+          },
+          {
+            "icon": "shield",
+            "label": "Secure payment"
+          }
+        ],
+        "inclusions": [
+          "Full-day park admission for the selected date",
+          "Access to all standard rides and shows",
+          "E-ticket by email and WhatsApp"
+        ],
+        "exclusions": [
+          "Express / fast-track passes",
+          "Food, drinks and lockers",
+          "Transport (ask us for a transfer)"
+        ],
+        "itinerary": [],
+        "info": [
+          "Some rides have height and age restrictions.",
+          "Children under 3 usually enter free; carry ID.",
+          "Opening hours vary by season; check before you go."
+        ],
+        "cancellation": [
+          "Tickets are issued for the selected date and time and are non-refundable once issued.",
+          "Date changes may be possible up to 48 hours before your visit. Message us on WhatsApp.",
+          "If the attraction closes or cancels, you receive a full refund."
+        ],
+        "faqs": [
+          {
+            "q": "When do I receive my ticket?",
+            "a": "Immediately after payment, by email and WhatsApp."
+          },
+          {
+            "q": "Can I combine parks?",
+            "a": "Yes. Message us for multi-park tickets and transfers from your hotel."
+          }
+        ],
+        "language": "English, Arabic",
+        "groupType": "Self-guided entry",
+        "prices": [
+          {
+            "key": "adult",
+            "label": "Adult",
+            "sub": "Age 12+",
+            "price": 345
+          },
+          {
+            "key": "child",
+            "label": "Child",
+            "sub": "Age 3–11",
+            "price": 276
+          },
+          {
+            "key": "infant",
+            "label": "Infant",
+            "sub": "Under 3",
+            "price": 0
+          }
+        ],
+        "addons": [],
+        "timeSlots": [
+          "11:00",
+          "12:00",
+          "13:00",
+          "14:00",
+          "15:00",
+          "16:00"
+        ],
+        "minGuests": 1
+      },
+      "cover_image": null
+    },
+    {
+      "slug": "warner-bros-world-tickets",
+      "type": "ticket",
+      "title": "Warner Bros. World Abu Dhabi Ticket",
+      "category": "theme-parks",
+      "location": "Yas Island",
+      "duration": "Full day",
+      "price": 345,
+      "rating": 4.8,
+      "reviews": 175,
+      "featured": false,
+      "pickup": false,
+      "instant": true,
+      "highlights": [
+        "Indoor theme park",
+        "Instant e-ticket",
+        "Valid 1 day"
+      ],
+      "sort_order": 13,
+      "details": {
+        "gallery": [],
+        "overview": [
+          "Warner Bros. World Abu Dhabi Ticket is one of our most loved experiences in Yas Island. Indoor theme park, Instant e-ticket, Valid 1 day.",
+          "Book online in a few clicks, pay securely and receive your e-ticket instantly on email and WhatsApp."
+        ],
+        "features": [
+          {
+            "icon": "zap",
+            "label": "Instant e-ticket"
+          },
+          {
+            "icon": "ferris",
+            "label": "Full-day access"
+          },
+          {
+            "icon": "calendar",
+            "label": "Choose your date"
+          },
+          {
+            "icon": "shield",
+            "label": "Secure payment"
+          }
+        ],
+        "inclusions": [
+          "Full-day park admission for the selected date",
+          "Access to all standard rides and shows",
+          "E-ticket by email and WhatsApp"
+        ],
+        "exclusions": [
+          "Express / fast-track passes",
+          "Food, drinks and lockers",
+          "Transport (ask us for a transfer)"
+        ],
+        "itinerary": [],
+        "info": [
+          "Some rides have height and age restrictions.",
+          "Children under 3 usually enter free; carry ID.",
+          "Opening hours vary by season; check before you go."
+        ],
+        "cancellation": [
+          "Tickets are issued for the selected date and time and are non-refundable once issued.",
+          "Date changes may be possible up to 48 hours before your visit. Message us on WhatsApp.",
+          "If the attraction closes or cancels, you receive a full refund."
+        ],
+        "faqs": [
+          {
+            "q": "When do I receive my ticket?",
+            "a": "Immediately after payment, by email and WhatsApp."
+          },
+          {
+            "q": "Can I combine parks?",
+            "a": "Yes. Message us for multi-park tickets and transfers from your hotel."
+          }
+        ],
+        "language": "English, Arabic",
+        "groupType": "Self-guided entry",
+        "prices": [
+          {
+            "key": "adult",
+            "label": "Adult",
+            "sub": "Age 12+",
+            "price": 345
+          },
+          {
+            "key": "child",
+            "label": "Child",
+            "sub": "Age 3–11",
+            "price": 276
+          },
+          {
+            "key": "infant",
+            "label": "Infant",
+            "sub": "Under 3",
+            "price": 0
+          }
+        ],
+        "addons": [],
+        "timeSlots": [
+          "11:00",
+          "12:00",
+          "13:00",
+          "14:00",
+          "15:00",
+          "16:00"
+        ],
+        "minGuests": 1
+      },
+      "cover_image": null
+    },
+    {
+      "slug": "yas-waterworld-tickets",
+      "type": "ticket",
+      "title": "Yas Waterworld Ticket",
+      "category": "theme-parks",
+      "location": "Yas Island",
+      "duration": "Full day",
+      "price": 310,
+      "rating": 4.7,
+      "reviews": 128,
+      "featured": false,
+      "pickup": false,
+      "instant": true,
+      "highlights": [
+        "40+ rides & slides",
+        "Instant e-ticket",
+        "Valid 1 day"
+      ],
+      "sort_order": 14,
+      "details": {
+        "gallery": [],
+        "overview": [
+          "Yas Waterworld Ticket is one of our most loved experiences in Yas Island. 40+ rides & slides, Instant e-ticket, Valid 1 day.",
+          "Book online in a few clicks, pay securely and receive your e-ticket instantly on email and WhatsApp."
+        ],
+        "features": [
+          {
+            "icon": "zap",
+            "label": "Instant e-ticket"
+          },
+          {
+            "icon": "ferris",
+            "label": "Full-day access"
+          },
+          {
+            "icon": "calendar",
+            "label": "Choose your date"
+          },
+          {
+            "icon": "shield",
+            "label": "Secure payment"
+          }
+        ],
+        "inclusions": [
+          "Full-day park admission for the selected date",
+          "Access to all standard rides and shows",
+          "E-ticket by email and WhatsApp"
+        ],
+        "exclusions": [
+          "Express / fast-track passes",
+          "Food, drinks and lockers",
+          "Transport (ask us for a transfer)"
+        ],
+        "itinerary": [],
+        "info": [
+          "Some rides have height and age restrictions.",
+          "Children under 3 usually enter free; carry ID.",
+          "Opening hours vary by season; check before you go."
+        ],
+        "cancellation": [
+          "Tickets are issued for the selected date and time and are non-refundable once issued.",
+          "Date changes may be possible up to 48 hours before your visit. Message us on WhatsApp.",
+          "If the attraction closes or cancels, you receive a full refund."
+        ],
+        "faqs": [
+          {
+            "q": "When do I receive my ticket?",
+            "a": "Immediately after payment, by email and WhatsApp."
+          },
+          {
+            "q": "Can I combine parks?",
+            "a": "Yes. Message us for multi-park tickets and transfers from your hotel."
+          }
+        ],
+        "language": "English, Arabic",
+        "groupType": "Self-guided entry",
+        "prices": [
+          {
+            "key": "adult",
+            "label": "Adult",
+            "sub": "Age 12+",
+            "price": 310
+          },
+          {
+            "key": "child",
+            "label": "Child",
+            "sub": "Age 3–11",
+            "price": 248
+          },
+          {
+            "key": "infant",
+            "label": "Infant",
+            "sub": "Under 3",
+            "price": 0
+          }
+        ],
+        "addons": [],
+        "timeSlots": [
+          "11:00",
+          "12:00",
+          "13:00",
+          "14:00",
+          "15:00",
+          "16:00"
+        ],
+        "minGuests": 1
+      },
+      "cover_image": null
+    }
+  ],
+  "reviews": [
+    {
+      "name": "Sarah M.",
+      "country": "United Kingdom",
+      "flag": "🇬🇧",
+      "date": "Oct 2026",
+      "tour": "Evening Desert Safari",
+      "tourHref": "/tours/evening-desert-safari",
+      "rating": 5,
+      "title": "Best evening of our holiday",
+      "text": "Pickup was right on time and our driver was brilliant: fun on the dunes but always safe. The sunset was unreal and the BBQ and fire show at camp were the perfect end. The kids still talk about the sandboarding."
+    },
+    {
+      "name": "Rahul & Priya",
+      "country": "India",
+      "flag": "🇮🇳",
+      "date": "Oct 2026",
+      "tour": "Full Day Abu Dhabi City Tour",
+      "tourHref": "/tours/full-day-abu-dhabi-city-tour",
+      "rating": 5,
+      "title": "Guide made the city come alive",
+      "text": "Our guide explained the history at every stop and gave us plenty of time for photos at the Grand Mosque and Qasr Al Watan. Comfortable car, cold water, zero stress. Highly recommend for first-timers."
+    },
+    {
+      "name": "Jonas K.",
+      "country": "Germany",
+      "flag": "🇩🇪",
+      "date": "Sep 2026",
+      "tour": "Burj Khalifa At The Top",
+      "tourHref": "/tickets/burj-khalifa-at-the-top",
+      "rating": 5,
+      "title": "Tickets on WhatsApp in seconds",
+      "text": "Booked the night before, paid online and the e-ticket arrived on WhatsApp straight away. No queue at the counter, we just scanned and went up. Easy."
+    },
+    {
+      "name": "Aisha A.",
+      "country": "Saudi Arabia",
+      "flag": "🇸🇦",
+      "date": "Sep 2026",
+      "tour": "Overnight Desert Safari",
+      "tourHref": "/tours/overnight-desert-safari",
+      "rating": 5,
+      "title": "Magical night under the stars",
+      "text": "The camp was clean and peaceful, dinner was delicious and waking up to the sunrise over the dunes was unforgettable. The team handled everything for our family."
+    },
+    {
+      "name": "Marie L.",
+      "country": "France",
+      "flag": "🇫🇷",
+      "date": "Aug 2026",
+      "tour": "Morning Desert Safari",
+      "tourHref": "/tours/morning-desert-safari",
+      "rating": 4,
+      "title": "Great morning in the desert",
+      "text": "Lovely red dunes and the camel farm was a highlight. It was hot by 11 am, so go early in summer. Friendly driver and good communication on WhatsApp before the tour."
+    },
+    {
+      "name": "Carlo D.",
+      "country": "Philippines",
+      "flag": "🇵🇭",
+      "date": "Aug 2026",
+      "tour": "Dune Buggy Adventure",
+      "tourHref": "/tours/dune-buggy-tour",
+      "rating": 5,
+      "title": "Pure adrenaline!",
+      "text": "Proper buggies, full safety briefing and the guide picked awesome routes for our group. Worth every dirham. We will book again for quad bikes next time."
+    },
+    {
+      "name": "Emily R.",
+      "country": "United States",
+      "flag": "🇺🇸",
+      "date": "Jul 2026",
+      "tour": "Louvre Abu Dhabi Entry Ticket",
+      "tourHref": "/tickets/louvre-abu-dhabi-tickets",
+      "rating": 5,
+      "title": "Smooth and simple",
+      "text": "Bought tickets on my phone in two minutes and walked straight in. The team also arranged a taxi back to our hotel when we asked on WhatsApp. Very helpful."
+    }
+  ],
+  "reviewSummary": {
+    "average": 4.9,
+    "total": 412,
+    "breakdown": [
+      92,
+      6,
+      1,
+      1,
+      0
+    ]
+  },
+  "reels": [
+    {
+      "title": "Dune bashing at sunset",
+      "guest": "Family from UK",
+      "tour": "Evening Desert Safari",
+      "tourHref": "/tours/evening-desert-safari",
+      "poster": "media/image-for-half-day-desert-safari.png",
+      "duration": "0:32",
+      "youtube": "pgq0S8YABu0"
+    },
+    {
+      "title": "Our first camel ride",
+      "guest": "Couple from India",
+      "tour": "Morning Desert Safari",
+      "tourHref": "/tours/morning-desert-safari",
+      "poster": "media/image-for-morning-desert-safari.png",
+      "duration": "0:24",
+      "youtube": "pgq0S8YABu0"
+    },
+    {
+      "title": "Inside the Grand Mosque",
+      "guest": "Friends from Germany",
+      "tour": "Abu Dhabi City Tour",
+      "tourHref": "/tours/full-day-abu-dhabi-city-tour",
+      "poster": "media/pexels-tommy-milanese-7891838-scaled.webp",
+      "duration": "0:41",
+      "youtube": "pgq0S8YABu0"
+    },
+    {
+      "title": "Dubai Fountain at night",
+      "guest": "Family from Saudi Arabia",
+      "tour": "Modern Dubai Tour",
+      "tourHref": "/tours/modern-dubai-tour",
+      "poster": "media/dubai-mall-fountain-show-jpg.webp",
+      "duration": "0:28",
+      "youtube": "pgq0S8YABu0"
+    },
+    {
+      "title": "Buggy racing the dunes",
+      "guest": "Group from Philippines",
+      "tour": "Dune Buggy Adventure",
+      "tourHref": "/tours/dune-buggy-tour",
+      "poster": "media/image-for-dune-buggy-tour1-scaled.webp",
+      "duration": "0:36",
+      "youtube": "pgq0S8YABu0"
+    },
+    {
+      "title": "Night at the Bedouin camp",
+      "guest": "Couple from France",
+      "tour": "Overnight Desert Safari",
+      "tourHref": "/tours/overnight-desert-safari",
+      "poster": "media/image-for-overnight-desert-safari1-jpg.webp",
+      "duration": "0:30",
+      "youtube": "pgq0S8YABu0"
+    }
+  ],
+  "posts": [
+    {
+      "slug": "evening-vs-morning-desert-safari",
+      "title": "Evening vs morning desert safari: which one should you book?",
+      "excerpt": "Sunset BBQ camp or cool morning dunes? Here’s how the two most popular safaris compare, and who each one suits best.",
+      "image": "media/image-for-half-day-desert-safari.png",
+      "category": "Desert Safari",
+      "date": "2026-10-28",
+      "readTime": "5 min read",
+      "related": [
+        "/tours/evening-desert-safari",
+        "/tours/morning-desert-safari"
+      ],
+      "body": [
+        {
+          "p": [
+            "Both safaris include the thrill of dune bashing in a 4x4, but the experience around it is quite different. Choosing the right one depends on your schedule, the weather and who you are travelling with."
+          ]
+        },
+        {
+          "h": "The evening safari",
+          "p": [
+            "The evening safari is the classic choice. You head into the desert in the afternoon, enjoy dune bashing and sandboarding, watch the sunset and finish with dinner and live entertainment at a desert camp.",
+            "It is ideal for first-time visitors, families and groups who want the full experience in one trip."
+          ]
+        },
+        {
+          "h": "The morning safari",
+          "p": [
+            "The morning safari is shorter and quieter. The dunes are cooler, the light is soft and you are back at your hotel by lunchtime, leaving the rest of the day free.",
+            "It suits travellers with tight schedules, photographers and anyone who prefers to skip the big camp dinner."
+          ]
+        },
+        {
+          "h": "Our tip",
+          "p": [
+            "In the hotter months, a morning safari starting early is more comfortable. In winter, the evening safari is hard to beat. If you can’t decide, message us on WhatsApp and we’ll help you pick."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "grand-mosque-visitor-guide",
+      "title": "Visiting Sheikh Zayed Grand Mosque: dress code & tips",
+      "excerpt": "What to wear, the best time for photos and how to plan your visit to Abu Dhabi’s most iconic landmark.",
+      "image": "media/pexels-tommy-milanese-7891838-scaled.webp",
+      "category": "City Guide",
+      "date": "2026-10-12",
+      "readTime": "4 min read",
+      "related": [
+        "/tours/full-day-abu-dhabi-city-tour",
+        "/tours/half-day-abu-dhabi-city-tour"
+      ],
+      "body": [
+        {
+          "p": [
+            "The Sheikh Zayed Grand Mosque is one of the most beautiful buildings in the world and a highlight of any Abu Dhabi trip. A little preparation makes the visit smooth and respectful."
+          ]
+        },
+        {
+          "h": "What to wear",
+          "p": [
+            "Modest dress is required. Clothing should be loose and cover the arms and legs. Women should also cover their hair. If you are unsure, our guides will advise you before you arrive."
+          ]
+        },
+        {
+          "h": "Best time for photos",
+          "p": [
+            "Late afternoon gives warm light on the white marble, and staying until dusk lets you see the mosque lit up. Mornings are usually quieter."
+          ]
+        },
+        {
+          "h": "Make it easy",
+          "p": [
+            "Our Abu Dhabi city tours include hotel pickup and time at the mosque with a guide who explains its history and architecture."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "burj-khalifa-best-time-to-visit",
+      "title": "Burj Khalifa At The Top: which time slot is best?",
+      "excerpt": "Daytime views, golden hour or city lights? How to choose your Burj Khalifa time slot, and why booking ahead matters.",
+      "image": "media/dubai-mall-fountain-show-jpg.webp",
+      "category": "Tickets",
+      "date": "2026-09-30",
+      "readTime": "3 min read",
+      "related": [
+        "/tickets/burj-khalifa-at-the-top",
+        "/tours/modern-dubai-tour"
+      ],
+      "body": [
+        {
+          "p": [
+            "A trip to the observation decks of the world’s tallest building is a must in Dubai. The time you choose changes the experience completely."
+          ]
+        },
+        {
+          "h": "Daytime",
+          "p": [
+            "Clear views across the city, the coastline and the desert beyond. Great for spotting landmarks."
+          ]
+        },
+        {
+          "h": "Sunset",
+          "p": [
+            "The most popular slot: watch the city turn gold and then light up. These times sell out first, so book early."
+          ]
+        },
+        {
+          "h": "Evening",
+          "p": [
+            "Sparkling city lights and the fountain show below. A relaxed option after dinner at Dubai Mall."
+          ]
+        },
+        {
+          "h": "Book online",
+          "p": [
+            "Buy your ticket online, choose your time slot and receive your e-ticket instantly by email and WhatsApp."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "what-to-wear-desert-safari",
+      "title": "What to wear on a desert safari (and what to leave at the hotel)",
+      "excerpt": "Comfortable clothes, the right shoes and a few small extras that make a big difference out on the dunes.",
+      "image": "media/image-for-morning-desert-safari.png",
+      "category": "Travel Tips",
+      "date": "2026-09-14",
+      "readTime": "4 min read",
+      "related": [
+        "/tours/evening-desert-safari",
+        "/tours/overnight-desert-safari"
+      ],
+      "body": [
+        {
+          "p": [
+            "Dressing right keeps you comfortable in the heat, the sand and the cooler desert evenings."
+          ]
+        },
+        {
+          "h": "Clothing",
+          "p": [
+            "Light, breathable clothes in natural fabrics work best. Long, loose trousers or skirts protect against sun and sand."
+          ]
+        },
+        {
+          "h": "Shoes",
+          "p": [
+            "Closed shoes or sturdy sandals. Sand gets everywhere, so many guests go barefoot on the dunes and keep shoes for the camp."
+          ]
+        },
+        {
+          "h": "Small extras",
+          "p": [
+            "Sunglasses, sunscreen, a light jacket for winter evenings and a small bag for your phone. Water is provided on our safaris."
+          ]
+        }
+      ]
+    }
+  ],
+  "site": {
+    "name": "Desert Voyagers Tourism",
+    "legalName": "Desert Voyagers Tourism LLC",
+    "tagline": "Desert safaris, city tours & attraction tickets across the UAE",
+    "phone": "+971 58 572 1121",
+    "phoneHref": "tel:+971585721121",
+    "whatsapp": "https://wa.me/971585721121?text=Hi%20Desert%20Voyagers%2C%20I%20would%20like%20to%20book%20a%20tour",
+    "email": "info@desertvoyagerstourism.com",
+    "hours": "Daily 10:00 am – 10:00 pm",
+    "address": "Office 14, 2nd Floor, Omeir Bin Yousef Building, Hamdan Street, Abu Dhabi, UAE",
+    "social": {
+      "facebook": "https://www.facebook.com/desertvoyagerstourism",
+      "instagram": "https://www.instagram.com/voyagerstourismdesert/",
+      "youtube": "https://www.youtube.com/@desertvoyagerstourism-yq6ds"
+    },
+    "currency": "AED",
+    "award": {
+      "name": "Certificate of Excellence",
+      "year": 2026,
+      "href": "https://www.tripadvisor.com/"
+    }
+  }
+}

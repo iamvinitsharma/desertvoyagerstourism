@@ -12,6 +12,7 @@ export interface Category {
   name: string;
   icon: string;
   blurb: string;
+  color?: string | null;
 }
 
 export interface Tour {
@@ -20,14 +21,14 @@ export interface Tour {
   title: string;
   category: string;          // Category slug
   location: string;
-  image?: string;
+  image?: string | null;
   duration: string;
-  timing?: string;
+  timing?: string | null;
   price: number;             // current "from" price per adult (AED)
-  oldPrice?: number;         // shown struck-through when set
+  oldPrice?: number | null;  // shown struck-through when set
   rating: number;
   reviews: number;
-  badge?: 'Best Seller' | 'Featured' | 'Limited Offer' | 'New';
+  badge?: string | null;     // Best Seller · Featured · Limited Offer · New
   featured: boolean;
   pickup: boolean;
   instant: boolean;          // instant e-ticket confirmation

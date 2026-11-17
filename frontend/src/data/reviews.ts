@@ -9,10 +9,10 @@ export interface Reel {
   guest: string;
   tour: string;
   tourHref: string;
-  poster: string;
+  poster: string | null;
   duration: string;
-  video?: string;      // e.g. /videos/reel-1.mp4 (uploaded in admin)
-  youtube?: string;    // YouTube / Shorts video id
+  video?: string | null;   // uploaded MP4 (admin)
+  youtube?: string | null; // YouTube / Shorts video id
 }
 
 export interface Review {

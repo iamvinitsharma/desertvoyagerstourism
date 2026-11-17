@@ -6,6 +6,7 @@ export const site = {
   phone: '+971 58 572 1121',
   phoneHref: 'tel:+971585721121',
   whatsapp: 'https://wa.me/971585721121?text=Hi%20Desert%20Voyagers%2C%20I%20would%20like%20to%20book%20a%20tour',
+  whatsappNumber: '971585721121',
   email: 'info@desertvoyagerstourism.com',
   hours: 'Daily 10:00 am – 10:00 pm',
   address: 'Office 14, 2nd Floor, Omeir Bin Yousef Building, Hamdan Street, Abu Dhabi, UAE',

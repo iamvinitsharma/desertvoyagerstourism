@@ -5,12 +5,13 @@ import DatePicker from './DatePicker.astro';
 import { type Tour, formatAED } from '../data/tours';
 import type { Details } from '../data/details';
 import { site } from '../data/site';
-interface Props { tour: Tour; details: Details }
-const { tour, details: d } = Astro.props;
+import type { LiveAvailability } from '../lib/availability';
+interface Props { tour: Tour; details: Details; availability?: LiveAvailability | null }
+const { tour, details: d, availability = null } = Astro.props;
 const pricing = { prices: d.prices, addons: d.addons };
 const field = 'w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-[15px] outline-none transition focus:border-brand-sand focus:ring-4 focus:ring-orange-100';
 ---
-<div class="overflow-hidden rounded-3xl border border-line bg-white shadow-xl shadow-ink/5" id="enquiry-card">
+<div class="overflow-hidden rounded-3xl border border-line bg-white shadow-xl shadow-ink/5" id="enquiry-card" data-wa={site.whatsappNumber}>
   <div class="border-b border-line bg-gradient-to-br from-sand-50 to-white p-5">
     <p class="text-xs font-semibold uppercase tracking-wide text-ink-soft">From {tour.oldPrice && <s class="ml-1">{formatAED(tour.oldPrice)}</s>}</p>
     <p class="mt-0.5 flex items-baseline gap-2"><span class="font-display text-3xl font-bold text-ink">{formatAED(tour.price)}</span><span class="text-sm text-ink-soft">per adult</span></p>
@@ -22,7 +23,7 @@ const field = 'w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-
     <!-- honeypot -->
     <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
 
-    <DatePicker name="date" slug={tour.slug} label="Tour date" minOffsetDays={1} accent="sand" />
+    <DatePicker name="date" slug={tour.slug} label="Tour date" minOffsetDays={1} accent="sand" availability={availability} />
 
     <div>
       <span class="mb-1.5 block text-sm font-semibold">Guests</span>
@@ -162,7 +163,7 @@ const field = 'w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-
         const ok = card.querySelector<HTMLElement>('[data-success]')!; ok.classList.remove('hidden');
         ok.querySelector('[data-ref]')!.textContent = data.ref;
         const msg = `Hi Desert Voyagers, I just sent a booking request.\nRef: ${data.ref}\nTour: ${data.tour}\nDate: ${body.date}\nGuests: ${body.adult} adults, ${body.child} children`;
-        ok.querySelector<HTMLAnchorElement>('[data-wa]')!.href = `https://wa.me/971585721121?text=${encodeURIComponent(msg)}`;
+        ok.querySelector<HTMLAnchorElement>('[data-wa]')!.href = `https://wa.me/${card.dataset.wa}?text=${encodeURIComponent(msg)}`;
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } catch (x: any) {
         err.textContent = x.message + '. Please try again or message us on WhatsApp.'; err.classList.remove('hidden');

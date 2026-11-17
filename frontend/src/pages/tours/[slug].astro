@@ -4,6 +4,7 @@ import ProductPage from '../../components/ProductPage.astro';
 import TourEnquiry from '../../components/TourEnquiry.astro';
 import { tours } from '../../data/tours';
 import { getDetails } from '../../data/details';
+import { getAvailability } from '../../lib/data';
 
 // Used only by the static GitHub Pages preview build (ignored when server-rendered).
 export function getStaticPaths() {
@@ -16,6 +17,7 @@ if (!tour) return Astro.rewrite('/404');
 if (tour.type === 'ticket') return Astro.redirect(`/tickets/${tour.slug}`, 301);
 
 const details = getDetails(tour);
+const availability = await getAvailability(tour.slug); // live admin rules (null = sample)
 const related = [
   ...tours.filter(t => t.slug !== tour.slug && t.category === tour.category),
   ...tours.filter(t => t.slug !== tour.slug && t.category !== tour.category && t.type === 'tour' && t.featured),
@@ -23,6 +25,6 @@ const related = [
 ---
 <Layout title={`${tour.title} | Desert Voyagers Tourism`} description={`${tour.title} in ${tour.location}: ${tour.highlights.join(', ')}. From AED ${tour.price}. Hotel pickup, no prepayment.`} bodyClass="has-cta">
   <ProductPage tour={tour} details={details} related={related} ctaLabel="Book now">
-    <TourEnquiry slot="sidebar" tour={tour} details={details} />
+    <TourEnquiry slot="sidebar" tour={tour} details={details} availability={availability} />
   </ProductPage>
 </Layout>

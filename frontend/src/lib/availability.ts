@@ -23,6 +23,25 @@ export function dayStatus(slug: string, iso: string, minIso: string): DayStatus 
   return 'available';
 }
 
+/** Live rules from the admin: every date/slot is available unless a rule says otherwise. */
+export interface LiveAvailability { mode: 'live'; minNoticeDays: number; days: Record<string, string>; slots: Record<string, string> }
+
+/** Status checker using live rules when available, else the sample generator. */
+export function makeChecker(slug: string, live: LiveAvailability | null) {
+  return {
+    day(iso: string, minIso: string): DayStatus {
+      if (!live) return dayStatus(slug, iso, minIso);
+      if (iso < minIso) return 'past';
+      return (live.days[iso] as DayStatus) ?? 'available';
+    },
+    slot(iso: string, slot: string): SlotStatus {
+      if (!live) return slotStatus(slug, iso, slot);
+      if (live.days[iso] === 'soldout') return 'soldout';
+      return (live.slots[`${iso}|${slot}`] as SlotStatus) ?? 'available';
+    },
+  };
+}
+
 export function slotStatus(slug: string, iso: string, slot: string): SlotStatus {
   const r = rnd(`${slug}|${iso}|${slot}`);
   if (r < 0.15) return 'soldout';

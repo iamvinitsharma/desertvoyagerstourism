@@ -3,6 +3,7 @@ import { tours } from '../../data/tours';
 import { getDetails } from '../../data/details';
 import { newRef, save } from '../../lib/store';
 import { dayStatus, isoDate } from '../../lib/availability';
+import { dataSource, postApi } from '../../lib/data';
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
@@ -17,6 +18,16 @@ export const POST: APIRoute = async ({ request }) => {
   let b: Record<string, unknown>;
   try { b = await request.json(); } catch { return json({ ok: false, error: 'Invalid request' }, 400); }
   if (str(b.website)) return json({ ok: true, ref: 'DV-OK' }); // honeypot: silently accept bots
+
+  // Connected to the admin: save the request there (it validates and recomputes the total).
+  if (dataSource() === 'api') {
+    try {
+      const { status, data } = await postApi('/enquiries', b);
+      return json(data, status);
+    } catch {
+      return json({ ok: false, error: 'Our booking system is busy right now. Please try again or message us on WhatsApp' }, 503);
+    }
+  }
 
   const tour = tours.find(t => t.slug === str(b.slug) && t.type === 'tour');
   if (!tour) return json({ ok: false, error: 'Tour not found' }, 404);

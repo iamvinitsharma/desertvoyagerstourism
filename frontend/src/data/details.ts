@@ -25,7 +25,12 @@ export interface Details {
   addons: Addon[];
   timeSlots: string[];
   minGuests: number;
+  minNoticeDays?: number;
 }
+
+// Live details from the admin API (set by src/lib/data.ts); null = use the sample generator below.
+let live: Record<string, Details> | null = null;
+export function setLiveDetails(d: Record<string, Details> | null) { live = d; }
 
 const img = (f: string) => `/images/tours/${f}`;
 const G = {
@@ -163,6 +168,7 @@ function defaultOverview(t: Tour): string[] {
 }
 
 export function getDetails(t: Tour): Details {
+  if (live?.[t.slug]) return live[t.slug];
   const cat = byCategory[t.category] ?? byCategory[t.type === 'ticket' ? 'tickets' : 'city-tours'];
   const ov = overrides[t.slug] ?? {};
   const isTicket = t.type === 'ticket';

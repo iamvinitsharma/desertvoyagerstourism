@@ -11,7 +11,9 @@ export interface Post {
   date: string;      // ISO
   readTime: string;
   related: string[]; // tour/ticket hrefs
-  body: { h?: string; p: string[] }[];
+  body?: { h?: string; p: string[] }[]; // sample posts
+  html?: string;                        // posts from the admin (rich text)
+  seo?: { title?: string | null; description?: string | null };
 }
 
 const img = (f: string) => `/images/tours/${f}`;

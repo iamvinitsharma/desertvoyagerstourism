@@ -2,11 +2,13 @@
 // Booking calendar: availability colours, no preselected date, legend, month navigation.
 // Emits `change` on the hidden input and `dp:change` (detail = ISO date) on the root.
 import Icon from './Icon.astro';
-interface Props { name: string; slug: string; label: string; minOffsetDays?: number; accent?: 'green' | 'sand' }
-const { name, slug, label, minOffsetDays = 0, accent = 'green' } = Astro.props;
+import type { LiveAvailability } from '../lib/availability';
+interface Props { name: string; slug: string; label: string; minOffsetDays?: number; accent?: 'green' | 'sand'; availability?: LiveAvailability | null }
+const { name, slug, label, minOffsetDays = 0, accent = 'green', availability = null } = Astro.props;
 const focusRing = accent === 'green' ? 'focus-visible:ring-green-100 focus-visible:border-brand-green' : 'focus-visible:ring-orange-100 focus-visible:border-brand-sand';
 ---
-<div class="dp relative" data-dp data-slug={slug} data-min-offset={minOffsetDays} data-accent={accent}>
+<div class="dp relative" data-dp data-slug={slug} data-min-offset={availability ? availability.minNoticeDays : minOffsetDays} data-accent={accent}
+     data-availability={availability ? JSON.stringify(availability) : undefined}>
   <span class="mb-1.5 block text-sm font-semibold">{label}</span>
   <button type="button" data-dp-field aria-haspopup="dialog" aria-expanded="false"
     class={`flex w-full items-center gap-3 rounded-xl border border-line bg-white px-3.5 py-3 text-left transition hover:border-ink/40 focus-visible:outline-none focus-visible:ring-4 ${focusRing}`}>
@@ -52,7 +54,7 @@ const focusRing = accent === 'green' ? 'focus-visible:ring-green-100 focus-visib
 </style>
 
 <script>
-  import { dayStatus, isoDate, MAX_DAYS_AHEAD } from '../lib/availability';
+  import { makeChecker, isoDate, MAX_DAYS_AHEAD } from '../lib/availability';
   document.querySelectorAll<HTMLElement>('[data-dp]').forEach(root => {
     const slug = root.dataset.slug!;
     const input = root.querySelector<HTMLInputElement>('input[type=hidden]')!;
@@ -73,7 +75,8 @@ const focusRing = accent === 'green' ? 'focus-visible:ring-green-100 focus-visib
     let view = new Date(min.getFullYear(), min.getMonth(), 1);
 
     const pretty = (iso: string) => new Date(iso + 'T00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
-    const status = (iso: string) => iso > maxIso ? 'past' : dayStatus(slug, iso, minIso);
+    const checker = makeChecker(slug, root.dataset.availability ? JSON.parse(root.dataset.availability) : null);
+    const status = (iso: string) => iso > maxIso ? 'past' : checker.day(iso, minIso);
 
     const render = () => {
       monthEl.textContent = view.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });

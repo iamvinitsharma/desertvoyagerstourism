@@ -18,7 +18,7 @@ const related = post.related
   .filter(Boolean) as typeof tours;
 const more = posts.filter(p => p.slug !== post.slug).slice(0, 3);
 ---
-<Layout title={`${post.title} | Desert Voyagers Tourism`} description={post.excerpt}>
+<Layout title={post.seo?.title || `${post.title} | Desert Voyagers Tourism`} description={post.seo?.description || post.excerpt}>
   <article>
     <header class="relative isolate overflow-hidden bg-ink">
       <img src={post.image} alt="" class="absolute inset-0 -z-10 size-full object-cover opacity-50" />
@@ -40,7 +40,11 @@ const more = posts.filter(p => p.slug !== post.slug).slice(0, 3);
     <div class="container-x grid max-w-6xl gap-10 py-12 lg:grid-cols-[minmax(0,1fr)_320px]">
       <div class="max-w-none">
         <p class="text-xl leading-relaxed text-ink">{post.excerpt}</p>
-        {post.body.map(b => (
+        {post.html && (
+          <div class="mt-2 [&_a]:font-semibold [&_a]:text-brand-blue [&_h2]:mt-8 [&_h2]:font-display [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:text-ink [&_h3]:mt-6 [&_h3]:font-display [&_h3]:text-xl [&_h3]:font-semibold [&_img]:my-6 [&_img]:rounded-2xl [&_li]:mt-1.5 [&_ol]:mt-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mt-3 [&_p]:text-[17px] [&_p]:leading-[1.8] [&_p]:text-ink-soft [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:text-ink-soft"
+               set:html={post.html} />
+        )}
+        {!post.html && (post.body ?? []).map(b => (
           <section class="mt-8">
             {b.h && <h2 class="font-display text-2xl font-semibold text-ink">{b.h}</h2>}
             {b.p.map(t => <p class="mt-3 text-[17px] leading-[1.8] text-ink-soft">{t}</p>)}

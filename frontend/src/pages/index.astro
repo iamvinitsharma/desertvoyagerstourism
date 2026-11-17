@@ -187,10 +187,13 @@ const howTo = [
     <div class="container-x relative z-10">
       <Carousel id="cat-carousel" label="Categories" trackClass="gap-3 pt-4 pb-14 -mt-4 -mb-14 px-3 -mx-3 lg:gap-4">
         {categories.map(c => {
-          const st = tileStyle[c.slug] ?? tileStyle['tickets'];
+          // Built-in categories use the designed gradients; new ones from the admin use their chosen colour.
+          const custom = !tileStyle[c.slug] && c.color;
+          const st = tileStyle[c.slug] ?? (custom ? { bg: '', shadow: 'shadow-ink/20' } : tileStyle['tickets']);
           const from = minPrice(c.slug);
           return (
             <button type="button" data-cat={c.slug} aria-controls="cat-results" aria-pressed="false"
+               style={custom ? `background: linear-gradient(135deg, ${c.color}, color-mix(in srgb, ${c.color} 70%, #000))` : undefined}
                class={`cat-tile group relative isolate flex min-h-[170px] w-[46%] shrink-0 snap-start flex-col overflow-hidden rounded-3xl p-4 text-left text-white shadow-lg transition duration-300 hover:-translate-y-1.5 hover:shadow-xl sm:min-h-[200px] sm:w-[31%] sm:p-5 lg:w-[calc((100%-5rem)/6)] ${st.bg} ${st.shadow}`}>
               <svg class="pointer-events-none absolute -bottom-2 left-0 -z-10 w-full text-white/12" viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true">
                 <path d="M0 40 C 40 20, 80 30, 110 35 S 170 20, 200 30 L200 60 L0 60Z" fill="currentColor" />
@@ -198,7 +201,7 @@ const howTo = [
               </svg>
               <span class="pointer-events-none absolute -right-6 -top-6 -z-10 size-24 rounded-full bg-white/10 transition duration-500 group-hover:scale-150"></span>
               <span class="cat-check absolute right-3 top-3 hidden size-7 place-items-center rounded-full bg-white text-ink shadow"><Icon name="check" size={15} /></span>
-              <CategoryIcon name={c.slug} size={58} class="transition duration-300 group-hover:-rotate-3 group-hover:scale-110" />
+              <CategoryIcon name={c.icon || c.slug} size={58} class="transition duration-300 group-hover:-rotate-3 group-hover:scale-110" />
               <span class="mt-auto block pt-4 font-display text-lg font-semibold leading-tight">{c.name}</span>
               <span class="mt-1 flex items-center justify-between gap-2">
                 <span class:list={['text-[13px] text-white/85', from && 'whitespace-nowrap']}>{from ? `From AED ${from}` : c.blurb}</span>

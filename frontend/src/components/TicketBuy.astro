@@ -4,8 +4,9 @@ import Icon from './Icon.astro';
 import DatePicker from './DatePicker.astro';
 import { type Tour, formatAED } from '../data/tours';
 import type { Details } from '../data/details';
-interface Props { tour: Tour; details: Details }
-const { tour, details: d } = Astro.props;
+import type { LiveAvailability } from '../lib/availability';
+interface Props { tour: Tour; details: Details; availability?: LiveAvailability | null }
+const { tour, details: d, availability = null } = Astro.props;
 ---
 <div class="overflow-hidden rounded-3xl border border-line bg-white shadow-xl shadow-ink/5">
   <div class="border-b border-line bg-gradient-to-br from-green-50/60 to-white p-5">
@@ -14,8 +15,8 @@ const { tour, details: d } = Astro.props;
     <p class="mt-2 flex items-center gap-1.5 text-sm font-medium text-brand-green"><Icon name="zap" size={16} />Instant e-ticket by email & WhatsApp</p>
   </div>
 
-  <form id="ticket-form" class="space-y-4 p-5" data-slug={tour.slug} data-slots={JSON.stringify(d.timeSlots)} novalidate>
-    <DatePicker name="date" slug={tour.slug} label="Visit date" accent="green" />
+  <form id="ticket-form" class="space-y-4 p-5" data-slug={tour.slug} data-slots={JSON.stringify(d.timeSlots)} data-availability={availability ? JSON.stringify(availability) : undefined} novalidate>
+    <DatePicker name="date" slug={tour.slug} label="Visit date" accent="green" availability={availability} />
 
     {d.timeSlots.length > 0 && (
       <fieldset data-slots-wrap>
@@ -70,13 +71,14 @@ const { tour, details: d } = Astro.props;
 
 <script>
   import { addToCart } from '../lib/cart';
-  import { slotStatus } from '../lib/availability';
+  import { makeChecker } from '../lib/availability';
   import { url } from '../lib/preview';
   const form = document.getElementById('ticket-form') as HTMLFormElement | null;
   if (form) {
     const aed = (n: number) => 'AED ' + n.toLocaleString('en-AE');
     const slug = form.dataset.slug!;
     const slots: string[] = JSON.parse(form.dataset.slots || '[]');
+    const checker = makeChecker(slug, form.dataset.availability ? JSON.parse(form.dataset.availability) : null);
     const date = form.elements.namedItem('date') as HTMLInputElement;
     const picker = form.querySelector<HTMLElement>('[data-dp]');
 
@@ -89,7 +91,7 @@ const { tour, details: d } = Astro.props;
       const prevPick = (form.querySelector('input[name=time]:checked') as HTMLInputElement | null)?.value;
       hint.classList.add('hidden'); slotsEl.classList.remove('hidden'); slotsEl.classList.add('grid');
       slotsEl.innerHTML = slots.map(t => {
-        const st = slotStatus(slug, date.value, t);
+        const st = checker.slot(date.value, t);
         const off = st === 'soldout';
         const sub = st === 'soldout' ? 'Sold out' : st === 'limited' ? 'Few left' : 'Available';
         return `<label class="slot ${off ? 'cursor-not-allowed' : 'cursor-pointer'}" data-st="${st}">
